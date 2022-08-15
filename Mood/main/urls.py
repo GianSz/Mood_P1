@@ -6,3 +6,4 @@ urlpatterns = [
     path('home/', views.home_page, name='home'),
     path('mood/', views.moood_page, name='mood'),
 ]
+

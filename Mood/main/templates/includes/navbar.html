@@ -1,25 +1,25 @@
 <!-- Section Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark bg-gradient" style="background: #8241F3;">
-    <a class="navbar-brand" href="">Icono</a>
+    <a class="navbar-brand" href="" style="padding-left: 15px;">Icono</a>
     <!-- Navbar responsiv, se le pone icono que tiene bp -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
     <!-- Section de los items del Navbar -->
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 25px;">
         <!-- Con bt5 paso de ser ms a me OJO, items que estan a la derecha (auto)-->
         <ul class="navbar-nav me-auto">
             <!-- Section Home -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
+                <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
             </li>
             <!-- Section Mood -->
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'mood' %}">Mood</a>
+                <a class="nav-link" href="{% url 'mood' %}"><i class="fas fa-laugh-beam"></i> Mood</a>
             </li>
             <!-- Section Tu Musica -->
             <li class="nav-item">
-                <a class="nav-link" href="#">Tu musica</a>
+                <a class="nav-link" href="#"><i class="fas fa-music"></i> Tu musica</a>
             </li>
         </ul>
         <!-- Items que estan a la derecha del todo  -->

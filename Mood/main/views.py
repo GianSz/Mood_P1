@@ -12,10 +12,10 @@ def home_page(request): # Views para la home page
 
 
 def moood_page(request): #Views para la pagina mood
-    userEmotion = ""
-    face_cascade_name = cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml'  #getting a haarcascade xml file
-    face_cascade = cv2.CascadeClassifier()  #processing it for our project
-    if not face_cascade.load(cv2.samples.findFile(face_cascade_name)):  #adding a fallback event
+    userEmotion = "" #initialize empty variable 
+    faceCascadeName = cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml'  #getting a haarcascade xml file
+    faceCascade = cv2.CascadeClassifier()  #processing it for our project
+    if not faceCascade.load(cv2.samples.findFile(faceCascadeName)):  #adding a fallback event
         print("Error loading xml file")
 
     video=cv2.VideoCapture(0)  #requisting the input from the webcam or camera
@@ -24,7 +24,7 @@ def moood_page(request): #Views para la pagina mood
         _,frame = video.read()
 
         gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)  #changing the video to grayscale to make the face analisis work properly
-        face=face_cascade.detectMultiScale(gray,scaleFactor=1.1,minNeighbors=5)
+        face=faceCascade.detectMultiScale(gray,scaleFactor=1.1,minNeighbors=5)
 
         for x,y,w,h in face:
             img=cv2.rectangle(frame,(x,y),(x+w,y+h),(0,0,255),1)  #making a recentangle to show up and detect the face and setting it position and colour
@@ -33,7 +33,7 @@ def moood_page(request): #Views para la pagina mood
             try:
                 analyze = DeepFace.analyze(frame)  #same thing is happing here as the previous example, we are using the analyze class from deepface and using ‘frame’ as input
                 userEmotion = analyze['dominant_emotion']
-            #print(analyze['dominant_emotion'])  #here we will only go print out the dominant emotion also explained in the previous example
+
             except:
                 userEmotion = " "
 

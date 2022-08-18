@@ -5,5 +5,85 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Hola mundo Mood</h1>
+    <!-- Cuadro de permiso de uso de camara -->
+    <div class="modal fade" id="PermitirUsoDeCamara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    ¿Permite usted el uso de su camara para el reconocimiento facial?
+                </h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <h6 class="text-center">
+                        ¡Para nosotros es muy importante su seguridad!
+                    </h6>
+                    <br>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-outline-success">Si, permito el uso de mi camara</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No, gracias</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <section class="py-5 text-center container" style="background:  #F0F0F0 ;">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h2 class="fw-light"><b>¡Bienvenida/o a Mood!</b></h2>
+                <h3>Instrucciones de uso</h3>
+                <br>
+            </div>
+            
+            <h5> 1. </h5>
+            <h5> 1. Instruccion 1</h5>
+            <h5> 1. Instruccion 1</h5>
+            <h5> 1. Instruccion 1</h5>
+            <h5> 1. Instruccion 1</h5>
+
+            
+            <div>
+                <br>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
+            </div>
+
+            <!-- <div>
+                <a href="#" class="btn btn-primary my-2" style="background: #7AE137 ;" type="submit">Comenzar Mood</a>
+            </div> -->
+            
+            <!-- <form action="" method="post">
+                {% csrf_token %}
+                <button style="background: #7AE137;"  class="btn btn-primary my-2">Comenzar Mood</button>
+            <form> -->
+        </div>
+    </section>
+    <br>
+    <div class="col-md">
+        <div class="card text-center" style="background-color: #8241F3;">
+            <div class="card-body">
+                <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal es...</h3>
+                <ul class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">Canción 1</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 2</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 3</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 4</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 5</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 6</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 7</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 8</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 9</a>
+                    <a href="#" class="list-group-item list-group-item-action">Canción 10</a>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br>
 {% endblock %}

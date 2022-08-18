@@ -4,6 +4,6 @@ from main import views
 urlpatterns = [
     path('', views.home_page, name='home'), # Esta se debe cambiar a que dirija al login de primerazo
     path('home/', views.home_page, name='home'),
-    path('mood/', views.moood_page, name='mood'),
+    path('mood/', views.mood_page, name='mood'),
 ]
 

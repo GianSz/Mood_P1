@@ -6,6 +6,5 @@ from django.shortcuts import render
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')
 
-
-def moood_page(request): #Views para la pagina mood
+def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')

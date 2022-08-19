@@ -1,9 +1,10 @@
 from urllib import request
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import matplotlib.pyplot as plt
 import cv2
 from deepface import DeepFace
 import numpy as np
+from main.models import Sentimiento_Cancion
 
 # Create your views here.
 
@@ -15,7 +16,10 @@ def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')
 
 
-def moood_page(request): #Views para la pagina mood
+def recognize(request): #Views para la pagina mood
+
+    print("estoy entrando")
+
     userEmotion = "" #initialize empty variable 
     faceCascadeName = cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml'  #getting a haarcascade xml file
     faceCascade = cv2.CascadeClassifier()  #processing it for our project
@@ -48,7 +52,7 @@ def moood_page(request): #Views para la pagina mood
                 break
         video.release()
 
-        if userEmotion == "happy":
+        if userEmotion == "happy" or userEmotion == "neutral" or userEmotion == "surprised":
             userEmotion = "feliz"
 
         elif userEmotion == "sad" or userEmotion == "fear":
@@ -56,10 +60,14 @@ def moood_page(request): #Views para la pagina mood
 
         elif userEmotion == "angry" or userEmotion == "disgust":
             userEmotion = "enojado"
-
-        elif userEmotion == "neutral" or userEmotion == "surprised":
-            userEmotion = "neutral"
+            
         else:
             userEmotion = "No reconocio tu cara, vuelve a intentarlo"
 
-    return render(request, template_name='mood.html', context={"userEmotion": userEmotion,})
+    print(userEmotion)
+
+    canciones = Sentimiento_Cancion.objects.filter(id_sentimiento__nombre__contains=userEmotion)
+
+    context={'userEmotion':userEmotion,'canciones':canciones}
+
+    return render(request, template_name='mood.html', context=context)

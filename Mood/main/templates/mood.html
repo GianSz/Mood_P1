@@ -26,7 +26,7 @@
                     </h6>
                     <br>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-outline-success">Si, permito el uso de mi camara</button>
+                        <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No, gracias</button>
                     </div>
                 </form>
@@ -44,16 +44,15 @@
                 <br>
             </div>
             
-            <h5> 1. </h5>
-            <h5> 1. Instruccion 1</h5>
-            <h5> 1. Instruccion 1</h5>
-            <h5> 1. Instruccion 1</h5>
-            <h5> 1. Instruccion 1</h5>
+            <h5> 1. En esta sección de Mood vamos a reconocer tu estado de ánimo por medio de reconocimiento facial, y según este se creará una playlist de canciones para llevarte a un estado de calma</h5>
+            <h5> 2. Al momento de seleccionar el botón "comenzar" la cámara de tu dispositivo se va a prender, el proceso de reconocimiento se demora aproximadamente 10 segundos, por lo que te pedimos que durante este tiempo no tengas ni la cámara ni tu cara tapada, así mismo, no moverte mucho del marco para que sea más rápido y preciso el reconocimiento. Es importante aclarar que no vas a verte en la pantalla, pero verás la luz de la cámara prendida mientras el proceso está activo.</h5>
+            <h5> 3. Cuando el proceso de reconocimiento esté listo, se va a mostrar una pequeña encuesta en donde saldrá un mensaje que dice cuál fue tu estado de ánimo detectado y tendrás 2 opciones, volver a repetir el procedimiento pues no es el estado de ánimo en el que te encuentras, o confirmar el estado de ánimo.</h5>
+            <h5> 4. Por último, si el estado de ánimo es correcto, una playlist personalizada se generará y podrás reproducirla.</h5>
 
-            
             <div>
                 <br>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
+                <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a>
+                <!--<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>-->
             </div>
 
             <!-- <div>
@@ -67,25 +66,32 @@
         </div>
     </section>
     <br>
-    <div class="col-md">
-        <div class="card text-center" style="background-color: #8241F3;">
-            <div class="card-body">
-                <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal es...</h3>
-                <ul class="list-group">
-                    <a href="#" class="list-group-item list-group-item-action">Canción 1</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 2</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 3</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 4</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 5</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 6</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 7</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 8</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 9</a>
-                    <a href="#" class="list-group-item list-group-item-action">Canción 10</a>
-                </ul>
+    {% if userEmotion %}
+
+        {% if userEmotion|length > 10 %}
+        <div class="col-md">
+            <div class="card text-center" style="background-color: #8241F3;">
+                <div class="card-body">
+                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" > {{ userEmotion }} </h3>
+                </div>
             </div>
         </div>
-    </div>
+        {% else %}
+        <br>
+        <div class="col-md">
+            <div class="card text-center" style="background-color: #8241F3;">
+                <div class="card-body">
+                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal {{ userEmotion }} es...</h3>
+                    <ul class="list-group">
+                        {% for cancion in canciones %}
+                        <a href="#!" class="list-group-item list-group-item-action">{{cancion.id_cancion.nombre}}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
     <br>
 
 {% endblock %}

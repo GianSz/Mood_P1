@@ -7,4 +7,3 @@ urlpatterns = [
     path('mood/', views.mood_page, name='mood'),
     path('recognize/', views.recognize, name='recognize'),
 ]
-

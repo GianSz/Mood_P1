@@ -16,13 +16,12 @@
     </head>
 
     <body style="background: #FFF9F2; ">
-        {% if messages %} <!-- Para mostrar los mensajes que se quieran popear -->
-            {% for message in messages %}
-                <div class="alert">
-                {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-primary d-flex justify-content-center" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
         {% include 'includes/navbar.html' %} <!-- Inclusión de la navbar -->
         {% block pageheader %} <!-- por si se le quiere poner un header a la pagina -->
 

@@ -1,6 +1,8 @@
 from re import template
 from urllib import request
 from django.shortcuts import render,redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 import matplotlib.pyplot as plt
 import cv2
 from deepface import DeepFace
@@ -19,6 +21,24 @@ def home_page(request): # Views para la home page
 def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')
 
+def login_page(request): #Views para la pagina mood
+    if request.method == 'GET':
+        return render(request, template_name='login.html')
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Acabas de ingresar como {user.username}')
+            return redirect('home')
+        else:
+            messages.error(request, '¡El usuario y la contraseña no coinciden, por favor vuelva a intentarlo!')
+            return redirect('login')
+    
+    return render(request, template_name='login.html')
 
 def recognize(request): #Views para la pagina mood
 

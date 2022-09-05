@@ -1,3 +1,4 @@
+from re import template
 from urllib import request
 from django.shortcuts import render,redirect
 import matplotlib.pyplot as plt
@@ -7,6 +8,9 @@ import numpy as np
 from main.models import Sentimiento_Cancion
 
 # Create your views here.
+
+def regsiter_page(request):
+    return render(request, template_name='registro.html')
 
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')

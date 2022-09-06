@@ -2,11 +2,13 @@ from urllib import request
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import *
 import matplotlib.pyplot as plt
 import cv2
 from deepface import DeepFace
 import numpy as np
 from main.models import Sentimiento_Cancion
+from django.http import JsonResponse
 
 import requests
 import base64
@@ -22,6 +24,27 @@ def regsiter_page(request):
 
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')
+
+def get_song(request):
+    search = request.GET.get('search')
+    payload = []
+    if search:
+        objs = Cancion.objects.filter(nombre__startswith=search)
+        for obj in objs:
+            payload.append({
+                'id': obj.id,
+                'name': obj.nombre, 
+                'audio': obj.audio,
+                'img': obj.imagen,
+                'length': obj.duracion,
+                'frequency': obj.frecuencia,
+                'idiom': obj.idioma,
+            })
+
+    return JsonResponse({
+        'status': True,
+        'payload': payload,
+    })
 
 def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')

@@ -8,4 +8,6 @@ urlpatterns = [
     path('home/', views.home_page, name='home'),
     path('mood/', views.mood_page, name='mood'),
     path('recognize/', views.recognize, name='recognize'),
+    path('get-songs/', views.get_song),
+
 ]

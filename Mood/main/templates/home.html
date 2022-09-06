@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <div id="search-bar-box" class="row">
+    <!-- <div id="search-bar-box" class="row">
         <style>
             #search-bar{
                 width: 50%;
@@ -20,6 +20,14 @@
             <input class="form-control d-inline mx-auto text-center" id="search-bar" type="search" placeholder="Busca tu canción favorita...">
             <i class="fas fa-search"></i>
         </form>
+    </div> -->
+    <div class="container mt-5 pt-3 mb-5" >
+        <div class="col-md-6 mx-auto">
+            <div id="autocomplete" class="autocomplete">
+                <input class="autocomplete-input" placeholder="Busca tu canción favorita..." />
+                <ul class="autocomplete-result-list"></ul>
+            </div>
+        </div>
     </div>
 
     <div class="row" style="margin-bottom: 2em;">
@@ -67,4 +75,33 @@
         </div>
     </div>
 
+    <!-- Script para la barra de navegación -->
+    <script>
+        new Autocomplete('#autocomplete',{
+            search : input =>{
+                const url = `/get-songs/?search=${(input)}`
+                return new Promise(resolve => {
+                    fetch(url)
+                    .then(response=>response.json())
+                    .then(data=>{
+                        resolve(data.payload)
+                    })
+                })
+            },
+            renderResult : (result, props)=>{
+                let group = ''
+                if(result.index % 3 === 0){
+                    group = `<li class="group">Group</li>`
+                }
+                return `
+                ${group}
+                <li ${props}>
+                    <div class="wiki-title">
+                        ${result.name}
+                    </div>
+                </li>
+                `
+            }
+        })
+    </script>
 {% endblock %}

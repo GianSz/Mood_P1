@@ -9,5 +9,6 @@ urlpatterns = [
     path('mood/', views.mood_page, name='mood'),
     path('recognize/', views.recognize, name='recognize'),
     path('get-songs/', views.get_song),
+    path('playlist/', views.playlist, name = 'playlist'),
 
 ]

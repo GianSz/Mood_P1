@@ -69,11 +69,13 @@ def login_page(request): #Views para la pagina mood
     
     return render(request, template_name='login.html')
 
+userEmotion = ""
+
 def recognize(request): #Views para la pagina mood
 
     print("estoy entrando")
 
-    userEmotion = "" #initialize empty variable for storing the users emotion
+    #userEmotion = "" #initialize empty variable for storing the users emotion
     faceCascadeName = cv2.data.haarcascades + 'haarcascade_frontalface_alt.xml'  #getting a haarcascade xml file for recognizing faces
     faceCascade = cv2.CascadeClassifier()  #processing it for detecting faces
     if not faceCascade.load(cv2.samples.findFile(faceCascadeName)):  #in case the file is not correctly downloaded
@@ -114,13 +116,19 @@ def recognize(request): #Views para la pagina mood
 
     print(userEmotion)
 
+    context={'userEmotion':userEmotion}
+
+    playlist(userEmotion)
+
+    return render(request, template_name='confirmEmotion.html', context=context)
+
+def playlist(request, userEmotion):
+
     canciones = Sentimiento_Cancion.objects.filter(id_sentimiento__nombre__contains=userEmotion)
 
     context={'userEmotion':userEmotion,'canciones':canciones}
 
-    return render(request, template_name='mood.html', context=context)
-
-
+    return render(request, template_name='playlist.html', context = context)
 
 class Spotify_authorization():
     AUTH_URL = "https://accounts.spotify.com/authorize"

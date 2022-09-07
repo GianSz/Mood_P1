@@ -6,21 +6,14 @@
 
 {% block content %}
 
-    <!-- <div id="search-bar-box" class="row">
-        <style>
-            #search-bar{
-                width: 50%;
+    <style>
+        @media screen and (max-width: 991px){
+            .playlist-container{
+                gap:24px;
             }
+        }
+    </style>
 
-            #search-bar-box{
-                margin: 2em 0 3em 0;
-            }
-        </style>
-        <form action="" method="get" class="text-center">
-            <input class="form-control d-inline mx-auto text-center" id="search-bar" type="search" placeholder="Busca tu canción favorita...">
-            <i class="fas fa-search"></i>
-        </form>
-    </div> -->
     <div class="container mt-5 pt-3 mb-5" >
         <div class="col-md-6 mx-auto">
             <div id="autocomplete" class="autocomplete">
@@ -30,12 +23,14 @@
         </div>
     </div>
 
-    <div class="row" style="margin-bottom: 2em;">
+    <div class="playlist-container row justify-content-center" style="margin-bottom: 2.5em;">
 
-        <div class="col-md">
-            <div class="card text-center" style="background-color: #8241F3;">
-                <div class="card-body" style="padding-top: 0px;">
-                    <h2 class="card-title" style="margin-top: 8px;">Según tus gustos</h2>
+        <div class="playlist-container__card playlist-container__card--1 col-11 col-sm-11 col-lg-6">
+            <div class="card text-center h-100" style="background-color: #8241F3;">
+                <div class="card-body d-flex flex-column justify-content-end pt-0">
+                    <div class="title-container my-auto">
+                        <h2 class="title-container__card-title card-title">Según tus gustos</h2>
+                    </div>
                     <ul class="list-group">
                         <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
                         <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>
@@ -54,10 +49,10 @@
 
     
 
-        <div class="col-md">
+        <div class="playlist-container__card playlist-container__card--2 col-11 col-sm-11 col-lg-6">
             <div class="card text-center" style="background-color: #8241F3;">
-                <div class="card-body" style="padding-top: 0px;">
-                    <h2 class="card-title" style="margin-top: 8px;">Según tu último estado de ánimo</h2>
+                <div class="card-body pt-0">
+                    <h2 class="card-title">Según tu último estado de ánimo</h2>
                     <ul class="list-group">
                         <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
                         <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>

@@ -6,31 +6,32 @@
 
 {% block content %}
 
-<div class="modal-fade">
-    <div class="modal-content">
-      <div class="modal-header bg-primary">
-        {% if userEmotion|length > 10 %}
-          <h5 class = "modal-title text-white" id = "exampleModalLabel">{{userEmotion}}</h5>
-        {% else %}
-          <h5 class="modal-title text-white" id="exampleModalLabel">Te hemos reconocido {{userEmotion}}</h5>
-        {% endif %}
-      </div>
-      <div class="modal-body">
-        <div class="text-center">
-          <p>
-            <strong>¿Esto es correcto?</strong>
-          </p>
+
+<div class="card" style="margin: 2em;">
+    <div class="card text-center">
+        <div class="card-body">
+            {% if userEmotion|length > 10 %}
+                <h3 class="card-title">{{userEmotion}}</h3>
+                
+                <div class="text-center" style="margin-top: 1.5em;">
+                    <a href="{% url 'recognize' %}" class="btn btn-outline-danger">Volver a intentarlo</a>
+                </div>
+
+            {% else %}
+                <h3 class="card-title">Te hemos reconocido {{userEmotion}}</h3>
+
+                <p>
+                    <strong>¿Esto es correcto?</strong>
+                </p>
+    
+                <div class="text-center">
+                    <a href="{% url 'recognize' %}" class="btn btn-outline-danger">No, quiero volver a intentarlo</a>
+                    <a href = "http://127.0.0.1:8000/playlist/{{userEmotion}}" class = "btn btn-outline-success">¡Si! Recomiendame canciones</a>
+                </div>
+            {% endif %}
+
         </div>
-
-        <hr />
-      </div>
-      <div class="text-center">
-          <a href="{% url 'recognize' %}" class="btn btn-outline-danger">No, quiero volver a intentarlo</a>
-          <a href = "http://127.0.0.1:8000/playlist/{{userEmotion}}" class = "btn btn-outline-success">¡Si! Recomiendame canciones</a>
-      </div>
     </div>
-  </div>
 </div>
-
 
 {% endblock %}

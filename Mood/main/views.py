@@ -101,7 +101,7 @@ def recognize(request): #Views para la pagina mood
             userEmotion = "enojado"
             
         else: #if the string was empty then the face was not recognized
-            userEmotion = "No reconocio tu cara, vuelve a intentarlo"
+            userEmotion = "No te hemos reconocido"
 
     print(userEmotion)
 

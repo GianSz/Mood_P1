@@ -25,13 +25,34 @@ def regsiter_page(request):
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')
 
+# Funcion para el buscador
 def get_song(request):
     search = request.GET.get('search')
     payload = []
-    if search:
-        objs = Cancion.objects.filter(nombre__startswith=search)
+    nombre_genr = []
+    nombre_arts = []
 
-        for obj in objs:
+    if search:
+
+        ########### BUSCAR POR TITULO DE LA CANCIÓN ##############################
+
+        objs = Cancion.objects.filter(nombre__startswith=search) #Posible cambio icontains
+        
+        for obj in objs: # Iterar sobre todas las canciones que empiecen con la busqueda
+            genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida
+            #nombre_genr = [] 
+            for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
+                genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
+                for genres in genr: # Iterar sobre todos los generos obtenidos que coinciden
+                    nombre_genr.append(genres.nombre) #Agregar el nombre de los generos al arreglo para desps agregarlos
+
+            arts_songs = Artista_Cancion.objects.filter(id_cancion_id=obj.id)
+            #nombre_arts = []
+            for arts_song in arts_songs:
+                arts = Artista.objects.filter(id=arts_song.id_artista_id)
+                for art in arts:
+                    nombre_arts.append(art.nombre)
+
             payload.append({
                 'id': obj.id,
                 'name': obj.nombre, 
@@ -40,8 +61,85 @@ def get_song(request):
                 'length': obj.duracion,
                 'frequency': obj.frecuencia,
                 'idiom': obj.idioma,
+                'genres': nombre_genr,
+                'artists': nombre_arts,
             })
+        
+        nombre_genr = []
+        nombre_arts = []
 
+        ########### BUSCAR POR NOMBRE DEL ARTISTA ##############################
+
+        artistas = Artista.objects.filter(nombre__startswith=search)
+
+        for artista in artistas:
+            artistas_cancion = Artista_Cancion.objects.filter(id_artista_id=artista.id)
+            for artista_cancion in artistas_cancion:
+                objs = Cancion.objects.filter(id=artista_cancion.id_cancion_id)
+                for obj in objs:
+                    genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida 
+                    for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
+                        genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
+                        for genres in genr: # Iterar sobre todos los generos obtenidos que coinciden
+                            nombre_genr.append(genres.nombre) #Agregar el nombre de los generos al arreglo para desps agregarlos
+
+                    arts_songs = Artista_Cancion.objects.filter(id_cancion_id=obj.id)
+                    for arts_song in arts_songs:
+                        arts = Artista.objects.filter(id=arts_song.id_artista_id)
+                        for art in arts:
+                            nombre_arts.append(art.nombre)
+
+                    payload.append({
+                        'id': obj.id,
+                        'name': obj.nombre, 
+                        'audio': obj.audio,
+                        'img': obj.imagen,
+                        'length': obj.duracion,
+                        'frequency': obj.frecuencia,
+                        'idiom': obj.idioma,
+                        'genres': nombre_genr,
+                        'artists': nombre_arts,
+                    })
+        
+        nombre_genr = []
+        nombre_arts = []
+
+        ######## BUSCAR POR GENERO ########################
+
+        generos = Genero.objects.filter(nombre__startswith=search)
+
+        for genero in generos:
+            generos_cancion = Genero_Cancion.objects.filter(id_genero_id=genero.id)
+            for genero_cancion in generos_cancion:
+                objs = Cancion.objects.filter(id=genero_cancion.id_cancion_id)
+                for obj in objs:
+                    genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida 
+                    for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
+                        genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
+                        for genres in genr: # Iterar sobre todos los generos obtenidos que coinciden
+                            nombre_genr.append(genres.nombre) #Agregar el nombre de los generos al arreglo para desps agregarlos
+
+                    arts_songs = Artista_Cancion.objects.filter(id_cancion_id=obj.id)
+                    for arts_song in arts_songs:
+                        arts = Artista.objects.filter(id=arts_song.id_artista_id)
+                        for art in arts:
+                            nombre_arts.append(art.nombre)
+
+                    payload.append({
+                        'id': obj.id,
+                        'name': obj.nombre, 
+                        'audio': obj.audio,
+                        'img': obj.imagen,
+                        'length': obj.duracion,
+                        'frequency': obj.frecuencia,
+                        'idiom': obj.idioma,
+                        'genres': nombre_genr,
+                        'artists': nombre_arts,
+                    })
+        
+        nombre_genr = []
+        nombre_arts = []    
+                
     return JsonResponse({
         'status': True,
         'payload': payload,

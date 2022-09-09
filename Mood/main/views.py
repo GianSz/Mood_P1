@@ -77,6 +77,8 @@ def get_song(request):
             for artista_cancion in artistas_cancion:
                 objs = Cancion.objects.filter(id=artista_cancion.id_cancion_id)
                 for obj in objs:
+                    nombre_genr = []
+                    nombre_arts = []
                     genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida 
                     for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
                         genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
@@ -113,6 +115,8 @@ def get_song(request):
             for genero_cancion in generos_cancion:
                 objs = Cancion.objects.filter(id=genero_cancion.id_cancion_id)
                 for obj in objs:
+                    nombre_genr = []
+                    nombre_arts = []
                     genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida 
                     for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
                         genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id

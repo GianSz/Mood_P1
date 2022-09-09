@@ -88,11 +88,30 @@
                 if(result.index % 3 === 0){
                     group = `<li class="group">Group</li>`
                 }
+
+                let artistas = ''               
+
+                if ((result.artists).length == 1 ){
+                    artistas = " - "+result.artists[0]
+                }
+                else if ((result.artists).length >= 2){
+                    artistas = " - "+result.artists[0]+" ft("+result.artists[1]+" ...)"
+                }
+
+                let generos = ''
+
+                if ((result.genres).length == 1 ){
+                    generos = " - "+result.genres[0]
+                }
+                else if ((result.genres).length >= 2){
+                    generos = " - "+result.genres[0]+"/"+result.genres[1]
+                }
+                
                 return `
                 ${group}
                 <li ${props}>
                     <div class="wiki-title">
-                        <a href="" style="text-decoration: none; color: #000; display: inline-block; width: 100%;">${result.name}</a>
+                        <a href="" style="text-decoration: none; color: #000; display: inline-block; width: 100%;">${result.name}${artistas}${generos}</a>
                     </div>
                 </li>
                 `

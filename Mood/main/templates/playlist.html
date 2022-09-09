@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Mood
+{% endblock %}
+
+{% block content %}
+
+<div class="col-md" style="margin: 2em;">
+    <div class="card text-center" style="background-color: #8241F3;">
+        <div class="card-body">
+            <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal {{ userEmotion }} es...</h3>
+            <ul class="list-group">
+                {% for cancion in canciones %}
+                <a href="#!" class="list-group-item list-group-item-action">{{cancion.id_cancion.nombre}}</a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

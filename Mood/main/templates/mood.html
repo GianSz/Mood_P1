@@ -32,7 +32,7 @@
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
-                    ¿Permite usted el uso de su camara para el reconocimiento facial?
+                    ¿Permite usted el uso de su cámara para el reconocimiento facial?
                 </h5>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close">
@@ -47,7 +47,7 @@
                     <br>
                     <div class="text-center">
                         <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                        <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a>
+                        <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi cámara</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No, gracias</button>
                     </div>
                 </form>
@@ -56,32 +56,6 @@
         </div>
     </div>
 
-    {% if userEmotion %}
-
-        {% if userEmotion|length > 10 %}
-        <div class="col-md">
-            <div class="card text-center" style="background-color: #8241F3;">
-                <div class="card-body">
-                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" > {{ userEmotion }} </h3>
-                </div>
-            </div>
-        </div>
-        {% else %}
-        <br>
-        <div class="col-md">
-            <div class="card text-center" style="background-color: #8241F3;">
-                <div class="card-body">
-                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal {{ userEmotion }} es...</h3>
-                    <ul class="list-group">
-                        {% for cancion in canciones %}
-                        <a href="#!" class="list-group-item list-group-item-action">{{cancion.id_cancion.nombre}}</a>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-    {% endif %}
     <br>
 
 {% endblock %}

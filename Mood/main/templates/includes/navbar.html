@@ -1,10 +1,12 @@
 <!-- Section Navbar -->
 <nav class="navbar navbar-expand-md navbar-dark bg-gradient" style="background: #8241F3;">
-    <a class="navbar-brand" href="" style="padding-left: 15px;"><img src="../../../static/LOGO.png" alt="Logo" style="width: 90px; margin-left: 30px; margin-top: -10px; margin-bottom: -10px;"></a> 
+    <a class="navbar-brand" href="" style="padding-left: 15px;"><img src="../../../static/LOGO.png" alt="Logo" style="width: 90px; margin-top: -10px; margin-bottom: -10px;"></a> 
     <!-- Navbar responsiv, se le pone icono que tiene bp -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <div style="padding-right: 15px;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
     <!-- Section de los items del Navbar -->
     <div class="collapse navbar-collapse" id="navbarNav" style="padding-left: 25px;">
         <!-- Con bt5 paso de ser ms a me OJO, items que estan a la derecha (auto)-->
@@ -19,14 +21,14 @@
             </li>
             <!-- Section Tu Musica -->
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-music"></i> Tu musica</a>
+                <a class="nav-link" href="{% url 'tuMusica' %}"><i class="fas fa-music"></i> Tu musica</a>
             </li>
         </ul>
         <!-- Items que estan a la derecha del todo  -->
         <ul class="navbar-nav">
             <!-- Section Mi perfil -->
             <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fas fa-user"></i> Mi perfil</a>
+                <a class="nav-link" href="{% url 'miPerfil' %}"><i class="fas fa-user"></i> Mi perfil</a>
             </li>
         </ul>
     </div>

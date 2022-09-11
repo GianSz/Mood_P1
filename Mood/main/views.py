@@ -25,6 +25,16 @@ def regsiter_page(request):
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')
 
+def miPerfil_page(request): 
+    return render(request, template_name='miPerfil.html')
+
+def tuMusica_page(request): 
+    return render(request, template_name='tuMusica.html')
+
+def formsFellings_page(request): 
+    return render(request, template_name='formsFellings.html')
+
+
 # Funcion para el buscador
 def get_song(request):
     search = request.GET.get('search')

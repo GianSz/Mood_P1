@@ -8,6 +8,9 @@ urlpatterns = [
     path('home/', views.home_page, name='home'),
     path('mood/', views.mood_page, name='mood'),
     path('recognize/', views.recognize, name='recognize'),
+    path('miPerfil/',views.miPerfil_page, name='miPerfil'),
+    path('tuMusica/',views.tuMusica_page, name='tuMusica'),
+    path('formsFellings/',views.formsFellings_page, name='formsFellings'),
     path('get-songs/', views.get_song),
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
 

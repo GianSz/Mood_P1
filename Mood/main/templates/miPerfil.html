@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Mi perfil
+{% endblock %}
+
+{% block content %}
+<section class="gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-12 col-md-10 col-lg-9">
+                <div class="card text-white" style="border-radius: 1rem; background-color: #8241F3;">
+                    <div class="card-body p-3 text-center">
+                        <div class="mb-md-2 mt-md-2 pb-4">
+                            <form class="form fw-bold" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        "foto de perfil"
+                                    </div>
+                                    <div class="col-8 col-md-7 text-start">
+                                        "Nombre de usuario"
+                                        <br>
+                                        <a href="#" class="text-light fw-normal"> ¿Cambiar foto de perfil?</a>                                   
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Nombre
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <input class="w-100" type="text">
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Genero
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <input class="w-100" type="text">                                  
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Fecha de nacimiento
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <input class="w-100" type="text">                                  
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Nombre de usuario
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <input class="w-100" type="text">                                  
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Correo
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <input class="w-100" type="text">                                  
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col-4 col-md-5 text-end" >
+                                        Gustos
+                                    </div>
+                                    <div class="col-8 col-md-4 text-start">
+                                        <a href="#" class="text-light fw-bold">
+                                            Actualizar gustos musicales
+                                        </a>                               
+                                    </div>
+                                    <div class="col-0 col-md-3"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div>
+                            <p class="mb-0">¿Desea salir de su cuenta?
+                                <br>
+                                <a href="#" class="text-danger fw-bold">
+                                    Cerrar sesión
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

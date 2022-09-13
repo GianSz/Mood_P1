@@ -17,11 +17,14 @@ class Perfil(models.Model):
 
 class Cancion(models.Model):
     nombre=models.CharField(max_length=25, null=False,blank=False)
-    audio=models.CharField(max_length=50, null=False,blank=False)
+    audio=models.CharField(max_length=50, null=True,blank=True)
     imagen=models.CharField(max_length=50,null=True,blank=True)
     duracion=models.TimeField(null=False,blank=False)
     frecuencia=models.IntegerField(null=True,blank=True)
     idioma=models.CharField(max_length=15,null=False,blank=False)
+    intensidad_feliz=models.IntegerField(null=True,blank=True)
+    intensidad_triste=models.IntegerField(null=True,blank=True)
+    intensidad_enojo=models.IntegerField(null=True,blank=True)
 
     class Meta:
         verbose_name = "cancion"
@@ -149,26 +152,4 @@ class Genero_Enojado(models.Model):
     def __str__(self):
         return (self.id_perfil.usuario.username+" gen:"+self.id_genero.nombre)
 
-class Sentimiento(models.Model):
-    nombre=models.CharField(max_length=25, null=False,blank=False)
 
-    class Meta:
-        verbose_name = "sentimiento"
-        verbose_name_plural = "sentimientos"
-        db_table = "sentimiento"
-
-    def __str__(self):
-        return (self.nombre)
-
-class Sentimiento_Cancion(models.Model):
-    id_sentimiento=models.ForeignKey(Sentimiento,null=False,blank=False,on_delete=models.CASCADE)
-    id_cancion=models.ForeignKey(Cancion,null=False,blank=False,on_delete=models.CASCADE)
-    intensidad=models.IntegerField(null=False,blank=False)
-
-    class Meta:
-        verbose_name = "sentimiento_cancion"
-        verbose_name_plural = "sentimiento_canciones"
-        db_table = "sentimiento_cancion"
-
-    def __str__(self):
-        return (self.id_sentimiento.nombre+" cancion:"+self.id_cancion.nombre)

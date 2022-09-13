@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from main.models import Artista,Artista_Cancion,Cancion,Genero,Genero_Cancion,Sentimiento,Sentimiento_Cancion,Perfil,Playlist,Playlist_Cancion,Genero_Favorito,Genero_Feliz,Genero_Triste,Genero_Enojado
+from main.models import Artista,Artista_Cancion,Cancion,Genero,Genero_Cancion,Perfil,Playlist,Playlist_Cancion,Genero_Favorito,Genero_Feliz,Genero_Triste,Genero_Enojado
 
 class ArtistaAdmin(admin.ModelAdmin):
     list_display=("nombre",)
@@ -13,7 +13,7 @@ class Artista_CancionAdmin(admin.ModelAdmin):
     list_filter=("id_artista","id_cancion")
 
 class CancionAdmin(admin.ModelAdmin):
-    list_display=("nombre","audio","imagen","duracion", "frecuencia","idioma")
+    list_display=("nombre","audio","imagen","duracion", "frecuencia","idioma","intensidad_feliz","intensidad_triste","intensidad_enojo")
     search_fields=("nombre","duracion", "frecuencia","idioma")
     list_filter=("nombre","duracion", "frecuencia","idioma")
 
@@ -47,16 +47,6 @@ class Genero_EnojadoAdmin(admin.ModelAdmin):
     search_fields=("id_genero","id_perfil")
     list_filter=("id_genero","id_perfil")
 
-class SentimientoAdmin(admin.ModelAdmin):
-    list_display=("nombre",)
-    search_fields=("nombre",)
-    list_filter=("nombre",)
-
-class Sentimiento_CancionAdmin(admin.ModelAdmin):
-    list_display=("id_sentimiento","id_cancion","intensidad")
-    search_fields=("id_sentimiento","id_cancion","intensidad")
-    list_filter=("id_sentimiento","id_cancion","intensidad")
-
 class PerfilAdmin(admin.ModelAdmin):
     list_display=("usuario","fecha_nacimiento")
     search_fields=("usuario","fecha_nacimiento")
@@ -81,8 +71,6 @@ admin.site.register(Genero_Favorito, Genero_FavoritoAdmin)
 admin.site.register(Genero_Feliz, Genero_FelizAdmin)
 admin.site.register(Genero_Triste, Genero_TristeAdmin)
 admin.site.register(Genero_Enojado, Genero_EnojadoAdmin)
-admin.site.register(Sentimiento, SentimientoAdmin)
-admin.site.register(Sentimiento_Cancion, Sentimiento_CancionAdmin)
 admin.site.register(Perfil, PerfilAdmin)
 admin.site.register(Playlist, PlaylistAdmin)
 admin.site.register(Playlist_Cancion, Playlist_CancionAdmin)

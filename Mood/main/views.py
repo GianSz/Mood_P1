@@ -7,8 +7,11 @@ import matplotlib.pyplot as plt
 import cv2
 from deepface import DeepFace
 import numpy as np
-from main.models import Sentimiento_Cancion
+import random
+#from main.models import Sentimiento_Cancion se eliminó
+from main.models import Cancion
 from django.http import JsonResponse
+from django.db.models import F
 
 import requests
 import base64
@@ -211,9 +214,124 @@ def recognize(request): #Views para la pagina mood
 
     return render(request, template_name='confirmEmotion.html', context=context)
 
-def playlist(request, userEmotion):
+def playlist(request, userEmotion):    
+    canciones=[]
+    
+    if(userEmotion=="feliz"):
+        CancionesAltas=Cancion.objects.filter(frecuencia__in=[4,5]).filter(intensidad_feliz__gte=F('intensidad_enojo')).filter(intensidad_enojo__gte=F('intensidad_triste'))
+        #Filtro:
+        #frecuencias 4 y 5
+        # %Feliz >= %Enojo >= %Triste
+        CancionesNeutras=Cancion.objects.filter(frecuencia__in=[3]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        #Filtro:
+        #frecuencia 3
+        # 20% < %Feliz %Triste Y %Enojo < 45%
+        
+        while(len(canciones)<4 and CancionesAltas.count()>0):
+            cancion = random.choice(CancionesAltas)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<5 and CancionesNeutras.count()>0):
+            cancion = random.choice(CancionesNeutras)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<9 and CancionesAltas.count()>0):
+            cancion = random.choice(CancionesAltas)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<10 and CancionesNeutras.count()>0):
+            cancion = random.choice(CancionesNeutras)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<14 and CancionesAltas.count()>0):
+            cancion = random.choice(CancionesAltas)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<15 and CancionesNeutras.count()>0):
+            cancion = random.choice(CancionesNeutras)
+            canciones.append(cancion)
+            CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
+            CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)        
 
-    canciones = Sentimiento_Cancion.objects.filter(id_sentimiento__nombre__contains=userEmotion)
+    elif(userEmotion=="triste"):
+        CancionesEmpatia=Cancion.objects.filter(frecuencia__in=[4,3,2]).filter(intensidad_triste__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_enojo'))
+        #Filtro:
+        #frecuencias 4,3,2
+        # %Triste >= %Feliz >= %Enojo
+        CancionesMedio=Cancion.objects.filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        #Filtro:
+        #frecuencia 3,2
+        # 20% < %Feliz %Triste Y %Enojo < 45%
+        CancionesSuave=Cancion.objects.filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        #Filtro:
+        #frecuencia 2,1
+        # 20% < %Feliz %Triste Y %Enojo < 45%
+
+        while(len(canciones)<5 and CancionesEmpatia.count()>0):
+            cancion = random.choice(CancionesEmpatia)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<10 and CancionesMedio.count()>0):
+            cancion = random.choice(CancionesMedio)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
+
+        while(len(canciones)<15 and CancionesSuave.count()>0):
+            cancion = random.choice(CancionesSuave)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
+    
+    elif(userEmotion=="enojado"):
+        CancionesEmpatia=Cancion.objects.filter(frecuencia__in=[5,4,3]).filter(intensidad_enojo__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_triste'))
+        #Filtro:
+        #frecuencias 5,4,3
+        # %Enojo >= %Feliz >= %Triste
+        CancionesMedio=Cancion.objects.filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        #Filtro:
+        #frecuencia 3,2
+        # 20% < %Feliz %Triste Y % Enojo < 45%
+        CancionesSuave=Cancion.objects.filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        #Filtro:
+        #frecuencia 2,1
+        # 20% < %Feliz %Triste Y % Enojo < 45%
+        
+        while(len(canciones)<5 and CancionesEmpatia.count()>0):
+            cancion = random.choice(CancionesEmpatia)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
+        
+        while(len(canciones)<10 and CancionesMedio.count()>0):
+            cancion = random.choice(CancionesMedio)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
+
+        while(len(canciones)<15 and CancionesSuave.count()>0):
+            cancion = random.choice(CancionesSuave)
+            canciones.append(cancion)
+            CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
+            CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
+            CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
     context={'userEmotion':userEmotion,'canciones':canciones}
 

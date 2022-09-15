@@ -8,6 +8,7 @@ from deepface import DeepFace
 import numpy as np
 import random
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
 # Create your views here.
@@ -15,18 +16,22 @@ from django.db.models import F
 def register_page(request):
     return render(request, template_name='registro.html')
 
+@login_required(login_url='/login/')
 def home_page(request): # Views para la home page
     canciones = Cancion.objects.all()
     contexto = {'canciones':canciones}
 
     return render(request, template_name='home.html', context=contexto)
 
+@login_required(login_url='/login/')
 def miPerfil_page(request): 
     return render(request, template_name='miPerfil.html')
 
+@login_required(login_url='/login/')
 def tuMusica_page(request): 
     return render(request, template_name='tuMusica.html')
 
+@login_required(login_url='/login/')
 def formsFellings_page(request): 
     return render(request, template_name='formsFellings.html')
 
@@ -155,6 +160,7 @@ def get_song(request):
         'payload': payload,
     })
 
+@login_required(login_url='/login/')
 def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')
 
@@ -340,3 +346,8 @@ def playlist(request, userEmotion):
     context={'userEmotion':userEmotion,'canciones':canciones}
 
     return render(request, template_name='playlist.html', context = context)
+# @login_required(login_url='/login/')
+# def logout_view(request):
+#     logout(request)
+#     messages.success(request, f'Sesión cerrada correctamente')
+#     return login_page(request)

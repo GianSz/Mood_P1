@@ -1,5 +1,6 @@
 from django.urls import path # Como este es un archivo creado por mi, yo mismo pongo la importación
 from main import views
+from django.contrib.auth.views import logout_then_login
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -15,6 +16,6 @@ urlpatterns = [
     path('formsFellings/',views.formsFellings_page, name='formsFellings'),
     path('get-songs/', views.get_song),
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
-
+    path('logout/', logout_then_login, name='logout'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

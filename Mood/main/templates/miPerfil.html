@@ -14,16 +14,6 @@
                         <div class="mb-md-2 mt-md-2 pb-4">
                             <form class="form fw-bold" method="POST">
                                 {% csrf_token %}
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        "foto de perfil"
-                                    </div>
-                                    <div class="col-8 col-md-7 text-start">
-                                        "Nombre de usuario"
-                                        <br>
-                                        <a href="#" class="text-light fw-normal"> ¿Cambiar foto de perfil?</a>                                   
-                                    </div>
-                                </div>
                                 <br>
                                 <div class="row">
                                     <div class="col-4 col-md-5 text-end" >
@@ -93,7 +83,7 @@
                         <div>
                             <p class="mb-0">¿Desea salir de su cuenta?
                                 <br>
-                                <a href="#" class="text-danger fw-bold">
+                                <a href="{% url 'logout' %}" class="text-danger fw-bold">
                                     Cerrar sesión
                                 </a>
                             </p>

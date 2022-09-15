@@ -5,5 +5,66 @@
 {% endblock %}
 
 {% block content %}
-    
+    <section class="jumbotron text-center">
+        <div class="container pt-5 border-bottom" >
+            <h3>¡Mejora tu experiencia en Mood!</h3>
+            <p>
+                <a href="#" class="btn btn-primary my-2">Crear una playlist</a>
+            </p>
+        </div>
+        <br>
+    </section>
+    <br>
+    <div class="container">
+        <form class="form" method="POST">
+            {% csrf_token %}
+            <div class="px-4 my-1">
+                <div class="row">
+                    <div class="text-center">
+                        <div class="col" >
+                            <select class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                                <option value="">Playlist X</option>
+                            </select>
+                        </div>
+                        <br>
+                        <div class="col">
+                            <button class="btn btn-primary"  type="submit"> Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div class="col" style="margin: 2em;">
+            <div class="card text-center" style="background-color: #8241F3;">
+                <div class="card-body">
+                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Nombre playlist</h3>
+                    <ul class="list-group">
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 3</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 4</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 5</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 6</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 7</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 8</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 9</a>
+                        <a href="#!" class="list-group-item list-group-item-action">Canción 10</a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>  
 {% endblock %}

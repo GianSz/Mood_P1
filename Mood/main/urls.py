@@ -1,5 +1,6 @@
 from django.urls import path # Como este es un archivo creado por mi, yo mismo pongo la importación
 from main import views
+from django.contrib.auth.views import logout_then_login
 
 urlpatterns = [
     path('', views.home_page, name='home'), # Esta se debe cambiar a que dirija al login de primerazo
@@ -13,5 +14,5 @@ urlpatterns = [
     path('formsFellings/',views.formsFellings_page, name='formsFellings'),
     path('get-songs/', views.get_song),
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
-
+    path('logout/', logout_then_login, name='logout'),
 ]

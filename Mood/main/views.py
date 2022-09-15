@@ -9,6 +9,7 @@ from deepface import DeepFace
 import numpy as np
 from main.models import Sentimiento_Cancion
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 import requests
 import base64
@@ -22,15 +23,19 @@ def regsiter_page(request):
 
     return render(request, template_name='registro.html')
 
+@login_required(login_url='/login/')
 def home_page(request): # Views para la home page
     return render(request, template_name='home.html')
 
+@login_required(login_url='/login/')
 def miPerfil_page(request): 
     return render(request, template_name='miPerfil.html')
 
+@login_required(login_url='/login/')
 def tuMusica_page(request): 
     return render(request, template_name='tuMusica.html')
 
+@login_required(login_url='/login/')
 def formsFellings_page(request): 
     return render(request, template_name='formsFellings.html')
 
@@ -159,6 +164,7 @@ def get_song(request):
         'payload': payload,
     })
 
+@login_required(login_url='/login/')
 def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')
 
@@ -181,7 +187,7 @@ def login_page(request): #Views para la pagina mood
     
     return render(request, template_name='login.html')
 
-
+@login_required(login_url='/login/')
 def recognize(request): #Views para la pagina mood
 
     userEmotion = "" #initialize empty variable for storing the users emotion
@@ -274,3 +280,9 @@ class Spotify_authorization():
         # access_token = token_response_json["access_token"]
         # refresh_token = token_response_json["refresh_token"]
         # expires_in = token_response_json["expires_in"]
+
+# @login_required(login_url='/login/')
+# def logout_view(request):
+#     logout(request)
+#     messages.success(request, f'Sesión cerrada correctamente')
+#     return login_page(request)

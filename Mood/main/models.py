@@ -17,7 +17,7 @@ class Perfil(models.Model):
 
 class Cancion(models.Model):
     nombre=models.CharField(max_length=25, null=False,blank=False)
-    audio=models.CharField(max_length=50, null=True,blank=True)
+    audio=models.FileField(upload_to='audios/')
     imagen=models.CharField(max_length=50,null=True,blank=True)
     duracion=models.TimeField(null=False,blank=False)
     frecuencia=models.IntegerField(null=True,blank=True)

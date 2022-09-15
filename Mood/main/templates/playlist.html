@@ -6,17 +6,44 @@
 
 {% block content %}
 
-<div class="col-md" style="margin: 2em;">
+<div class="col my-5">
     <div class="card text-center" style="background-color: #8241F3;">
         <div class="card-body">
             <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal {{ userEmotion }} es...</h3>
-            <ul class="list-group">
+            <div class="list-group" style="height: 411px; overflow: auto;">
+                {% if canciones %}
+                    {% for cancion in canciones %}
+                        <button type="button" class="list-group-item list-group-item-action" onclick="myFunction('{{cancion.nombre}}')">{{cancion.nombre}}</button>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% if canciones %}
                 {% for cancion in canciones %}
-                <a href="#!" class="list-group-item list-group-item-action">{{cancion.nombre}}</a>
+                    <audio src="{{cancion.audio.url}}" id="{{cancion.nombre}}" type="audio/mpeg"></audio>
                 {% endfor %}
-            </ul>
+            {% endif %}
         </div>
     </div>
 </div>
+
+<script>
+    let reproducing;
+    function myFunction(id){
+        let song = document.getElementById(id);
+        if(reproducing != undefined && reproducing != song){
+            reproducing.pause();
+            reproducing.currentTime = 0;
+        }
+
+        reproducing = song;
+
+        if(song.paused){
+            song.play();
+        }
+        else{
+            song.pause();
+        }
+    }
+</script>
 
 {% endblock %}

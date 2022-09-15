@@ -25,46 +25,46 @@
 
     <div class="playlist-container row justify-content-center" style="margin-bottom: 2.5em;">
 
-        <div class="playlist-container__card playlist-container__card--1 col-11 col-sm-11 col-lg-6">
+        <div class="col-11 col-sm-11 col-lg-6">
             <div class="card text-center h-100" style="background-color: #8241F3;">
                 <div class="card-body d-flex flex-column justify-content-end pt-0">
                     <div class="title-container my-auto">
-                        <h2 class="title-container__card-title card-title">Según tus gustos</h2>
+                        <h3 class="card-title" style="color: white;">Según tus gustos</h3>
                     </div>
-                    <ul class="list-group">
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 3</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 4</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 5</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 6</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 7</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 8</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 9</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 10</a>
-                    </ul>
+                    <div class="list-group" style="height: 411px; overflow: auto;">
+                        {% if canciones %}
+                            {% for cancion in canciones %}
+                                <button type="button" class="list-group-item list-group-item-action" onclick="myFunction('{{cancion.nombre}}')">{{cancion.nombre}}</button>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% if canciones %}
+                        {% for cancion in canciones %}
+                            <audio src="{{cancion.audio.url}}" id="{{cancion.nombre}}" type="audio/mpeg"></audio>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
 
     
 
-        <div class="playlist-container__card playlist-container__card--2 col-11 col-sm-11 col-lg-6">
+        <div class="col-11 col-sm-11 col-lg-6">
             <div class="card text-center" style="background-color: #8241F3;">
                 <div class="card-body pt-0">
-                    <h2 class="card-title">Según tu último estado de ánimo</h2>
-                    <ul class="list-group">
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 3</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 4</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 5</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 6</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 7</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 8</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 9</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 10</a>
-                    </ul>
+                    <h3 class="card-title" style="color:white;">Según tu último estado de ánimo</h3>
+                    <div class="list-group" style="height: 411px; overflow: auto;">
+                        {% if canciones %}
+                            {% for cancion in canciones %}
+                                <button type="button" class="list-group-item list-group-item-action" onclick="myFunction('{{cancion.nombre}}')">{{cancion.nombre}}</button>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% if canciones %}
+                        {% for cancion in canciones %}
+                            <audio src="{{cancion.audio.url}}" id="{{cancion.nombre}}" type="audio/mpeg"></audio>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -120,4 +120,25 @@
             }
         })
     </script>
+
+    <script>
+        let reproducing;
+        function myFunction(id){
+            let song = document.getElementById(id);
+            if(reproducing != undefined && reproducing != song){
+                reproducing.pause();
+                reproducing.currentTime = 0;
+            }
+
+            reproducing = song;
+
+            if(song.paused){
+                song.play();
+            }
+            else{
+                song.pause();
+            }
+        }
+    </script>
+    
 {% endblock %}

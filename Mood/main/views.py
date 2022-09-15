@@ -1,4 +1,3 @@
-from urllib import request
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -8,25 +7,19 @@ import cv2
 from deepface import DeepFace
 import numpy as np
 import random
-#from main.models import Sentimiento_Cancion se eliminó
-from main.models import Cancion
 from django.http import JsonResponse
 from django.db.models import F
 
-import requests
-import base64
-
 # Create your views here.
 
-def regsiter_page(request):
-    auth_object = Spotify_authorization()
-    auth_user_token = auth_object.get_auth_user_token()
-    auth_url = auth_user_token.url
-
+def register_page(request):
     return render(request, template_name='registro.html')
 
 def home_page(request): # Views para la home page
-    return render(request, template_name='home.html')
+    canciones = Cancion.objects.all()
+    contexto = {'canciones':canciones}
+
+    return render(request, template_name='home.html', context=contexto)
 
 def miPerfil_page(request): 
     return render(request, template_name='miPerfil.html')
@@ -69,7 +62,7 @@ def get_song(request):
             payload.append({
                 'id': obj.id,
                 'name': obj.nombre, 
-                'audio': obj.audio,
+                #'audio': obj.audio,
                 'img': obj.imagen,
                 'length': obj.duracion,
                 'frequency': obj.frecuencia,
@@ -107,7 +100,7 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        'audio': obj.audio,
+                        #'audio': obj.audio,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
@@ -145,7 +138,7 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        'audio': obj.audio,
+                        #'audio': obj.audio,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
@@ -183,7 +176,6 @@ def login_page(request): #Views para la pagina mood
             return redirect('login')
     
     return render(request, template_name='login.html')
-
 
 def recognize(request): #Views para la pagina mood
 
@@ -343,52 +335,8 @@ def playlist(request, userEmotion):
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
+    print(canciones)
+
     context={'userEmotion':userEmotion,'canciones':canciones}
 
     return render(request, template_name='playlist.html', context = context)
-
-class Spotify_authorization():
-    AUTH_URL = "https://accounts.spotify.com/authorize"
-    TOKEN_URL = "https://accounts.spotify.com/api/token"
-    
-    CLIENT_ID = "6771adc482d249bab3f377402f1d38c6"
-    CLIENT_SECRET = "ed6632a07b87492aad870c0d3b2663e1"
-    REDIRECT_URI = "http://localhost:8000/home/"
-    scope = "user-modify-playback-state"
-    auth_code = ""
-
-    def get_auth_user_token(self):
-        auth_user_token = requests.get(self.AUTH_URL, {
-            "client_id":self.CLIENT_ID,
-            "response_type":"code",
-            "scope":self.scope,
-            "redirect_uri":self.REDIRECT_URI
-        })
-        return auth_user_token
-
-    def get_access_token(self):
-        token_creds = f"{self.CLIENT_ID}:{self.CLIENT_SECRET}".encode()
-        token_creds_b64 = base64.b64encode(token_creds)
-
-        token_data={
-            "client_id": self.CLIENT_ID,
-            "client_secret": self.CLIENT_SECRET,
-            "grant_type":"authorization_code",
-            "redirect_uri": self.REDIRECT_URI,
-            "code": self.auth_code
-        }
-
-        token_headers={
-            "Authorization": f"Basic {token_creds_b64.decode()}",
-            "content-type":"application/x-www-form-urlencoded",
-        }
-
-        token_response = requests.post(self.TOKEN_URL, data=token_data, headers=token_headers)
-
-        token_response_json = token_response.json()
-
-        print(token_response_json)
-
-        # access_token = token_response_json["access_token"]
-        # refresh_token = token_response_json["refresh_token"]
-        # expires_in = token_response_json["expires_in"]

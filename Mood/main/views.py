@@ -346,6 +346,7 @@ def playlist(request, userEmotion):
     context={'userEmotion':userEmotion,'canciones':canciones}
 
     return render(request, template_name='playlist.html', context = context)
+
 # @login_required(login_url='/login/')
 # def logout_view(request):
 #     logout(request)

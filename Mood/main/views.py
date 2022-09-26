@@ -10,6 +10,9 @@ import random
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
+import csv;
+import json;
+from datetime import datetime
 
 # Create your views here.
 
@@ -343,9 +346,47 @@ def playlist(request, userEmotion):
 
     print(canciones)
 
-    context={'userEmotion':userEmotion,'canciones':canciones}
+    context={'userEmotion':userEmotion,'canciones':canciones,'MOOD':True}
+    #parametros:
+    #userEmotion: la emoción que mandaremis a la playlist
+    #canciones: la lista de las canciones
+    #MOOD: el verificador que ya se usó el servicio de mood para poder enviar la encuesta
 
     return render(request, template_name='playlist.html', context = context)
+
+def sendSatisfactionForm(request,goto):
+    #Guardamos los datos que ingresaremos en las persistencias
+    usuario= request.user
+    fecha=datetime.now()
+    calificacion=request.GET["punctuation"]
+
+    #Ingreso CSV (abrimos el csv en modo append)
+    fileCsv=open('main\data\SatisfactionFormMood.csv','a',newline='\n')
+
+    escritor=csv.writer(fileCsv)
+    escritor.writerow([usuario,fecha,calificacion])
+
+    fileCsv.close()
+
+    #Ingreso JSON (abrimos el json en modo append)
+    fileJson=open('main\data\SatisfactionFormMood.json','r+')
+
+    dataJson=json.load(fileJson)
+    dataJson.append({"usuario":str(usuario),"fecha":str(fecha),"calificacion":calificacion})
+    fileJson.seek(0)
+    json.dump(dataJson,fileJson,indent=2)
+
+    fileJson.close()
+
+    #redirigimos a la pestaña a la que el usuario buscaba ir
+    if(goto=="home"):
+        return home_page(request)
+    elif(goto=="mood"):
+        return mood_page(request)
+    elif(goto=="tumusica"):
+        return tuMusica_page(request)
+    elif(goto=="perfil"):
+        return miPerfil_page(request)
 
 # @login_required(login_url='/login/')
 # def logout_view(request):

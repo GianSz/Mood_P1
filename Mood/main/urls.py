@@ -17,5 +17,6 @@ urlpatterns = [
     path('get-songs/', views.get_song),
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
     path('logout/', logout_then_login, name='logout'),
+    path('sendSatisfactionForm/<str:goto>', views.sendSatisfactionForm, name='sendSatisfactionForm'),#recibe la página a la que se debe redireccionar
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -13,6 +13,9 @@ from django.db.models import F
 
 # Create your views here.
 
+def handle_not_found(request,exception):
+    return render(request,template_name='error404.html')
+
 def register_page(request):
     return render(request, template_name='registro.html')
 
@@ -32,9 +35,73 @@ def tuMusica_page(request):
     return render(request, template_name='tuMusica.html')
 
 @login_required(login_url='/login/')
-def formsFellings_page(request): 
-    return render(request, template_name='formsFellings.html')
+def formsFellings_page(request):
 
+    usuario = User.objects.get(id=request.user.id) #Obtener usuario logeado
+    perfil = Perfil.objects.get(usuario=usuario.id) #Obtener perfil segun el usuario logeado
+
+    if request.method == 'POST':
+
+        genFav = request.POST.getlist('genFav')
+        genFel = request.POST.getlist('genFel')
+        genTri = request.POST.getlist('genTri')
+        genEno = request.POST.getlist('genEno')
+
+        if((genFav != []) and (genFel != []) and (genTri != []) and (genEno != [])):
+
+            genFavAct = Genero_Favorito.objects.filter(id_perfil=perfil.id)
+            genFelAct = Genero_Feliz.objects.filter(id_perfil=perfil.id)
+            genTriAct = Genero_Triste.objects.filter(id_perfil=perfil.id)
+            genEnoAct = Genero_Enojado.objects.filter(id_perfil=perfil.id)
+
+            # Borra si tiene anteriormente creadas
+
+            if (genFavAct is not None):
+                for gen in genFavAct:
+                    gen.delete()
+
+            if (genFelAct is not None):
+                for gen in genFelAct:
+                    gen.delete()
+
+            if (genTriAct is not None):
+                for gen in genTriAct:
+                    gen.delete()
+            
+            if (genEnoAct is not None):
+                for gen in genEnoAct:
+                    gen.delete()
+
+            ############ Agrega las nuevas canciones ####################
+
+            for i in range(len(genFav)):
+                gen = Genero.objects.get(id=int(genFav[i]))
+                a = Genero_Favorito(id_genero=gen,id_perfil=perfil)
+                a.save()
+
+            for i in range(len(genFel)):
+                gen = Genero.objects.get(id=int(genFel[i]))
+                a = Genero_Feliz(id_genero=gen,id_perfil=perfil)
+                a.save()
+
+            for i in range(len(genTri)):
+                gen = Genero.objects.get(id=int(genTri[i]))
+                a = Genero_Triste(id_genero=gen,id_perfil=perfil)
+                a.save()
+
+            for i in range(len(genEno)):
+                gen = Genero.objects.get(id=int(genEno[i]))
+                a = Genero_Enojado(id_genero=gen,id_perfil=perfil)
+                a.save()
+
+            messages.success(request, '¡La información se guardo exitosamente!')
+            return redirect('home')
+        else:
+            messages.success(request, '¡Por favor llene todos los campos!')
+
+    generos = Genero.objects.all().order_by('nombre').values()
+    context = {'generos':generos}
+    return render(request, template_name='formsFellings.html',context=context)
 
 # Funcion para el buscador
 def get_song(request):
@@ -175,7 +242,7 @@ def login_page(request): #Views para la pagina mood
 
         if user is not None:
             login(request, user)
-            messages.success(request, f'Acabas de ingresar como {user.username}')
+            messages.success(request, f'¡Bienvenido {user.username}, nos encanta tenerte de vuelta!')
             return redirect('home')
         else:
             messages.error(request, '¡El usuario y la contraseña no coinciden, por favor vuelva a intentarlo!')

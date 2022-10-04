@@ -6,84 +6,79 @@
 
 {% block content %}
 <section class="gradient-custom">
-    <div class="container py-5 h-100">
+    <div class="container py-5">
         <div class="row d-flex justify-content-center align-items-center">
             <div class="col-12 col-md-10 col-lg-9">
                 <div class="card text-white" style="border-radius: 1rem; background-color: #8241F3;">
                     <div class="card-body p-3 text-center">
-                        <div class="mb-md-2 mt-md-2 pb-4">
-                            <form class="form fw-bold" method="POST">
-                                {% csrf_token %}
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Nombre
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <input class="w-100" type="text">
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                        <div class="mb-md-2 mt-md-2 fw-bold">
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Nombre
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Genero
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <input class="w-100" type="text">                                  
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <input class="w-100" type="text" readonly="readonly" placeholder="{{ info.nombre }}">
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Fecha de nacimiento
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <input class="w-100" type="text">                                  
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Fecha de nacimiento
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Nombre de usuario
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <input class="w-100" type="text">                                  
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <input class="w-100" type="text" readonly="readonly" placeholder="{{ info.fechaNacimiento }}">                                  
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Correo
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <input class="w-100" type="text">                                  
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Día que te uniste a Mood
                                 </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-4 col-md-5 text-end" >
-                                        Gustos
-                                    </div>
-                                    <div class="col-8 col-md-4 text-start">
-                                        <a href="{% url 'formsFellings' %}" class="text-light fw-bold">
-                                            Actualizar gustos musicales
-                                        </a>                               
-                                    </div>
-                                    <div class="col-0 col-md-3"></div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <input class="w-100" type="text" readonly="readonly" placeholder="{{ info.fechaUnido }}">                                  
                                 </div>
-                                <br>
-                                <button class="btn btn-light" type="submit"> Actualizar información</button>
-                            </form>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Nombre de usuario
+                                </div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <input class="w-100" type="text" readonly="readonly" placeholder="{{ info.nombreUsuario }}">                                  
+                                </div>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Correo
+                                </div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <input class="w-100" type="text" readonly="readonly" placeholder="{{ info.correo }}">                                  
+                                </div>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-4 col-md-5 text-end" >
+                                    Gustos
+                                </div>
+                                <div class="col-8 col-md-4 text-start">
+                                    <a href="{% url 'formsFellings' %}" class="text-light fw-bold">
+                                        Actualizar gustos musicales
+                                    </a>                               
+                                </div>
+                                <div class="col-0 col-md-3"></div>
+                            </div>
                         </div>
                         <div>
-                            <p class="mb-0">¿Desea salir de su cuenta?
+                            <p class="mb-1 pb-1">¿Desea salir de su cuenta?
                                 <br>
-                                <a href="{% url 'logout' %}" class="text-danger fw-bold">
+                                <a href="{% url 'logout' %}" class="mt-2 btn btn-light text-danger fw-bold">
                                     Cerrar sesión
                                 </a>
                             </p>

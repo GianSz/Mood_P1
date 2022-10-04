@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from matplotlib.style import context
 from .models import *
 import matplotlib.pyplot as plt
 import cv2
@@ -27,8 +28,26 @@ def home_page(request): # Views para la home page
     return render(request, template_name='home.html', context=contexto)
 
 @login_required(login_url='/login/')
-def miPerfil_page(request): 
-    return render(request, template_name='miPerfil.html')
+def miPerfil_page(request):
+    usuario = User.objects.get(id=request.user.id) #Obtener usuario logeado
+    perfil = Perfil.objects.get(usuario=usuario.id) #Obtener perfil segun el usuario logeado
+
+    nombreCompleto = usuario.first_name + " " + usuario.last_name
+    fechaNacimiento = perfil.fecha_nacimiento
+    fechaUnido = usuario.date_joined
+    nombreUsuario = usuario.username
+    correo = usuario.email
+
+    info ={
+        'nombre': nombreCompleto,
+        'fechaNacimiento': fechaNacimiento,
+        'fechaUnido': fechaUnido,
+        'nombreUsuario': nombreUsuario,
+        'correo': correo,
+    }
+    
+    context={'info': info}
+    return render(request, template_name='miPerfil.html',context=context)
 
 @login_required(login_url='/login/')
 def tuMusica_page(request): 

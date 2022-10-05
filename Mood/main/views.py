@@ -22,9 +22,26 @@ def register_page(request):
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
     canciones = Cancion.objects.all()
-    contexto = {'canciones':canciones}
+    cancionGusto = recomByLikes(request)
+    contexto = {'canciones':canciones,'cancionesGusto':cancionGusto}
 
     return render(request, template_name='home.html', context=contexto)
+
+# función para recomendar por gustos
+def recomByLikes(request):
+    gustos=Genero_Favorito.objects.filter(id_perfil__usuario=request.user)
+    gustos=[gusto.id_genero.nombre for gusto in gustos] 
+
+    cancionesPosibles=Genero_Cancion.objects.filter(id_genero__nombre__in=gustos)
+    canciones=[]
+
+    while(len(canciones)<15 and cancionesPosibles.count()>0):
+        cancion = random.choice(cancionesPosibles)
+        canciones.append(cancion.id_cancion)
+        cancionesPosibles=cancionesPosibles.exclude(id_cancion__nombre__exact=cancion.id_cancion.nombre)
+
+    return canciones
+
 
 @login_required(login_url='/login/')
 def miPerfil_page(request): 
@@ -229,11 +246,20 @@ def playlist(request, userEmotion):
     canciones=[]
     
     if(userEmotion=="feliz"):
-        CancionesAltas=Cancion.objects.filter(frecuencia__in=[4,5]).filter(intensidad_feliz__gte=F('intensidad_enojo')).filter(intensidad_enojo__gte=F('intensidad_triste'))
+        gustos=Genero_Feliz.objects.filter(id_perfil__usuario=request.user)
+        gustos=[gusto.id_genero.nombre for gusto in gustos]
+
+        cancionesPosibles=Genero_Cancion.objects.filter(id_genero__nombre__in=gustos)
+
+        listaGustos=[cancionPosible.id_cancion.nombre for cancionPosible in cancionesPosibles]
+        print(listaGustos)
+        #gustos cuando está feliz
+
+        CancionesAltas=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[4,5]).filter(intensidad_feliz__gte=F('intensidad_enojo')).filter(intensidad_enojo__gte=F('intensidad_triste'))
         #Filtro:
         #frecuencias 4 y 5
         # %Feliz >= %Enojo >= %Triste
-        CancionesNeutras=Cancion.objects.filter(frecuencia__in=[3]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        CancionesNeutras=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[3]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
         #Filtro:
         #frecuencia 3
         # 20% < %Feliz %Triste Y %Enojo < 45%
@@ -275,15 +301,24 @@ def playlist(request, userEmotion):
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)        
 
     elif(userEmotion=="triste"):
-        CancionesEmpatia=Cancion.objects.filter(frecuencia__in=[4,3,2]).filter(intensidad_triste__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_enojo'))
+        gustos=Genero_Triste.objects.filter(id_perfil__usuario=request.user)
+        gustos=[gusto.id_genero.nombre for gusto in gustos]
+
+        cancionesPosibles=Genero_Cancion.objects.filter(id_genero__nombre__in=gustos)
+        
+        listaGustos=[cancionPosible.id_cancion.nombre for cancionPosible in cancionesPosibles]
+        print(listaGustos)
+        #gustos cuando está triste
+        
+        CancionesEmpatia=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[4,3,2]).filter(intensidad_triste__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_enojo'))
         #Filtro:
         #frecuencias 4,3,2
         # %Triste >= %Feliz >= %Enojo
-        CancionesMedio=Cancion.objects.filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        CancionesMedio=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
         #Filtro:
         #frecuencia 3,2
         # 20% < %Feliz %Triste Y %Enojo < 45%
-        CancionesSuave=Cancion.objects.filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        CancionesSuave=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
         #Filtro:
         #frecuencia 2,1
         # 20% < %Feliz %Triste Y %Enojo < 45%
@@ -310,15 +345,24 @@ def playlist(request, userEmotion):
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
     
     elif(userEmotion=="enojado"):
-        CancionesEmpatia=Cancion.objects.filter(frecuencia__in=[5,4,3]).filter(intensidad_enojo__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_triste'))
+        gustos=Genero_Favorito.objects.filter(id_perfil__usuario=request.user)
+        gustos=[gusto.id_genero.nombre for gusto in gustos]
+
+        cancionesPosibles=Genero_Cancion.objects.filter(id_genero__nombre__in=gustos)
+
+        listaGustos=[cancionPosible.id_cancion.nombre for cancionPosible in cancionesPosibles]
+        print(listaGustos)
+        #gustos cuando está enojado
+
+        CancionesEmpatia=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[5,4,3]).filter(intensidad_enojo__gte=F('intensidad_feliz')).filter(intensidad_feliz__gte=F('intensidad_triste'))
         #Filtro:
         #frecuencias 5,4,3
         # %Enojo >= %Feliz >= %Triste
-        CancionesMedio=Cancion.objects.filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        CancionesMedio=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[3,2]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
         #Filtro:
         #frecuencia 3,2
         # 20% < %Feliz %Triste Y % Enojo < 45%
-        CancionesSuave=Cancion.objects.filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
+        CancionesSuave=Cancion.objects.filter(nombre__in=listaGustos).filter(frecuencia__in=[2,1]).filter(intensidad_feliz__range=(20,45)).filter(intensidad_triste__range=(20,45)).filter(intensidad_enojo__range=(20,45))
         #Filtro:
         #frecuencia 2,1
         # 20% < %Feliz %Triste Y % Enojo < 45%
@@ -393,3 +437,102 @@ def sendSatisfactionForm(request,goto):
 #     logout(request)
 #     messages.success(request, f'Sesión cerrada correctamente')
 #     return login_page(request)
+
+#--------------------------------------------- utilidad para guardar musica en la BBDD -------------------------------
+def SubirMusica(request):
+    archivo = open("main/data/help.csv",encoding="UTF-8")
+    verificacion=[]
+    for linea in archivo:
+        registro= linea.split(";")    
+        registro[-1]=registro[-1][:-1] #quitamos el /n --> ojo que la última linea si tenga salto porque sino se daña
+        #registro[0] nombre
+        #registro[1] duracion
+        #registro[2] frecuencia
+        #registro[3] idioma
+        #registro[4] intensidad feliz
+        #registro[5] intensidad triste
+        #registro[6] intensidad enojado
+        #registro[7] generos
+        #registro[8] artistas
+
+        #Canción
+        if(len(Cancion.objects.filter(nombre=registro[0].title()))==0):
+            cancionSV=Cancion(nombre=registro[0].title(),duracion=int(registro[1]),frecuencia=int(registro[2]),idioma=registro[3].title(),intensidad_feliz=int(registro[4]),intensidad_triste=int(registro[5]),intensidad_enojo=int(registro[6]))
+            cancionSV.save()
+
+        can=Cancion.objects.get(nombre=registro[0].title())
+
+        #Géneros
+        registro[7]=registro[7].split(",")
+        #Ya están los géneros?
+        for genero in registro[7]:
+            if(len(Genero.objects.filter(nombre=genero.title()))==0):
+                generoSV=Genero(nombre=genero.title())
+                generoSV.save()
+
+            #Vinculo
+            
+            gen=Genero.objects.get(nombre=genero.title())
+            RelGC = Genero_Cancion(id_genero=gen,id_cancion=can)
+            RelGC.save()
+
+        #Artistas
+        registro[8]=registro[8].split(",")
+        #Ya están los artistas?
+        for artista in registro[8]:
+            if(len(Artista.objects.filter(nombre=artista.title()))==0):
+                artistaSV=Artista(nombre=artista.title())
+                artistaSV.save()
+       
+            #Vinculo
+            art=Artista.objects.get(nombre=artista.title())
+            RelAC = Artista_Cancion(id_artista=art,id_cancion=can)
+            RelAC.save()
+
+        verificacion.append(registro[0].title)
+        print(registro)
+
+    archivo.close()
+
+    return render(request,template_name="zzVerificar.html",context={"lista":verificacion})
+
+def subirDuracion(request):
+    archivo = open("main/data/help.csv",encoding="UTF-8")
+
+    verificacion=[]
+
+    for linea in archivo:
+        registro= linea.split(";")    
+        registro[-1]=registro[-1][:-1]
+
+        cancionAct = Cancion.objects.get(nombre=registro[0])
+        cancionAct.duracion=int(registro[1])
+        cancionAct.save()
+
+        mistr=registro[0]+"que dura: "+registro[1]
+        verificacion.append(mistr)
+
+    archivo.close()
+    return render(request,template_name="zzVerificar.html",context={"lista":verificacion})
+
+def subirAudios(request):
+    archivo = open("main/data/help.csv",encoding="UTF-8")
+
+    verificacion=[]
+
+    for linea in archivo:
+        registro= linea.split(";")    
+        registro[-1]=registro[-1][:-1]
+
+        cancionAct = Cancion.objects.get(nombre=registro[0])
+        #opción 1
+        cancionAct.audio="audios/"+registro[1]#ojo que debe incluir el .mp3 en el excel
+        #opción 2
+        #cancionAct.audio="audios/"+registro[0].lower().replace(" ","_")+".mp3"
+        cancionAct.save()
+
+        mistr=registro[0]+"con la direccion: audios/"+registro[1]
+        verificacion.append(mistr)
+
+    archivo.close()
+    return render(request,template_name="zzVerificar.html",context={"lista":verificacion})

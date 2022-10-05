@@ -18,5 +18,9 @@ urlpatterns = [
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
     path('logout/', logout_then_login, name='logout'),
     path('sendSatisfactionForm/<str:goto>', views.sendSatisfactionForm, name='sendSatisfactionForm'),#recibe la página a la que se debe redireccionar
+    # estas deberán tener alguna seguridad para que los usuarios no puedan acceder a ellas
+    path('musicaBD', views.SubirMusica, name='subirMusica'),#utilidad pa subir a la BBDD
+    path('duracionBD', views.subirDuracion, name='subirDuracion'),#utilidad pa subir a la BBDD
+    path('audiosBD', views.subirAudios, name='subirAudios'),#utilidad pa subir a la BBDD
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

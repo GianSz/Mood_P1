@@ -31,7 +31,7 @@ def register_page(request):
             nuevoPerfil.save()
             return redirect('formsFellings')
 
-    return render(request, template_name='registro.html', context = {'form': form})
+    return render(request, template_name='register.html', context = {'form': form})
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page

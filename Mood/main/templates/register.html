@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous"><!--Bootstrap 5-->
+    <script src="https://kit.fontawesome.com/6f83f56a7b.js" crossorigin="anonymous"></script> <!--Font Awesome-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+
+    <style>
+
+        .form{
+            background-color: #8241F3;
+            border-radius: 1rem;
+        }
+
+        .form__field{
+            width: 23%;
+            margin: 2rem auto;
+        }
+
+        .form-label{
+            padding-left: 2px;
+            font-size: 18px;
+        }
+
+        .form-control:focus{
+            border-color: #ddd;
+            box-shadow: 0 0 0 .10rem #ddd;
+        }
+
+        .form__button{
+            font-size: 18px;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .form__button:hover{
+            background-color: #ddd;
+            border-color: #ddd;
+            box-shadow: 0 0 0 .10rem #ddd;
+        }
+
+        .form__button:focus, .form__button:active:focus{
+            box-shadow: 0 0 0 .25rem rgba(0, 0, 0, 0.25);
+        }
+
+        .form__terms-input:focus{
+            border-color: #444;
+            box-shadow: 0 0 0 .25rem rgba(0, 0, 0, 0.25);
+        }
+
+        .form__terms-input:checked{
+            background-color: #444;
+            border-color: #444;
+        }
+
+        .container{
+            max-width: 700px;
+        }
+        
+
+    </style>
+
+</head>
+
+<body style="background: #FFF9F2;">
+    
+    <div class="container">
+
+        <form class="form text-white py-5" method = "POST" actions="">
+
+            {% csrf_token %}
+
+            <div class="row justify-content-center align-items-center py-5">
+                <div class="col-12 col-md-9">
+                    <div class="info-container fw-bold text-center">
+                        <h2 class="info-container__title">Formulario de Registro</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+        
+                    <div class="form__field form__field--1">
+                        <label class="form__name-label form-label" for="input-name">Nombres</label>
+                        </br>
+                        {{form.first_name}}
+                    </div>
+                </div>
+
+                <div class="col-5">
+                    <div class="form__field form__field--2">
+                        <label class="form__surnames-label form-label" for="input-surnames">Apellidos</label>
+                        </br>
+                        {{form.last_name}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-7">
+        
+                    <div class="form__field form__field--3">
+                        <label class="form__username-label form-label" for="input-username">Nombre de usuario</label>
+                        </br>
+                        {{form.username}}
+                    </div>
+                </div>
+
+                <div class="col-7">
+                    <div class="form__field form__field--4">
+                        <label class="form__birth-label form-label" for="input-birth">Fecha de nacimiento</label>
+                        <input class="form__birth-input form-control" type="date" id="input-birth" required name="birthDate">    
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+        
+                    <div class="form__field form__field--5">
+                        <label class="form__email-label form-label" for="input-email">Correo</label>
+                        </br>
+                        {{form.email}}
+                    </div>
+                </div>
+
+                <div class="col-5">
+                    <div class="form__field form__field--6">
+                        <label class="form__password-label form-label" for="input-password">Contraseña</label>
+                        </br>
+                        {{form.password1}}
+                    </div>
+                </div>
+
+            </div>
+        
+
+            <div class="row">
+                <div class="col-12">
+        
+                    <div class="form__field form__field--7">
+                        <label class="form__confirm-password-label form-label" for="input-confirm-password">Confirmar contraseña</label>
+                        </br>
+                        {{form.password2}}
+                    </div>
+                </div>
+            </div>
+
+        
+                <div class="form__field form__field--8">
+                    <label class="form__terms-label form-label">
+                        <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los términos y condiciones.
+                    </label>
+                </div>
+
+            {{form.errors}}
+
+            <div class="form__field form__field--9 text-center my-0">
+                <a href="{% url 'formsFellings' %}"><button class="form__button btn btn-primary btn-lg btn-outline-light" type="submit">Enviar</button></a>
+            </div>
+                    
+                </form>
+            
+        
+    </div>
+</body>
+</html>

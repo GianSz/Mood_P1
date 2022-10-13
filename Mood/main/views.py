@@ -13,11 +13,25 @@ from django.db.models import F
 import csv;
 import json;
 from datetime import datetime
+from django.contrib.auth.forms import UserCreationForm
+from .forms import CreateUserForm
 
 # Create your views here.
 
 def register_page(request):
-    return render(request, template_name='registro.html')
+    form = CreateUserForm()
+
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            usuarioActual = User.objects.get(username= request.POST["username"])
+            fecha = request.POST["birthDate"]
+            nuevoPerfil = Perfil(usuario = usuarioActual, fecha_nacimiento = fecha)
+            nuevoPerfil.save()
+            return redirect('formsFellings')
+
+    return render(request, template_name='registro.html', context = {'form': form})
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page

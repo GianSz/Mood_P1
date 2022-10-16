@@ -64,6 +64,9 @@
 
 </head>
 
+
+
+
 <body style="background: #FFF9F2;">
     
     <div class="container">
@@ -79,7 +82,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="row">
                 <div class="col-5">
         
@@ -102,33 +105,38 @@
 
 
             <div class="row">
-                <div class="col-7">
+                <div class="col-5">
         
                     <div class="form__field form__field--3">
-                        <label class="form__username-label form-label" for="input-username">Nombre de usuario</label>
+                        <label class="form__username-label form-label" for="input-username">Usuario</label>
                         </br>
                         {{form.username}}
                     </div>
                 </div>
 
-                <div class="col-7">
-                    <div class="form__field form__field--4">
-                        <label class="form__birth-label form-label" for="input-birth">Fecha de nacimiento</label>
-                        <input class="form__birth-input form-control" type="date" id="input-birth" required name="birthDate">    
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
                 <div class="col-5">
-        
                     <div class="form__field form__field--5">
                         <label class="form__email-label form-label" for="input-email">Correo</label>
                         </br>
                         {{form.email}}
                     </div>
+
                 </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="form__field form__field--4">
+                        <label class="form__birth-label form-label" for="input-birth">Fecha de nacimiento</label>
+                        <input class="form__birth-input form-control" type="date" id="input-birth" required name="birthDate">    
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row">
 
                 <div class="col-5">
                     <div class="form__field form__field--6">
@@ -138,11 +146,7 @@
                     </div>
                 </div>
 
-            </div>
-        
-
-            <div class="row">
-                <div class="col-12">
+                <div class="col-7">
         
                     <div class="form__field form__field--7">
                         <label class="form__confirm-password-label form-label" for="input-confirm-password">Confirmar contraseña</label>
@@ -153,12 +157,19 @@
             </div>
 
         
-                <div class="form__field form__field--8">
-                    <label class="form__terms-label form-label">
-                        <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los términos y condiciones.
-                    </label>
-                </div>
+            <div class="form__field form__field--8">
+                <label class="form__terms-label form-label">
+                    <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los términos y condiciones.
+                </label>
+            </div>
+            
+            {% if error|length > 5 %}
+                <ul>
+                    <li>{{error}}</li>
+                </ul>
 
+            {% endif %}
+            
             {{form.errors}}
 
             <div class="form__field form__field--9 text-center my-0">

@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import F
 import csv;
 import json;
-from datetime import datetime
+from datetime import datetime, date
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 
@@ -24,14 +24,19 @@ def register_page(request):
     if request.method == "POST":
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            usuarioActual = User.objects.get(username= request.POST["username"])
-            fecha = request.POST["birthDate"]
-            nuevoPerfil = Perfil(usuario = usuarioActual, fecha_nacimiento = fecha)
-            nuevoPerfil.save()
-            return redirect('formsFellings')
+            fecha = datetime.strptime(request.POST["birthDate"], '%Y-%m-%d')
+            hoy = date.today()
+            edad = hoy.year - fecha.year
+            if(edad >= 15):
+                form.save()
+                usuarioActual = User.objects.get(username= request.POST["username"])
+                nuevoPerfil = Perfil(usuario = usuarioActual, fecha_nacimiento = fecha)
+                nuevoPerfil.save()
+                return redirect('formsFellings')
+            else:
+                return render(request, template_name='register.html', context = {'form': form, 'error': "Debes tener más de 15 años"})
 
-    return render(request, template_name='register.html', context = {'form': form})
+    return render(request, template_name='register.html', context = {'form': form, 'error': "None"})
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page

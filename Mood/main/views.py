@@ -20,6 +20,7 @@ from .forms import CreateUserForm
 
 def register_page(request):
     form = CreateUserForm()
+    print("Entra a la pagina")
 
     if request.method == "POST":
         form = CreateUserForm(request.POST)
@@ -32,11 +33,12 @@ def register_page(request):
                 usuarioActual = User.objects.get(username= request.POST["username"])
                 nuevoPerfil = Perfil(usuario = usuarioActual, fecha_nacimiento = fecha)
                 nuevoPerfil.save()
+                login(request, usuarioActual)
                 return redirect('formsFellings')
             else:
-                return render(request, template_name='register.html', context = {'form': form, 'error': "Debes tener más de 15 años"})
+                return render(request, template_name='registro.html', context = {'form': form, 'error': "Debes tener más de 15 años"})
 
-    return render(request, template_name='register.html', context = {'form': form, 'error': "None"})
+    return render(request, template_name='registro.html', context = {'form': form, 'error': "None"})
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page

@@ -1,3 +1,4 @@
+from cgitb import handler
 from django.urls import path # Como este es un archivo creado por mi, yo mismo pongo la importación
 from main import views
 from django.contrib.auth.views import logout_then_login
@@ -24,3 +25,5 @@ urlpatterns = [
     path('audiosBD', views.subirAudios, name='subirAudios'),#utilidad pa subir a la BBDD
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = "main.views.handle_not_found"

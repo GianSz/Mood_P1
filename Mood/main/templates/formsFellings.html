@@ -38,73 +38,37 @@
 
                                     <div class="form-outline form-white mb-4" >
                                         <h5>¿Cuáles son tus géneros favoritos?</h5>
-                                        <select class="selectpicker" data-width="100%"  title="Seleccione los generos..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
+                                        <select name='genFav' class="selectpicker" data-width="100%"  title="Seleccione todos los generos..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                                            {% for genero in generos %}
+                                            <option value="{{ genero.id }}">{{ genero.nombre }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
 
                                      <div class="form-outline form-white mb-4" >
                                         <h5>¿Qué géneros prefieres escuchar cuando estás feliz?</h5>
-                                        <select class="selectpicker" data-width="100%"  title="Seleccione los generos..."aria-label="" data-live-search="true" data-size="10" multiple>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
+                                        <select name='genFel' class="selectpicker" data-width="100%"  title="Seleccione todos los generos..."aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                                            {% for genero in generos %}
+                                            <option value="{{ genero.id }}">{{ genero.nombre }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
 
                                     <div class="form-outline form-white mb-4" >
                                         <h5>¿Qué géneros prefieres escuchar cuando estás triste?</h5>
-                                        <select class="selectpicker" data-width="100%"  title="Seleccione los generos..."aria-label="" data-live-search="true" data-size="10" multiple>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
-                                            <option value="">One</option>
-                                            <option value="">Two</option>
-                                            <option value="">Three</option>
-                                            <option value="">Four</option>
+                                        <select name='genTri'class="selectpicker" data-width="100%"  title="Seleccione todos los generos..."aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                                            {% for genero in generos %}
+                                            <option value="{{genero.id}}">{{ genero.nombre }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
 
                                     <div class="form-outline form-white mb-4" >
                                         <h5>¿Qué géneros prefieres escuchar cuando estás enojado?</h5>
-                                        <select class="selectpicker" data-width="100%"  title="Seleccione los generos..."aria-label="" data-live-search="true" data-size="10" multiple>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            <option value="4">Four</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            <option value="4">Four</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                            <option value="4">Four</option>
+                                        <select name='genEno' class="selectpicker" data-width="100%"  title="Seleccione todos los generos..."aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                                            {% for genero in generos %}
+                                            <option value="{{genero.id}}">{{ genero.nombre }}</option>
+                                            {% endfor %}
                                         </select>
                                     </div>
                                     <br>

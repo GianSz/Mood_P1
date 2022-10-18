@@ -20,14 +20,16 @@
         </title>
     </head>
 
-    <body style="background: #F2F2F2;">
+    <body style="background: #F2F2F2;" class="d-flex flex-column min-vh-100">
+        {% include 'includes/navbar.html' %} <!-- Inclusión de la navbar -->
+
         {% for message in messages %}
             <div class="alert alert-dismissible alert-primary d-flex justify-content-center" role="alert">
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         {% endfor %}
-        {% include 'includes/navbar.html' %} <!-- Inclusión de la navbar -->
+        
         {% block pageheader %} <!-- por si se le quiere poner un header a la pagina -->
 
         {% endblock %}

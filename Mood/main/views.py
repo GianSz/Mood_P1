@@ -25,10 +25,28 @@ def register_page(request):
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
-    canciones = Cancion.objects.all()
+    cancionesQuery = Cancion.objects.all()
     cancionGusto = recomByLikes(request)
-    contexto = {'canciones':canciones,'cancionesGusto':cancionGusto}
 
+    canciones = []
+    for cancion in cancionesQuery:
+        dictio = {"nombre":cancion.nombre,
+        "audio": cancion.audio.url,
+        "imagen": cancion.imagen,
+        "duracion": cancion.duracion
+        }
+        canciones.append(dictio)
+
+    cancionesGusto = []
+    for cancion in cancionGusto:
+        dictio = {"nombre":cancion.nombre,
+        "audio": cancion.audio.url,
+        "imagen": cancion.imagen,
+        "duracion": cancion.duracion
+        }
+        cancionesGusto.append(dictio)
+
+    contexto = {'canciones':canciones, 'cancionesGusto':cancionesGusto}
     return render(request, template_name='home.html', context=contexto)
 
 # función para recomendar por gustos

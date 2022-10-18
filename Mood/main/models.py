@@ -19,7 +19,7 @@ class Cancion(models.Model):
     nombre=models.CharField(max_length=25, null=False,blank=False)
     audio=models.FileField(upload_to='audios/')
     imagen=models.CharField(max_length=50,null=True,blank=True)
-    duracion=models.TimeField(null=False,blank=False)
+    duracion=models.IntegerField(null=False,blank=False)
     frecuencia=models.IntegerField(null=True,blank=True)
     idioma=models.CharField(max_length=15,null=False,blank=False)
     intensidad_feliz=models.IntegerField(null=True,blank=True)

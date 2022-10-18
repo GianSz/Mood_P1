@@ -58,12 +58,25 @@
 
 </head>
 <body style="background: #FFF9F2;">
+
+    {% if error|length > 5 %}
+        <div class="alert alert-dismissible alert-primary" role="alert">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="alert alert-dismissible alert-primary" role="alert">
+            {{form.errors}}
+        </div>
+    {% endif %}        
+
     
     <div class="container">
         <div class="row justify-content-center align-items-center py-5">
             <div class="col-12 col-md-9">
                 
-                <form class="form text-white py-5">
+                <form class="form text-white py-5" method = "POST" actions="">
 
                     {% csrf_token %}
 
@@ -73,37 +86,43 @@
         
                     <div class="form__field form__field--1">
                         <label class="form__name-label form-label" for="input-name">Nombres</label>
-                        <input class="form__name-input form-control" type="text" id="input-name" required>
+                        <br>
+                        {{form.first_name}}
                     </div>
         
                     <div class="form__field form__field--2">
                         <label class="form__surnames-label form-label" for="input-surnames">Apellidos</label>
-                        <input class="form__surnames-input form-control" type="text" id="input-surnames" required>
+                        <br>
+                        {{form.last_name}}
                     </div>
         
                     <div class="form__field form__field--3">
                         <label class="form__username-label form-label" for="input-username">Nombre de usuario</label>
-                        <input class="form__username-input form-control" type="text" id="input-username" required>
+                        <br>
+                        {{form.username}}
                     </div>
         
                     <div class="form__field form__field--4">
                         <label class="form__birth-label form-label" for="input-birth">Fecha de nacimiento</label>
-                        <input class="form__birth-input form-control" type="date" id="input-birth" required>
+                        <input class="form__birth-input form-control" type="date" id="input-birth" required name="birthDate">
                     </div>
         
                     <div class="form__field form__field--5">
                         <label class="form__email-label form-label" for="input-email">Correo</label>
-                        <input class="form__email-input form-control" type="email" id="input-email" required>
+                        <br>
+                        {{form.email}}
                     </div>
         
                     <div class="form__field form__field--6">
                         <label class="form__password-label form-label" for="input-password">Contraseña</label>
-                        <input class="form__password-input form-control" type="password" id="input-password" required>
+                        <br>
+                        {{form.password1}}
                     </div>
         
                     <div class="form__field form__field--7">
                         <label class="form__confirm-password-label form-label" for="input-confirm-password">Confirmar contraseña</label>
-                        <input class="form__confirm-password-input form-control" type="password" id="input-confirm-password" required>
+                        <br>
+                        {{form.password2}}
                     </div>
         
                     <div class="form__field form__field--8">

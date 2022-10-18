@@ -34,7 +34,7 @@
                     <div class="list-group" style="height: 411px; overflow: auto;">
                         {% if cancionesGusto %}
                             {% for cancion in cancionesGusto %}
-                            <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio.url}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}')">{{cancion.nombre}}</button>
+                                <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{cancionesGusto}})">{{cancion.nombre}}</button>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -51,7 +51,7 @@
                     <div class="list-group" style="height: 411px; overflow: auto;">
                         {% if canciones %}
                             {% for cancion in canciones %}
-                                <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio.url}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}')">{{cancion.nombre}}</button>
+                                <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">{{cancion.nombre}}</button>
                             {% endfor %}
                         {% endif %}
                     </div>

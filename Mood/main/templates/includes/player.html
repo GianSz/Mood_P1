@@ -160,42 +160,47 @@
     let progress = document.getElementById("progress-bar");
     let timeBar = document.getElementById("time-bar");
 
-    let reproducing;
+    //Lista de reproducción e índice de la canción que se reproduce
+    let songs;
+    let index;
+
+    let reproducing = false;
 
     //Función que se activa al hacer click en alguna canción de la lista de reproducción, esta activa el player con la información de la canción seleccionada y la reproduce.
-    function loadSong(aud_source, text, img_source, dur, index){
+    function loadSong(aud_source_param, nombre_param, img_source_param, duration_param, index_param, songs_param){
 
-        if(reproducing==undefined){
+        songs = songs_param;
+        index = index_param * 1;
+
+        if(!reproducing){
             player.style.display = "flex";
+            reproducing = true;
         }
 
-        audio.src = aud_source;
-        reproducing = index;
-
-        setTitle(text);
-        setImage(img_source);
-        setDuration(dur);
+        audio.src = aud_source_param;
+        setTitle(nombre_param);
+        setImage(img_source_param);
+        setDuration(duration_param);
         audio.play();
         updateIcon();
-        
     }
 
     //Función para escribir en el player el titulo de la canción que se está reproduciendo.
-    function setTitle(text){
-        title.innerText = text;
+    function setTitle(nombre_param){
+        title.innerText = nombre_param;
     }
 
     //Función para poner en el player la imagen de la canción que se está reproduciendo.
-    function setImage(img_source){
-        cover.src = img_source;
+    function setImage(img_source_param){
+        cover.src = img_source_param;
     }
 
     //Función para poner en el player la duración de la canción que se está reproduciendo.
-    function setDuration(dur){
+    function setDuration(duration_param){
 
-        let time = Math.trunc(dur/60)+":";
+        let time = Math.trunc(duration_param/60)+":";
 
-        dur%60 > 9 ? time+=Math.trunc(dur%60) : time+="0"+Math.trunc(dur%60);
+        duration_param%60 > 9 ? time+=Math.trunc(duration_param%60) : time+="0"+Math.trunc(duration_param%60);
 
         duration.innerText = time;
     }
@@ -229,7 +234,16 @@
     prev.addEventListener("click", () => playPrevSong());
 
     function playPrevSong(){
-        
+        if(index>0){
+            index--;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+        else{
+            index = songs.length - 1;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
     }
 
 
@@ -237,7 +251,16 @@
     next.addEventListener("click", () => playNextSong());
 
     function playNextSong(){
-
+        if(index < songs.length - 1){
+            index++;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+        else{
+            index = 0;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
     }
 
 
@@ -272,9 +295,9 @@
 
 
     //Evento capturar click en la barra de tiempo y asi actualizar el tiempo de reproducción de la canción
-    timeBar.addEventListener("click", () => setProgressBar(event));
+    timeBar.addEventListener("click", () => setTime(event));
 
-    function setProgressBar(event){
+    function setTime(event){
         const maxWidth = timeBar.clientWidth;
         const clickedWidth = event.offsetX;
         

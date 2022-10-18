@@ -13,37 +13,11 @@
             <div class="list-group" style="height: 411px; overflow: auto;">
                 {% if canciones %}
                     {% for cancion in canciones %}
-                        <button type="button" class="list-group-item list-group-item-action" onclick="myFunction('{{cancion.nombre}}')">{{cancion.nombre}}</button>
+                        <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">{{cancion.nombre}}</button>
                     {% endfor %}
                 {% endif %}
             </div>
-            {% if canciones %}
-                {% for cancion in canciones %}
-                    <audio src="{{cancion.audio.url}}" id="{{cancion.nombre}}" type="audio/mpeg"></audio>
-                {% endfor %}
-            {% endif %}
         </div>
     </div>
 </div>
-
-<script>
-    let reproducing;
-    function myFunction(id){
-        let song = document.getElementById(id);
-        if(reproducing != undefined && reproducing != song){
-            reproducing.pause();
-            reproducing.currentTime = 0;
-        }
-
-        reproducing = song;
-
-        if(song.paused){
-            song.play();
-        }
-        else{
-            song.pause();
-        }
-    }
-</script>
-
 {% endblock %}

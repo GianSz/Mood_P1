@@ -1,0 +1,313 @@
+<div class="player" id="player">
+    <div class="player__info-song">
+        <div class="player__img">
+            <img src="" id="cover" />
+        </div>
+        <div class="player__title">
+            <p id="title"></p>
+        </div>
+    </div>
+
+    <div class="player__controls">
+
+        <div class="player__buttons-container">
+            <button class="player__button" id="prev">
+                <i class="fas fa-backward"></i>
+            </button>
+            <button class="player__button" id="play/pause">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button class="player__button" id="next">
+                <i class="fas fa-forward"></i>
+            </button>
+        </div>
+
+        <div class="player__time-container">
+            <div class="player__timer">
+                <p id="timer"></p>
+            </div>
+            <div class="player__time-bar" id="time-bar">
+                <div class="player__progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="player__duration">
+                <p id="duration"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<audio src="" id="audio"></audio>
+
+<style>
+    *{
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body{
+        overflow-x: hidden;
+    }
+
+    .player{
+        padding: 1em 2em;
+        height: 125px;
+        background-color: #333;
+        display: none;
+        flex-direction: row;
+        justify-content: space-evenly;
+        position: sticky;
+        bottom: 0;
+        z-index: 1000;
+
+        min-width: 760px;
+        color: white;
+    }
+
+    .player__info-song{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .player__img{
+        width: 75px;
+        height: 75px;
+        margin: auto;
+        object-fit: scale-down;
+    }
+
+    .player__img img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .player__title p{
+        margin: 0;
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .player__controls{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .player__buttons-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 10px;
+    }
+
+    .player__button{
+        width: 50px;
+        height: 50px;
+        object-fit: scale-down;
+        border-radius: 50%;
+        border: none;
+        font-size: 1.5rem;
+        text-align: center;
+        color: #fff;
+        background-color: transparent;
+    }
+
+    .player__time-container{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .player__time-bar{
+        height: 8px;
+        background-color: #777;
+        width: 100%;
+        border-radius: 5px;
+    }
+
+    .player__progress-bar{
+        background-color: #8241F3;
+        width: 0%;
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    p{
+        margin: 0;
+    }
+</style>
+
+<script>
+    
+    let player = document.getElementById("player");
+    let audio = document.getElementById("audio");
+
+    //Info song
+    let cover = document.getElementById("cover");
+    let title = document.getElementById("title");
+    
+    //Buttons
+    let prev = document.getElementById("prev");
+    let play = document.getElementById("play/pause");
+    let next = document.getElementById("next");
+    
+    //Time
+    let timer = document.getElementById("timer");
+    let duration = document.getElementById("duration");
+    let progress = document.getElementById("progress-bar");
+    let timeBar = document.getElementById("time-bar");
+
+    //Lista de reproducción e índice de la canción que se reproduce
+    let songs;
+    let index;
+
+    let reproducing = false;
+
+    //Función que se activa al hacer click en alguna canción de la lista de reproducción, esta activa el player con la información de la canción seleccionada y la reproduce.
+    function loadSong(aud_source_param, nombre_param, img_source_param, duration_param, index_param, songs_param){
+
+        songs = songs_param;
+        index = index_param * 1;
+
+        if(!reproducing){
+            player.style.display = "flex";
+            reproducing = true;
+        }
+
+        audio.src = aud_source_param;
+        setTitle(nombre_param);
+        setImage(img_source_param);
+        setDuration(duration_param);
+        audio.play();
+        updateIcon();
+    }
+
+    //Función para escribir en el player el titulo de la canción que se está reproduciendo.
+    function setTitle(nombre_param){
+        title.innerText = nombre_param;
+    }
+
+    //Función para poner en el player la imagen de la canción que se está reproduciendo.
+    function setImage(img_source_param){
+        cover.src = img_source_param;
+    }
+
+    //Función para poner en el player la duración de la canción que se está reproduciendo.
+    function setDuration(duration_param){
+
+        let time = Math.trunc(duration_param/60)+":";
+
+        duration_param%60 > 9 ? time+=Math.trunc(duration_param%60) : time+="0"+Math.trunc(duration_param%60);
+
+        duration.innerText = time;
+    }
+
+
+    //Evento del botón play/pause que escucha click y reproduce o pausa la canción con respecto a su estado, además actualiza el icono del botón dependiendo del estaod también.
+    play.addEventListener("click", () => {
+        if(audio.paused){
+            audio.play();
+        }
+        else{
+            audio.pause();
+        }
+
+        updateIcon();
+    });
+
+    function updateIcon(){
+        if(audio.paused){
+            play.firstElementChild.classList.remove("fa-pause");
+            play.firstElementChild.classList.add("fa-play");
+        }
+        else{
+            play.firstElementChild.classList.remove("fa-play");
+            play.firstElementChild.classList.add("fa-pause");
+        }
+    }
+
+
+    //Evento del botón anterior canción el cuál escucha clicks y reproduce la anterior canción en la lista.
+    prev.addEventListener("click", () => playPrevSong());
+
+    function playPrevSong(){
+        if(index>0){
+            index--;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+        else{
+            index = songs.length - 1;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+    }
+
+
+    //Evento del botón siguiente canción el cuál escucha clicks y reproduce la siguiente canción en la lista.
+    next.addEventListener("click", () => playNextSong());
+
+    function playNextSong(){
+        if(index < songs.length - 1){
+            index++;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+        else{
+            index = 0;
+            let song = songs[index];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        }
+    }
+
+
+    //Evento de audio el cual al actualizarse el tiempo de la canción se ejecuta la función updateTime quien por dentor ejecuta dos funcionaes más llamadas updateTimer y updateProgressBar.
+    audio.addEventListener("timeupdate", () => updateTime(event));
+    
+    function updateTime(event){
+        updateTimer(event);
+        updateProgressBar(event);
+    }
+
+
+    function updateTimer(event){
+        const time = event.srcElement.currentTime;
+
+        let timeStr = ~~(time/60)+":";
+
+        if(~~(time)%60 <= 9) timeStr += "0";
+
+        timeStr += ~~(time)%60;
+
+        timer.innerText = timeStr;
+    }
+
+
+    function updateProgressBar(event){
+        const {duration, currentTime} = event.srcElement;
+        const percentage = currentTime/duration * 100;
+        progress.style.width = percentage + "%";
+    }
+
+
+
+    //Evento capturar click en la barra de tiempo y asi actualizar el tiempo de reproducción de la canción
+    timeBar.addEventListener("click", () => setTime(event));
+
+    function setTime(event){
+        const maxWidth = timeBar.clientWidth;
+        const clickedWidth = event.offsetX;
+        
+        let val = clickedWidth / maxWidth;
+
+        audio.currentTime = val * audio.duration;
+    }
+
+
+    //Evento que al acabarse una canción reproduce la siguiente de manera.
+    audio.addEventListener("ended", () => playNextSong());
+
+</script>

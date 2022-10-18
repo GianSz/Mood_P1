@@ -25,10 +25,28 @@ def register_page(request):
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
-    canciones = Cancion.objects.all()
+    cancionesQuery = Cancion.objects.all()
     cancionGusto = recomByLikes(request)
-    contexto = {'canciones':canciones,'cancionesGusto':cancionGusto}
 
+    canciones = []
+    for cancion in cancionesQuery:
+        dictio = {"nombre":cancion.nombre,
+        "audio": cancion.audio.url,
+        "imagen": cancion.imagen,
+        "duracion": cancion.duracion
+        }
+        canciones.append(dictio)
+
+    cancionesGusto = []
+    for cancion in cancionGusto:
+        dictio = {"nombre":cancion.nombre,
+        "audio": cancion.audio.url,
+        "imagen": cancion.imagen,
+        "duracion": cancion.duracion
+        }
+        cancionesGusto.append(dictio)
+
+    contexto = {'canciones':canciones, 'cancionesGusto':cancionesGusto}
     return render(request, template_name='home.html', context=contexto)
 
 # función para recomendar por gustos
@@ -329,7 +347,7 @@ def recognize(request): #Views para la pagina mood
     return render(request, template_name='confirmEmotion.html', context=context)
 
 def playlist(request, userEmotion):    
-    canciones=[]
+    cancionesQuery=[]
     
     if(userEmotion=="feliz"):
         gustos=Genero_Feliz.objects.filter(id_perfil__usuario=request.user)
@@ -350,39 +368,39 @@ def playlist(request, userEmotion):
         #frecuencia 3
         # 20% < %Feliz %Triste Y %Enojo < 45%
         
-        while(len(canciones)<4 and CancionesAltas.count()>0):
+        while(len(cancionesQuery)<4 and CancionesAltas.count()>0):
             cancion = random.choice(CancionesAltas)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<5 and CancionesNeutras.count()>0):
+        while(len(cancionesQuery)<5 and CancionesNeutras.count()>0):
             cancion = random.choice(CancionesNeutras)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<9 and CancionesAltas.count()>0):
+        while(len(cancionesQuery)<9 and CancionesAltas.count()>0):
             cancion = random.choice(CancionesAltas)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<10 and CancionesNeutras.count()>0):
+        while(len(cancionesQuery)<10 and CancionesNeutras.count()>0):
             cancion = random.choice(CancionesNeutras)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<14 and CancionesAltas.count()>0):
+        while(len(cancionesQuery)<14 and CancionesAltas.count()>0):
             cancion = random.choice(CancionesAltas)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<15 and CancionesNeutras.count()>0):
+        while(len(cancionesQuery)<15 and CancionesNeutras.count()>0):
             cancion = random.choice(CancionesNeutras)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesAltas=CancionesAltas.exclude(nombre__exact=cancion.nombre)
             CancionesNeutras=CancionesNeutras.exclude(nombre__exact=cancion.nombre)        
 
@@ -409,23 +427,23 @@ def playlist(request, userEmotion):
         #frecuencia 2,1
         # 20% < %Feliz %Triste Y %Enojo < 45%
 
-        while(len(canciones)<5 and CancionesEmpatia.count()>0):
+        while(len(cancionesQuery)<5 and CancionesEmpatia.count()>0):
             cancion = random.choice(CancionesEmpatia)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<10 and CancionesMedio.count()>0):
+        while(len(cancionesQuery)<10 and CancionesMedio.count()>0):
             cancion = random.choice(CancionesMedio)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
-        while(len(canciones)<15 and CancionesSuave.count()>0):
+        while(len(cancionesQuery)<15 and CancionesSuave.count()>0):
             cancion = random.choice(CancionesSuave)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
@@ -453,28 +471,35 @@ def playlist(request, userEmotion):
         #frecuencia 2,1
         # 20% < %Feliz %Triste Y % Enojo < 45%
         
-        while(len(canciones)<5 and CancionesEmpatia.count()>0):
+        while(len(cancionesQuery)<5 and CancionesEmpatia.count()>0):
             cancion = random.choice(CancionesEmpatia)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
         
-        while(len(canciones)<10 and CancionesMedio.count()>0):
+        while(len(cancionesQuery)<10 and CancionesMedio.count()>0):
             cancion = random.choice(CancionesMedio)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
-        while(len(canciones)<15 and CancionesSuave.count()>0):
+        while(len(cancionesQuery)<15 and CancionesSuave.count()>0):
             cancion = random.choice(CancionesSuave)
-            canciones.append(cancion)
+            cancionesQuery.append(cancion)
             CancionesEmpatia=CancionesEmpatia.exclude(nombre__exact=cancion.nombre)
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
-    print(canciones)
+    canciones = []
+    for cancion in cancionesQuery:
+        dictio = {"nombre":cancion.nombre,
+        "audio": cancion.audio.url,
+        "imagen": cancion.imagen,
+        "duracion": cancion.duracion
+        }
+        canciones.append(dictio)
 
     context={'userEmotion':userEmotion,'canciones':canciones,'MOOD':True}
     #parametros:

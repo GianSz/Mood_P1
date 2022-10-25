@@ -109,6 +109,7 @@ def miPerfil_page(request):
 
 @login_required(login_url='/login/')
 def tuMusica_page(request): 
+    
     return render(request, template_name='tuMusica.html')
 
 @login_required(login_url='/login/')

@@ -36,6 +36,10 @@ def register_page(request):
                 usuarioActual = User.objects.get(username= request.POST["username"])
                 nuevoPerfil = Perfil(usuario = usuarioActual, fecha_nacimiento = fecha)
                 nuevoPerfil.save()
+                
+                # creamos la playlist que almacenará su ultima playlist de mood
+                ultimaEmocion = Playlist(id_perfil= nuevoPerfil ,nombre= "ultima")
+                ultimaEmocion.save()
                 login(request, usuarioActual)
                 return redirect('formsFellings')
             else:
@@ -45,28 +49,29 @@ def register_page(request):
 
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
-    cancionesQuery = Cancion.objects.all()
-    cancionGusto = recomByLikes(request)
+    cancionesGustos = recomByLikes(request)
+    ultima=Playlist.objects.get(id_perfil__usuario=request.user,nombre="ultima")
+    cancionesUltimo=Playlist_Cancion.objects.filter(id_playlist=ultima)
 
-    canciones = []
-    for cancion in cancionesQuery:
+    listaCancionesGustos = []
+    for cancion in cancionesGustos:
         dictio = {"nombre":cancion.nombre,
         "audio": cancion.audio.url,
         "imagen": cancion.imagen,
         "duracion": cancion.duracion
         }
-        canciones.append(dictio)
+        listaCancionesGustos.append(dictio)
 
-    cancionesGusto = []
-    for cancion in cancionGusto:
-        dictio = {"nombre":cancion.nombre,
-        "audio": cancion.audio.url,
-        "imagen": cancion.imagen,
-        "duracion": cancion.duracion
+    listaCancionesUltimo = []
+    for cancion in cancionesUltimo:
+        dictio = {"nombre":cancion.id_cancion.nombre,
+        "audio": cancion.id_cancion.audio.url,
+        "imagen": cancion.id_cancion.imagen,
+        "duracion": cancion.id_cancion.duracion
         }
-        cancionesGusto.append(dictio)
+        listaCancionesUltimo.append(dictio)
 
-    contexto = {'canciones':canciones, 'cancionesGusto':cancionesGusto}
+    contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos}
     return render(request, template_name='home.html', context=contexto)
 
 # función para recomendar por gustos
@@ -512,8 +517,20 @@ def playlist(request, userEmotion):
             CancionesMedio=CancionesMedio.exclude(nombre__exact=cancion.nombre)
             CancionesSuave=CancionesSuave.exclude(nombre__exact=cancion.nombre)
 
+    #eliminamos las canciones de la playlist ultima
+    miPerfil=Perfil.objects.get(usuario=request.user)
+    ultima=Playlist.objects.get(id_perfil=miPerfil,nombre="ultima")
+    enUltima=Playlist_Cancion.objects.filter(id_playlist=ultima)
+    for cancionEnUltima in enUltima:
+        print("se eliminó: ",cancionEnUltima.id_cancion.nombre)
+        cancionEnUltima.delete()
+
     canciones = []
     for cancion in cancionesQuery:
+        #agregamos las canciones a la playlist ultima
+        cancionEnUltima=Playlist_Cancion(id_playlist=ultima ,id_cancion=cancion)
+        cancionEnUltima.save()
+        #organizamos las canciones en un diccionario para usar correctamente el js
         dictio = {"nombre":cancion.nombre,
         "audio": cancion.audio.url,
         "imagen": cancion.imagen,

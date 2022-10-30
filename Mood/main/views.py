@@ -89,7 +89,6 @@ def recomByLikes(request):
 
     return canciones
 
-
 @login_required(login_url='/login/')
 def miPerfil_page(request):
     usuario = User.objects.get(id=request.user.id) #Obtener usuario logeado
@@ -113,9 +112,18 @@ def miPerfil_page(request):
     return render(request, template_name='miPerfil.html',context=context)
 
 @login_required(login_url='/login/')
-def tuMusica_page(request): 
-    
-    return render(request, template_name='tuMusica.html')
+def tuMusica_page(request):
+
+    idPerfil = Perfil.objects.get(usuario=request.user)
+
+    if request.method == "POST":
+        namePlaylist = request.POST["newPlaylist"]
+        newPlaylist = Playlist(id_perfil__usuario=idPerfil, name = namePlaylist)
+        newPlaylist.save()
+
+    playlists = Playlist.objects.all().order_by('nombre').values()   
+    context = {'playlists': playlists}
+    return render(request, template_name='tuMusica.html', context=context)
 
 @login_required(login_url='/login/')
 def formsFellings_page(request):

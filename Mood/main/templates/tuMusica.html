@@ -14,12 +14,14 @@
             <div class="collapse" id="collapseExample">
                 <div class="card card-body">
                     <form method="POST">
+                        {% csrf_token %}
+                    
                         <div class="row">
                             <div class="fw-bold col-12 col-md-4 d-flex align-items-center justify-content-center justify-content-md-end" style="font-size: 18px;">
                                 Nombre de la playlist
                             </div>
                             <div class="mb-2 col-12 col-md-4">
-                                <input class="form-control" type="text">
+                                <input class="form-control" type="text" name="newPlaylist">
                             </div>
                             <div class="col-12 col-md-4 text-md-start">
                                 <button class="btn btn-success px-3" type="submit"><i class="fas fa-check"></i></button>
@@ -40,18 +42,9 @@
                     <div class="text-center">
                         <div class="col" >
                             <select class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
-                                <option value="">Playlist X</option>
+                                {% for playlist in playlists %}
+                                    <option value="{{ playlistid }}">{{ playlist.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                         <br>

@@ -121,7 +121,7 @@ def tuMusica_page(request):
         newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
         newPlaylist.save()
 
-    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values() #Cogemos las playlist de este usuario
+    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
     context = {'playlists': playlists}
     return render(request, template_name='tuMusica.html', context=context)
 

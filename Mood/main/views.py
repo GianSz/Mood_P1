@@ -114,14 +114,14 @@ def miPerfil_page(request):
 @login_required(login_url='/login/')
 def tuMusica_page(request):
 
-    idPerfil = Perfil.objects.get(usuario=request.user)
+    idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
 
     if request.method == "POST":
-        namePlaylist = request.POST["newPlaylist"]
-        newPlaylist = Playlist(id_perfil__usuario=idPerfil, name = namePlaylist)
+        namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
+        newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
         newPlaylist.save()
 
-    playlists = Playlist.objects.all().order_by('nombre').values()   
+    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values() #Cogemos las playlist de este usuario
     context = {'playlists': playlists}
     return render(request, template_name='tuMusica.html', context=context)
 

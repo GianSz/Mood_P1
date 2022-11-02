@@ -20,35 +20,34 @@
             <div>
                 <br>
                 <!-- <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#IngresarEmocion"> Comenzar Mood </button>
             </div>
         </div>
     </section>
     <br>
 
-    <!-- Cuadro de permiso de uso de camara -->
-    <div class="modal fade" id="PermitirUsoDeCamara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Cuadro para seleccionar emoción -->
+    <div class="modal fade" id="IngresarEmocion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
-                    ¿Permite usted el uso de su cámara para el reconocimiento facial?
+                    ¿Cómo te sientes el día de hoy?
                 </h5>
-                <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close">
-                </button>
             </div>
             <div class="modal-body">
                 <form method="POST">
                     {% csrf_token %}
-                    <h6 class="text-center">
-                        ¡Para nosotros es muy importante su seguridad!
-                    </h6>
+                    <select name="emo" class="selectpicker" data-width="100%"  title="Emociones..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
+                        {% for emocion in emociones %}
+                            <option>{{ emocion }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
                     <br>
                     <div class="text-center">
-                        <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                        <a href="{% url 'texto' %}" class="btn btn-outline-success">Texto</a>
-                        <a href="{% url 'camara' %}" class="btn btn-outline-success">Camara</a>
+                        <button style="background-color:#ffffff; border-color:green; color:green" class="form__button btn btn-primary btn-lg btn-outline-light" type="submit">Generar playlist</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>

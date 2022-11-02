@@ -74,7 +74,7 @@ def home_page(request): # Views para la home page
         listaCancionesUltimo.append(dictio)
 
     if request.method == 'POST':
-        addTo = request.POST.get('addTo')
+        addTo = request.POST.getlist('addTo')
         songToAdd = request.POST.get()
         adding = Playlist_Cancion(id_playlist = addTo, id_cancion = songToAdd)
         adding.save()

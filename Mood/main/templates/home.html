@@ -136,7 +136,7 @@
                             <button type="button" onclick="myFunction(${result.id})" class="dropbtn btn btn-light position-absolute start-100 translate-middle" style="margin-top: -18px; margin-left: -30px;"><svg onclick="myFunction2()" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="dropbtn bi bi-three-dots-vertical" viewBox="0 0 16 16"><path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></button>
                         </div>
                         <div id="myDropdown-${result.id}" class="dropdown-content">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlaylist">Añadir a playlist</button>
+                            <button type="button" onclick="addsong(${result.id})" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPlaylist">Añadir a playlist</button>
                             <a href="#">Añadir a la cola</a>
                         </div>
                     </div>
@@ -159,13 +159,14 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST">
+                    <form method="POST" action="{% url 'home' %}">
                         {% csrf_token %}
                         <h6 class="text-center">
                             Por favor escoge solo una
                         </h6>
+                        <input id="songId" name="songId" type="hidden" value="">
                         <br>
-                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
+                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
                             {% for playlist in playlists %}
                                 <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
                             {% endfor %}
@@ -174,7 +175,7 @@
                         <br>
                         <div class="text-center">
                             <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                            <a href="{% url 'home' %}" class="btn btn-outline-success">Añadir</a>
+                            <button style="background-color:#ffffff; border-color:green; color:green" class="form__button btn btn-primary btn-lg btn-outline-light" type="submit">Añadir</button>
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
                         </div>
                     </form>
@@ -188,6 +189,12 @@
         toggle between hiding and showing the dropdown content */
         function myFunction(id) {
           document.getElementById(`myDropdown-${id}`).classList.toggle("show");
+        }
+
+        function addsong(id){
+            var songid = document.getElementById("songId");
+
+            songid.value = id;
         }
         
         // Close the dropdown if the user clicks outside of it

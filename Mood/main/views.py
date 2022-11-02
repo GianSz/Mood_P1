@@ -75,10 +75,16 @@ def home_page(request): # Views para la home page
 
     if request.method == 'POST':
         addTo = request.POST.getlist('addTo')
-        songToAdd = request.POST.get()
-        adding = Playlist_Cancion(id_playlist = addTo, id_cancion = songToAdd)
-        adding.save()
+        songToAdd = request.POST.get('songId')
+        songToAdd = Cancion.objects.get(id = int(songToAdd))
+        
+        for i in range (len(addTo)):
+            addToPlay = Playlist.objects.get(id = int(addTo[i]))
 
+            if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
+                adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
+                adding.save()
+            
 
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
     return render(request, template_name='home.html', context=contexto)
@@ -323,7 +329,7 @@ def get_song(request):
                     })
         
         nombre_genr = []
-        nombre_arts = []    
+        nombre_arts = [] 
                 
     return JsonResponse({
         'status': True,

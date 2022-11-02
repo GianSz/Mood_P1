@@ -336,11 +336,20 @@ def mood_page(request): #Views para la pagina mood
 
 @login_required(login_url='/login/')
 def moodByText(request):
-    emociones = ["feliz", "triste", "enojado"]
+    emociones = ["Feliz", "Triste", "Enojad@"]
     userEmotion = ""
 
     if request.method == 'POST':
         userEmotion = request.POST['emo']
+        if userEmotion == "Feliz":
+            userEmotion = "feliz"
+
+        elif userEmotion == "Triste":
+            userEmotion = "triste"
+
+        elif userEmotion == "Enojad@":
+            userEmotion = "enojado"
+
         context2={'userEmotion':userEmotion}
         return render(request, template_name = 'confirmEmotion.html', context = context2)
    

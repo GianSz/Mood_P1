@@ -5,22 +5,21 @@
 {% endblock %}
 
 {% block content %}
-    <br>
     <section class="py-5 text-center container" style="background:  #F0F0F0 ;">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h2 class="fw-light"><b>¡Bienvenida/o a Mood!</b></h2>
-                <h3>Instrucciones de uso</h3>
+                <h1 class="fw-light" style="font-family:Impact"><b>¡BIENVENIDA/O A MOOD!</b></h1>
+                <br>
                 <br>
             </div>
             <div class="text-center">
-                <img src="../../../static/INSTRUCCIONES_MOOD.png" alt="Instrucciones" style="width: 50%; position: relative; left: 5%;">
+                <img src="../../../static/INSTRUCCIONES.png" alt="Instrucciones" style="width: 50%; position: relative;">
             </div>
             
             <div>
                 <br>
                 <!-- <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Escoger método </button>
             </div>
         </div>
     </section>
@@ -32,7 +31,7 @@
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">
-                    ¿Permite usted el uso de su cámara para el reconocimiento facial?
+                    ¿Cómo quieres realizar el ánalisis?
                 </h5>
                 <button type="button" class="btn-close"
                         data-bs-dismiss="modal" aria-label="Close">
@@ -42,13 +41,13 @@
                 <form method="POST">
                     {% csrf_token %}
                     <h6 class="text-center">
-                        ¡Para nosotros es muy importante su seguridad!
+                        Escoge la opción más fácil para ti
                     </h6>
                     <br>
                     <div class="text-center">
                         <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                        <a href="{% url 'texto' %}" class="btn btn-outline-success">Texto</a>
-                        <a href="{% url 'camara' %}" class="btn btn-outline-success">Camara</a>
+                        <a href="{% url 'texto' %}" class="btn btn-outline-success">Por texto</a>
+                        <a href="{% url 'camara' %}" class="btn btn-outline-success">Por cámara</a>
                     </div>
                 </form>
             </div>

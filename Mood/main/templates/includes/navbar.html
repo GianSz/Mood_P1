@@ -8,7 +8,7 @@
             </h5>
         </div>
         <div class="modal-body">
-            <form method="GET" action="{% url 'sendSatisfactionForm' 'home' %}" id="myForm">
+            <form method="POST" action="{% url 'sendSatisfactionForm' 'home' %}" id="myForm">
                 {% csrf_token %}
                 <h6 class="text-center">
                     ¿Qué tan a gusto te sentiste con el servicio de MOOD?

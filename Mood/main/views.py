@@ -12,7 +12,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 import csv;
-import json;
 from datetime import datetime, date
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
@@ -559,7 +558,7 @@ def sendSatisfactionForm(request,goto):
     #Guardamos los datos que ingresaremos en las persistencias
     usuario= request.user
     fecha=datetime.now()
-    calificacion=request.GET["punctuation"]
+    calificacion=request.POST["punctuation"]
 
     #Ingreso CSV (abrimos el csv en modo append)
     fileCsv=open('main\data\SatisfactionFormMood.csv','a',newline='\n')
@@ -568,16 +567,6 @@ def sendSatisfactionForm(request,goto):
     escritor.writerow([usuario,fecha,calificacion])
 
     fileCsv.close()
-
-    #Ingreso JSON (abrimos el json en modo append)
-    fileJson=open('main\data\SatisfactionFormMood.json','r+')
-
-    dataJson=json.load(fileJson)
-    dataJson.append({"usuario":str(usuario),"fecha":str(fecha),"calificacion":calificacion})
-    fileJson.seek(0)
-    json.dump(dataJson,fileJson,indent=2)
-
-    fileJson.close()
 
     #redirigimos a la pestaña a la que el usuario buscaba ir
     if(goto=="home"):

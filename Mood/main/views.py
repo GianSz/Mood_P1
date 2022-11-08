@@ -51,6 +51,8 @@ def home_page(request): # Views para la home page
     cancionesGustos = recomByLikes(request)
     ultima=Playlist.objects.get(id_perfil__usuario=request.user,nombre="ultima")
     cancionesUltimo=Playlist_Cancion.objects.filter(id_playlist=ultima)
+    idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
+    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
 
     listaCancionesGustos = []
     for cancion in cancionesGustos:
@@ -70,7 +72,20 @@ def home_page(request): # Views para la home page
         }
         listaCancionesUltimo.append(dictio)
 
-    contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos}
+    if request.method == 'POST':
+        addTo = request.POST.getlist('addTo')
+        songToAdd = request.POST.get('songId')
+        songToAdd = Cancion.objects.get(id = int(songToAdd))
+        
+        for i in range (len(addTo)):
+            addToPlay = Playlist.objects.get(id = int(addTo[i]))
+
+            if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
+                adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
+                adding.save()
+            
+
+    contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
     return render(request, template_name='home.html', context=contexto)
 
 # función para recomendar por gustos
@@ -119,6 +134,9 @@ def tuMusica_page(request):
         namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
         newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
         newPlaylist.save()
+    
+    #if request.method == 'POST':
+    #  playlistToListen = request.POST.get('playlistToListen')   
 
     playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
     context = {'playlists': playlists}
@@ -310,7 +328,7 @@ def get_song(request):
                     })
         
         nombre_genr = []
-        nombre_arts = []    
+        nombre_arts = [] 
                 
     return JsonResponse({
         'status': True,
@@ -320,6 +338,32 @@ def get_song(request):
 @login_required(login_url='/login/')
 def mood_page(request): #Views para la pagina mood
     return render(request, template_name='mood.html')
+
+@login_required(login_url='/login/')
+def moodByText(request):
+    emociones = ["Feliz", "Triste", "Enojad@"]
+    userEmotion = ""
+
+    if request.method == 'POST':
+        userEmotion = request.POST['emo']
+        if userEmotion == "Feliz":
+            userEmotion = "feliz"
+
+        elif userEmotion == "Triste":
+            userEmotion = "triste"
+
+        elif userEmotion == "Enojad@":
+            userEmotion = "enojado"
+
+        context2={'userEmotion':userEmotion}
+        return render(request, template_name = 'confirmEmotion.html', context = context2)
+   
+    context={'emociones':emociones}
+    return render(request, template_name='moodTexto.html', context=context)
+
+@login_required(login_url='/login/')
+def moodByCamera(request):
+    return render(request, template_name='moodCamera.html')
 
 def login_page(request): #Views para la pagina mood
     if request.method == 'GET':

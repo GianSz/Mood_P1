@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Mood
+{% endblock %}
+
+{% block content %}
+    <section class="py-5 text-center container" style="background:  #F0F0F0 ;">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h2 class="fw-light"><b>INSTRUCCIONES DE USO</b></h2>
+                <br>
+                <br>
+            </div>
+            <div class="text-center">
+                <img src="../../../static/INSTRUCCIONES_TEXTO.png" alt="Instrucciones" style="width: 50%; position: relative; left: 5%;">
+            </div>
+            
+            <div>
+                <br>
+                <!-- <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#IngresarEmocion"> Comenzar Mood </button>
+            </div>
+        </div>
+    </section>
+    <br>
+
+    <!-- Cuadro para seleccionar emoción -->
+    <div class="modal fade" id="IngresarEmocion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    ¿Cómo te sientes el día de hoy?
+                </h5>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <select name="emo" class="selectpicker" data-width="100%"  title="Emociones..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
+                        {% for emocion in emociones %}
+                            <option>{{ emocion }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <button style="background-color:#ffffff; border-color:green; color:green" class="form__button btn btn-primary btn-lg btn-outline-light" type="submit">Generar playlist</button>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+{% endblock %}

@@ -60,18 +60,11 @@
         <div class="col" style="margin: 2em;">
             <div class="card text-center" style="background-color: #8241F3;">
                 <div class="card-body">
-                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Nombre playlist</h3>
+                    <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >{{ playlistToListen }}</h3>
                     <ul class="list-group">
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 1</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 2</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 3</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 4</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 5</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 6</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 7</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 8</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 9</a>
-                        <a href="#!" class="list-group-item list-group-item-action">Canción 10</a>
+                        {% for cancion in songsPlaylist %}
+                            <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">{{cancion.nombre}}</button>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

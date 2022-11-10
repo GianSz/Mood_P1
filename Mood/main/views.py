@@ -129,14 +129,35 @@ def miPerfil_page(request):
 def tuMusica_page(request):
 
     idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
+    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
+
 
     if request.method == "POST":
-        namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
-        newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
-        newPlaylist.save()
+        
+        if request.POST.get('newPlaylist'):
+            namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
+            namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
+            newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
+            newPlaylist.save()
+
+            if newPlaylist is not None:
+                messages.success(request, f'Se ha creado la playlsit {namePlaylist} con éxito')
+                return redirect('tuMusica')
+            else:
+                messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
+                return redirect('tuMusica')
     
-    #if request.method == 'POST':
-    #  playlistToListen = request.POST.get('playlistToListen')   
+        if request.POST.get('playlistToListen'):
+            songsPlaylist = []
+            playlistToListen = request.POST.get('playlistToListen')
+            showPlaylist = Playlist.objects.get(id = int(playlistToListen))
+
+            for i in range (len(Playlist_Cancion.objects.filter(id_playlist = showPlaylist))):
+                song = Playlist_Cancion.objects.filter(id_playlist = showPlaylist)[i]
+                songsPlaylist.append(song)    
+            
+            context2 = {'playlistToListen': showPlaylist, 'songsPlaylist': songsPlaylist, 'playlists': playlists}
+            return render(request, template_name='tuMusica.html', context=context2)
 
     playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
     context = {'playlists': playlists}
@@ -356,7 +377,7 @@ def moodByText(request):
             userEmotion = "enojado"
 
         context2={'userEmotion':userEmotion}
-        return render(request, template_name = 'confirmEmotion.html', context = context2)
+        return playlist(request, userEmotion)
    
     context={'emociones':emociones}
     return render(request, template_name='moodTexto.html', context=context)

@@ -46,7 +46,7 @@
                     <br>
                     <div class="text-center">
                         <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                        <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi cámara</a>
+                        <a href="{% url 'recognize' %}" onclick="charge()" class="btn btn-outline-success btn-recog">Si, permito el uso de mi cámara</a>
                         <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No, gracias</button>
                     </div>
                 </form>
@@ -54,7 +54,18 @@
             </div>
         </div>
     </div>
-
+    <script>
+        function charge(){
+            btn = document.getElementsByClassName('btn-recog');
+            for (let i=0;i<btn.length;i++){
+                btn[i].disabled = true;
+                btn[i].innerHTML = `<div>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span>Reconociendo...</span>
+                            </div>`
+            }
+        }
+    </script>
     <br>
 
 {% endblock %}

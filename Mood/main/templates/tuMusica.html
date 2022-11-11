@@ -63,7 +63,7 @@
                     <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >{{ playlistToListen }}</h3>
                     <ul class="list-group">
                         {% for cancion in songsPlaylist %}
-                            <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">{{cancion.nombre}}</button>
+                            <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{songsPlaylist}})">{{cancion.nombre}}</button>
                         {% endfor %}
                     </ul>
                 </div>

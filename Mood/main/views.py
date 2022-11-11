@@ -83,6 +83,13 @@ def home_page(request): # Views para la home page
             if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
                 adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
                 adding.save()
+
+                if adding is not None:
+                    messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
+                    return redirect('home')
+                else:
+                    messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
+                    return redirect('home')
             
 
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
@@ -131,15 +138,30 @@ def tuMusica_page(request):
     idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
     playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
 
+    playlistToShow = playlists[0] #Cogemos la primera playlist
+    playlistListen = Playlist_Cancion.objects.filter(id_playlist = playlistToShow['id']) #Buscamos las canciones que estan dentro de la playlist
+    showPlaylist = Playlist.objects.get(id = playlistToShow['id']) #Cogemos el nombre de la playlist
+    songsPlaylistDefault = [] #Lista para guardar las canciones
+    
+    #Guardamos todas las canciones de la playlist
+    for song in playlistListen:      
+        dictio = {"nombre":song.id_cancion.nombre,
+            "audio": song.id_cancion.audio.url,
+            "imagen": song.id_cancion.imagen,
+            "duracion": song.id_cancion.duracion
+        }   
+        songsPlaylistDefault.append(dictio) 
+
 
     if request.method == "POST":
         
+        #Si se crea una nueva playlist
         if request.POST.get('newPlaylist'):
-            namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
             namePlaylist = request.POST["newPlaylist"] #Cogemos el nombre de la nueva Playlist
             newPlaylist = Playlist(id_perfil = idPerfil, nombre = namePlaylist) #Creamos el objeto playlist
             newPlaylist.save()
 
+            #Se manda mensaje de confirmación
             if newPlaylist is not None:
                 messages.success(request, f'Se ha creado la playlsit {namePlaylist} con éxito')
                 return redirect('tuMusica')
@@ -147,20 +169,26 @@ def tuMusica_page(request):
                 messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
                 return redirect('tuMusica')
     
+        #Si se escoge una playlist
         if request.POST.get('playlistToListen'):
-            songsPlaylist = []
-            playlistToListen = request.POST.get('playlistToListen')
-            showPlaylist = Playlist.objects.get(id = int(playlistToListen))
+            songsPlaylist = [] 
+            playlistToListen = request.POST.get('playlistToListen') #Cogemos la playlist seleccionada
+            showPlaylist = Playlist.objects.get(id = int(playlistToListen)) #Cogemos el nombre de la playlist
+            playlistListen = Playlist_Cancion.objects.filter(id_playlist = showPlaylist) #Buscamos las canciones de la playlist
 
-            for i in range (len(Playlist_Cancion.objects.filter(id_playlist = showPlaylist))):
-                song = Playlist_Cancion.objects.filter(id_playlist = showPlaylist)[i]
-                songsPlaylist.append(song)    
+            #Guardamos todas las canciones de la playlist
+            for song in playlistListen:
+                dictio = {"nombre":song.id_cancion.nombre,
+                    "audio": song.id_cancion.audio.url,
+                    "imagen": song.id_cancion.imagen,
+                    "duracion": song.id_cancion.duracion
+                }   
+                songsPlaylist.append(dictio) 
             
             context2 = {'playlistToListen': showPlaylist, 'songsPlaylist': songsPlaylist, 'playlists': playlists}
             return render(request, template_name='tuMusica.html', context=context2)
 
-    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
-    context = {'playlists': playlists}
+    context = {'playlistToListen':showPlaylist, 'songsPlaylist': songsPlaylistDefault, 'playlists': playlists}
     return render(request, template_name='tuMusica.html', context=context)
 
 @login_required(login_url='/login/')

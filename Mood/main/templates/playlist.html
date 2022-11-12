@@ -13,7 +13,15 @@
             <div class="list-group" style="height: 411px; overflow: auto;">
                 {% if canciones %}
                     {% for cancion in canciones %}
-                        <button type="button" class="list-group-item list-group-item-action" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">{{cancion.nombre}}</button>
+                        <div class="song-box">
+                            <div class="song-box__info" onclick="loadSong('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}', '{{forloop.counter0}}', {{canciones}})">
+                                <div class="song-box__image-container">
+                                    <img src="{{cancion.imagen}}" alt="{{cancion.nombre}}"/>
+                                </div>
+                                <h6 class="song-box__title">{{cancion.nombre}}</h6>
+                            </div>
+                            <button class="song-box__button" onclick="addQueue('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}')">...</button>
+                        </div>
                     {% endfor %}
                 {% endif %}
             </div>

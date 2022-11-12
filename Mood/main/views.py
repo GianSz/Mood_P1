@@ -141,7 +141,7 @@ def tuMusica_page(request):
     idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
     playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
     
-    if(len(playlists) > 1):
+    if(len(playlists) >= 1):
         playlistToShow = playlists[0] #Cogemos la primera playlist
         playlistListen = Playlist_Cancion.objects.filter(id_playlist = playlistToShow['id']) #Buscamos las canciones que estan dentro de la playlist
         showPlaylist = Playlist.objects.get(id = playlistToShow['id']) #Cogemos el nombre de la playlist

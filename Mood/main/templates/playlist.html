@@ -28,4 +28,66 @@
         </div>
     </div>
 </div>
+
+<style>
+    .song-box{
+        display: flex;
+        flex-direction: row;
+
+        color: black;
+        background-color: #fff;
+
+        border-radius: 5px;
+        margin-top: 0.2em;
+        margin-right: 0.2em;
+    }
+
+    .song-box:hover{
+        background-color: #e0e0e0;
+    }
+
+    .song-box:first-child{
+        margin-top: 0;
+    }
+
+    .song-box__info{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        width: 100%;
+        height: 3em;
+    }
+
+    .song-box__info:hover{
+        cursor: pointer;
+    }
+
+    .song-box__image-container{
+        width: 2em;
+        height: 2em;
+        margin-left: 1em;
+        object-fit: scale-down;
+    }
+
+    .song-box__image-container img{
+        width: 100%;
+        height: 100%;
+    }
+
+    .song-box__title{
+        margin: 0;
+        margin-left: 7px;
+    }
+
+    .song-box__button{
+        padding-right: .65em;
+        padding-left: .55em ;
+        padding-bottom: 5px;
+        border: none;
+        background-color: transparent;
+        color: black;
+        text-align: center;
+    }
+</style>
 {% endblock %}

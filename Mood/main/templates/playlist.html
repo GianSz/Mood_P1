@@ -9,8 +9,8 @@
 <div class="col my-5">
     <div class="card text-center" style="background-color: #8241F3;">
         <div class="card-body">
-            <h3 class="card-title" style="color: #FFF; margin-bottom: 20px;" >Tu playlist ideal {{ userEmotion }} es...</h3>
-            <div class="list-group" style="height: 411px; overflow: auto;">
+            <h3 class="card-title" style="color: #FFF;" >Tu playlist ideal {{ userEmotion }} es...</h3>
+            <div class="songs-container" style="height: 400px; overflow: auto;">
                 {% if canciones %}
                     {% for cancion in canciones %}
                         <div class="song-box">

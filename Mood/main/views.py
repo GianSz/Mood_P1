@@ -16,11 +16,10 @@ from datetime import datetime, date
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 
-# Create your views here.
-
 def handle_not_found(request,exception):
     return render(request,template_name='error404.html')
 
+#Función que carga la página de registro de usuario
 def register_page(request):
     form = CreateUserForm()
     
@@ -46,6 +45,7 @@ def register_page(request):
 
     return render(request, template_name='registro.html', context = {'form': form, 'error': "None"})
 
+#Función que carga la página principal de la página
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
     cancionesGustos = recomByLikes(request)
@@ -73,7 +73,7 @@ def home_page(request): # Views para la home page
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos}
     return render(request, template_name='home.html', context=contexto)
 
-# función para recomendar por gustos
+#Función para retornar una playlist según los gustos del usuario
 def recomByLikes(request):
     gustos=Genero_Favorito.objects.filter(id_perfil__usuario=request.user)
     gustos=[gusto.id_genero.nombre for gusto in gustos] 
@@ -88,6 +88,7 @@ def recomByLikes(request):
 
     return canciones
 
+#Función que carga la página de mi perfil
 @login_required(login_url='/login/')
 def miPerfil_page(request):
     usuario = User.objects.get(id=request.user.id) #Obtener usuario logeado
@@ -318,10 +319,11 @@ def get_song(request):
     })
 
 @login_required(login_url='/login/')
-def mood_page(request): #Views para la pagina mood
+def mood_page(request):
     return render(request, template_name='mood.html')
 
-def login_page(request): #Views para la pagina mood
+#Función de la página de inicio de seisión
+def login_page(request):
     if request.method == 'GET':
         return render(request, template_name='login.html')
 
@@ -340,7 +342,8 @@ def login_page(request): #Views para la pagina mood
     
     return render(request, template_name='login.html')
 
-def recognize(request): #Views para la pagina mood
+#Función que sirve para analizar la expresión facial del usuario y reconocer su sentimiento
+def recognize(request):
 
     userEmotion = "" #initialize empty variable for storing the users emotion
 
@@ -379,6 +382,7 @@ def recognize(request): #Views para la pagina mood
 
     return render(request, template_name='confirmEmotion.html', context=context)
 
+#Función que genera una playlist con respecto al estado de ánimo del usuario
 def playlist(request, userEmotion):    
     cancionesQuery=[]
     
@@ -578,13 +582,7 @@ def sendSatisfactionForm(request,goto):
     elif(goto=="perfil"):
         return miPerfil_page(request)
 
-# @login_required(login_url='/login/')
-# def logout_view(request):
-#     logout(request)
-#     messages.success(request, f'Sesión cerrada correctamente')
-#     return login_page(request)
-
-#--------------------------------------------- utilidad para guardar musica en la BBDD -------------------------------
+#----------------------------- Las siguientes funciones son usadas únicamente para guardar musica en la BBDD -----------------------------
 def SubirMusica(request):
     archivo = open("main/data/help.csv",encoding="UTF-8")
     verificacion=[]

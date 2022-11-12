@@ -136,22 +136,25 @@ def miPerfil_page(request):
 @login_required(login_url='/login/')
 def tuMusica_page(request):
 
+    showPlaylist = ""
+    songsPlaylistDefault = [] #Lista para guardar las canciones
     idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
     playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
-
-    playlistToShow = playlists[0] #Cogemos la primera playlist
-    playlistListen = Playlist_Cancion.objects.filter(id_playlist = playlistToShow['id']) #Buscamos las canciones que estan dentro de la playlist
-    showPlaylist = Playlist.objects.get(id = playlistToShow['id']) #Cogemos el nombre de la playlist
-    songsPlaylistDefault = [] #Lista para guardar las canciones
     
-    #Guardamos todas las canciones de la playlist
-    for song in playlistListen:      
-        dictio = {"nombre":song.id_cancion.nombre,
-            "audio": song.id_cancion.audio.url,
-            "imagen": song.id_cancion.imagen,
-            "duracion": song.id_cancion.duracion
-        }   
-        songsPlaylistDefault.append(dictio) 
+    if(len(playlists) > 1):
+        playlistToShow = playlists[0] #Cogemos la primera playlist
+        playlistListen = Playlist_Cancion.objects.filter(id_playlist = playlistToShow['id']) #Buscamos las canciones que estan dentro de la playlist
+        showPlaylist = Playlist.objects.get(id = playlistToShow['id']) #Cogemos el nombre de la playlist
+        
+    
+        #Guardamos todas las canciones de la playlist
+        for song in playlistListen:      
+            dictio = {"nombre":song.id_cancion.nombre,
+                "audio": song.id_cancion.audio.url,
+                "imagen": song.id_cancion.imagen,
+                "duracion": song.id_cancion.duracion
+            }   
+            songsPlaylistDefault.append(dictio) 
 
 
     if request.method == "POST":

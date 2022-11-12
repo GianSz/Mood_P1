@@ -34,6 +34,9 @@
         <br>
     </section>
     <br>
+
+    {% if playlistToListen %}
+
     <div class="container">
         <form class="form" method="POST">
             {% csrf_token %}
@@ -56,6 +59,7 @@
             </div>
         </form>
     </div>
+
     <div>
         <div class="col" style="margin: 2em;">
             <div class="card text-center" style="background-color: #8241F3;">
@@ -69,5 +73,9 @@
                 </div>
             </div>
         </div>
-    </div>  
+    </div> 
+    {% endif %} 
+
+    <br> <br> <br>
+
 {% endblock %}

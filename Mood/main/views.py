@@ -226,14 +226,14 @@ def get_song(request):
         
         for obj in objs: # Iterar sobre todas las canciones que empiecen con la busqueda
             genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida
-            #nombre_genr = [] 
+            nombre_genr = [] 
             for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
                 genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
                 for genres in genr: # Iterar sobre todos los generos obtenidos que coinciden
                     nombre_genr.append(genres.nombre) #Agregar el nombre de los generos al arreglo para desps agregarlos
 
             arts_songs = Artista_Cancion.objects.filter(id_cancion_id=obj.id)
-            #nombre_arts = []
+            nombre_arts = []
             for arts_song in arts_songs:
                 arts = Artista.objects.filter(id=arts_song.id_artista_id)
                 for art in arts:

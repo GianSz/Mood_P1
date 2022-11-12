@@ -41,7 +41,7 @@
                 <div class="row">
                     <div class="text-center">
                         <div class="col" >
-                            <select class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
+                            <select name="playlistToListen" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
                                 {% for playlist in playlists %}
                                     <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
                                 {% endfor %}

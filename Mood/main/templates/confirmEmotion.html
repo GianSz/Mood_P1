@@ -14,24 +14,33 @@
                 <h3 class="card-title">{{userEmotion}}</h3>
                 
                 <div class="text-center" style="margin-top: 1.5em;">
-                    <a href="{% url 'recognize' %}" class="btn btn-outline-danger">Volver a intentarlo</a>
+                    <a href="{% url 'recognize' %}" onclick="charge()" class="btn btn-outline-danger btn-recog">Volver a intentarlo</a>
                 </div>
 
             {% else %}
                 <h3 class="card-title">Te hemos reconocido {{userEmotion}}</h3>
 
-                <p>
+                <p class="mb-2">
                     <strong>¿Esto es correcto?</strong>
                 </p>
-    
                 <div class="text-center">
                     <a href = "http://127.0.0.1:8000/playlist/{{userEmotion}}" class = "btn btn-outline-success">¡Si! Recomiendame canciones</a>
-                    <a href="{% url 'recognize' %}" class="btn btn-outline-danger">No, quiero volver a intentarlo</a>
+                    <a href="{% url 'recognize' %}" onclick="charge()" class="btn btn-outline-danger btn-recog">No, quiero volver a intentarlo</a>
                 </div>
             {% endif %}
-
         </div>
     </div>
 </div>
-
+<script>
+    function charge(){
+        btn = document.getElementsByClassName('btn-recog');
+        for (let i=0;i<btn.length;i++){
+            btn[i].disabled = true;
+            btn[i].innerHTML = `<div>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span>Reconociendo...</span>
+                        </div>`
+        }
+    }
+</script>
 {% endblock %}

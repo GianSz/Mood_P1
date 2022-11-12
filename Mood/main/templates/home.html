@@ -6,6 +6,43 @@
 
 {% block content %}
 
+    <style>
+        @media screen and (max-width: 991px){
+            .playlist-container{
+                gap:24px;
+            } 
+        }
+
+        .dropbtn:hover, .dropbtn:focus {
+        background-color: #ddd;
+        }
+
+        .dropdown {
+        position: relative;
+        }
+
+        .dropdown-content {
+        display: none;
+        position: relative;
+        /* width: 100px;
+        right: 5px; */
+        background-color: #f1f1f1;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        }
+
+        .caid {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        width: 100%;
+        }
+
+
+        .show {display: block;}
+    </style>
+
     <div class="container mt-5 pt-3 mb-5" >
         <div class="col-md-6 mx-auto">
             <div id="autocomplete" class="autocomplete">
@@ -213,9 +250,9 @@
                                 </svg>
                             </button>
                         </div>
-                        <div id="myDropdown-${result.id}" class="dropdown-content">
-                            <a href="#">Añadir a playlist</a>
-                            <a href="#">Añadir a la cola</a>
+                        <div id="myDropdown-${result.id}" class="dropdown-content mt-1">
+                            <button type="button" onclick="addsong(${result.id})" class="btn caid" data-bs-toggle="modal" data-bs-target="#addPlaylist">Añadir a playlist</button>
+                            <a class="btn caid" href="#">Añadir a la cola</a>
                         </div>
                     </div>
                 </li>
@@ -223,11 +260,55 @@
             }
         })
     </script>
-    
+
+    <div class="modal fade" id="addPlaylist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">
+                        ¿A qué playlist quieres añadir la canción?
+                    </h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'home' %}">
+                        {% csrf_token %}
+                        <h6 class="text-center">
+                            Por favor escoge solo una
+                        </h6>
+                        <input id="songId" name="songId" type="hidden" value="">
+                        <br>
+                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                            {% for playlist in playlists %}
+                                <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <br>
+                        <div class="text-center">
+                            <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
+                            <button style="background-color:#ffffff; border-color:green; color:green" class="form__button btn btn-primary btn-lg btn-outline-light" type="submit">Añadir</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Cuando el usuario da click en el botón, se alterna entre mostrar y ocultar el dropdown.
         function myFunction(id) {
           document.getElementById(`myDropdown-${id}`).classList.toggle("show");
+        }
+
+        function addsong(id){
+            var songid = document.getElementById("songId");
+
+            songid.value = id;
         }
         
         // Cierra el dropdown si el usuario hace click fuera de él

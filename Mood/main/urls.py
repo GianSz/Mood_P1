@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('', views.home_page, name='home'), # Esta se debe cambiar a que dirija al login de primerazo
+    path('', views.home_page, name='home'),
     path('register/', views.register_page, name='register'),
     path('login/', views.login_page, name='login'),
     path('home/', views.home_page, name='home'),
@@ -21,7 +21,7 @@ urlpatterns = [
     path('playlist/<str:userEmotion>', views.playlist, name = 'playlist'),
     path('logout/', logout_then_login, name='logout'),
     path('sendSatisfactionForm/<str:goto>', views.sendSatisfactionForm, name='sendSatisfactionForm'),#recibe la página a la que se debe redireccionar
-    # estas deberán tener alguna seguridad para que los usuarios no puedan acceder a ellas
+    # Las siguientes deberán tener alguna seguridad para que los usuarios no puedan acceder a ellas
     path('musicaBD', views.SubirMusica, name='subirMusica'),#utilidad pa subir a la BBDD
     path('duracionBD', views.subirDuracion, name='subirDuracion'),#utilidad pa subir a la BBDD
     path('audiosBD', views.subirAudios, name='subirAudios'),#utilidad pa subir a la BBDD

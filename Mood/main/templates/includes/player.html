@@ -1,14 +1,13 @@
 <div class="player" id="player">
     <div class="player__info-song">
-        <div class="player__img">
+        <div class="player__img-container">
             <img src="" id="cover" />
         </div>
         <div class="player__title">
             <p id="title"></p>
         </div>
     </div>
-
-    <div class="player__controls">
+    <div class="player__song-interactions">
 
         <div class="player__buttons-container">
             <button class="player__button" id="prev">
@@ -34,33 +33,45 @@
             </div>
         </div>
     </div>
+    <div class="player__other-controls">
+        <button class="player__button player__button--queue" id ="queue-button">
+            <i class="fas fa-solid fa-bars"></i>
+        </button>
+    </div>
+</div>
+<div class="queue-page" id="queue-page">
+    <div class="queue-page__header">
+        <h5 class="queue-page__title">Cola de reproducción</h5>
+        <button class="queue-page__button queue-page__button--undo btn btn-primary" id="undo-button">Deshacer cola</button>
+    </div>
+    <div class="songs-container" id="songs-container"></div>
 </div>
 
 <audio src="" id="audio"></audio>
 
 <style>
-    *{
-        box-sizing: border-box;
+
+    h5{
         margin: 0;
-        padding: 0;
     }
 
-    body{
-        overflow-x: hidden;
+    p{
+        margin: 0;
     }
 
     .player{
         padding: 1em 2em;
         height: 125px;
         background-color: #333;
-        display: none;
+        display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
-        position: sticky;
-        bottom: 0;
+        justify-content: space-between;
+
+        position: fixed;
+        width: 100%;
+        bottom: -125px;
         z-index: 1000;
 
-        min-width: 760px;
         color: white;
     }
 
@@ -68,16 +79,17 @@
         display: flex;
         flex-direction: column;
         justify-content: space-around;
+        flex-basis: 30%;
     }
 
-    .player__img{
+    .player__img-container{
         width: 75px;
         height: 75px;
         margin: auto;
         object-fit: scale-down;
     }
 
-    .player__img img{
+    .player__img-container img{
         width: 100%;
         height: 100%;
     }
@@ -88,10 +100,11 @@
         font-size: 16px;
     }
 
-    .player__controls{
+    .player__song-interactions{
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         gap: 8px;
     }
 
@@ -105,8 +118,6 @@
     .player__button{
         width: 50px;
         height: 50px;
-        object-fit: scale-down;
-        border-radius: 50%;
         border: none;
         font-size: 1.5rem;
         text-align: center;
@@ -118,6 +129,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        width: 140%;
         gap: 5px;
     }
 
@@ -135,8 +147,46 @@
         border-radius: 5px;
     }
 
-    p{
-        margin: 0;
+    .player__other-controls{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-basis: 30%;
+        justify-content: center;
+    }
+
+    .queue-page{
+        width: 100%;
+        height: calc(100vh - 125px);
+        padding: 2em;
+
+        position: fixed;
+        bottom: calc(-100vh + 125px);
+
+        background-color: #666;
+    }
+
+    .queue-page__header{
+        display: flex;
+        margin-bottom: 1em;
+        padding-bottom: .75em;
+        color: white;
+        border-bottom: 1px solid #333;
+        align-items: center;
+    }
+
+    .queue-page__button--undo{
+        margin-left: auto;
+        border: none;
+        background-color: #8241F3;
+    }
+
+    .queue-page__button--undo:hover, .queue-page__button--undo:focus, .queue-page__button--undo:active:focus{
+        background-color: #6020D1;
+    }
+
+    .queue-page__button--undo:focus, .queue-page__button--undo:active:focus{
+        box-shadow: 0 0 0 .25rem rgba(0, 0, 0, 0.25);
     }
 </style>
 
@@ -145,42 +195,59 @@
     let player = document.getElementById("player");
     let audio = document.getElementById("audio");
 
-    //Info song
+    //Componentes de información de la canción del depslegable en js
     let cover = document.getElementById("cover");
     let title = document.getElementById("title");
     
-    //Buttons
+    //Botones del desplegable en js
     let prev = document.getElementById("prev");
     let play = document.getElementById("play/pause");
     let next = document.getElementById("next");
+    let queueButton = document.getElementById("queue-button");
     
-    //Time
+    //Componentes de tiempo del desplegable en js
     let timer = document.getElementById("timer");
     let duration = document.getElementById("duration");
     let progress = document.getElementById("progress-bar");
     let timeBar = document.getElementById("time-bar");
 
-    //Lista de reproducción e índice de la canción que se reproduce
-    let songs;
-    let index;
+    //Lista de reproducción e índice de la canción que está siendo escuchada
+    let playlist;
+    let indexPlaylist;
 
-    let reproducing = false;
+    //Cola e indice de la canción en la cola.
+    let queue = [];
+    let indexQueue = 0;
 
-    //Función que se activa al hacer click en alguna canción de la lista de reproducción, esta activa el player con la información de la canción seleccionada y la reproduce.
-    function loadSong(aud_source_param, nombre_param, img_source_param, duration_param, index_param, songs_param){
+    //Flags usadas para saber el estado de un elemento
+    let reproducingMusic = false;
+    let queueExtended = false;
+    let queuePlaying = false;
 
-        songs = songs_param;
-        index = index_param * 1;
+    //Componentes de la cola de reproducción
+    let songsContainer = document.getElementById("songs-container");
+    let undoQueueButton = document.getElementById("undo-button");
 
-        if(!reproducing){
-            player.style.display = "flex";
-            reproducing = true;
+    //Función que se activa al hacer click en alguna canción de la lista de reproducción. Esta muestra el player con la información de la canción seleccionada y a su vez la reproduce.
+    function loadSong(aud_source_param, nombre_param, img_source_param, duration_param, indexPlaylist_param, playlist_param){
+        queuePlaying = false;
+        playlist = playlist_param;
+        indexPlaylist = indexPlaylist_param * 1;
+        if(!reproducingMusic){
+            player.style.bottom = "0px";
+            player.style.transitionProperty = "bottom";
+            player.style.transitionDuration = ".45s";
+            player.style.position = "sticky";
+            reproducingMusic = true;
         }
 
+        //Se establecen todos los parametros correctos de la canción
         audio.src = aud_source_param;
         setTitle(nombre_param);
         setImage(img_source_param);
         setDuration(duration_param);
+
+        //Se reproduce la canción y se actualiza el icono.
         audio.play();
         updateIcon();
     }
@@ -197,27 +264,12 @@
 
     //Función para poner en el player la duración de la canción que se está reproduciendo.
     function setDuration(duration_param){
-
-        let time = Math.trunc(duration_param/60)+":";
-
-        duration_param%60 > 9 ? time+=Math.trunc(duration_param%60) : time+="0"+Math.trunc(duration_param%60);
-
+        let time = ~~(duration_param/60)+":";
+        duration_param%60 > 9 ? time+= ~~(duration_param%60) : time+="0" + ~~(duration_param%60);
         duration.innerText = time;
     }
 
-
-    //Evento del botón play/pause que escucha click y reproduce o pausa la canción con respecto a su estado, además actualiza el icono del botón dependiendo del estaod también.
-    play.addEventListener("click", () => {
-        if(audio.paused){
-            audio.play();
-        }
-        else{
-            audio.pause();
-        }
-
-        updateIcon();
-    });
-
+    //Función que se encarga de actualizar el icono de reproducción o pausa.
     function updateIcon(){
         if(audio.paused){
             play.firstElementChild.classList.remove("fa-pause");
@@ -229,85 +281,252 @@
         }
     }
 
-
-    //Evento del botón anterior canción el cuál escucha clicks y reproduce la anterior canción en la lista.
-    prev.addEventListener("click", () => playPrevSong());
-
+    //Función que reproduce la canción anterior a la que se encuentra actualmente sonando.
     function playPrevSong(){
-        if(index>0){
-            index--;
-            let song = songs[index];
-            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+
+        /*Si se presiona este botón cuando estaba siendo reproducida una canción de la cola entonces el reproductor debe reproducir la canción en la que setaba antes de entrar en la cola. 
+        Para esto se suma 1 al indice de la playlist (el cuál me indica en que canción estoy), ya que este mismo será restado en líneas futuras, lo que ocasionará que no nos desplacemos en la playlist sino que sigamos en la misma canción que entramos.*/
+        if(queuePlaying){
+            indexPlaylist++;
+        }
+
+        if(indexPlaylist>0){
+            indexPlaylist--;
+            let song = playlist[indexPlaylist];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
         }
         else{
-            index = songs.length - 1;
-            let song = songs[index];
-            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+            indexPlaylist = playlist.length - 1;
+            let song = playlist[indexPlaylist];
+            loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
         }
     }
 
-
-    //Evento del botón siguiente canción el cuál escucha clicks y reproduce la siguiente canción en la lista.
-    next.addEventListener("click", () => playNextSong());
-
+    //Función que reproduce la canción siguiente a la que se encuentra actualmente sonando.
     function playNextSong(){
-        if(index < songs.length - 1){
-            index++;
-            let song = songs[index];
-            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+        //Si en la cola hay alguna canción pendiente entonces se reproduce esta en vez de la siguiente en la playlist.
+        if(queue.length>0){
+            let song = queue[0];
+            loadSongQueue(song.audio, song.name, song.image, song.duration, song.index);
         }
+        //Sino, se reproduce la siguiente en la playlist.
         else{
-            index = 0;
-            let song = songs[index];
-            loadSong(song.audio, song.nombre, song.imagen, song.duracion, index, songs);
+            if(indexPlaylist < playlist.length - 1){
+                indexPlaylist++;
+                let song = playlist[indexPlaylist];
+                loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+            }
+            else{
+                indexPlaylist = 0;
+                let song = playlist[indexPlaylist];
+                loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+            }
         }
     }
-
-
-    //Evento de audio el cual al actualizarse el tiempo de la canción se ejecuta la función updateTime quien por dentor ejecuta dos funcionaes más llamadas updateTimer y updateProgressBar.
-    audio.addEventListener("timeupdate", () => updateTime(event));
     
+    //Función que gestiona las actualizaciones con base en el tiempo de la canción. En otras palabras, llama a las dos funciones siguientes que son las que ejecutan funcionalidades con respecto al tiempo de la canción.
     function updateTime(event){
         updateTimer(event);
         updateProgressBar(event);
     }
 
-
+    //Función que actualiza el tiempo actual de la canción en el player.
     function updateTimer(event){
         const time = event.srcElement.currentTime;
-
         let timeStr = ~~(time/60)+":";
-
         if(~~(time)%60 <= 9) timeStr += "0";
-
         timeStr += ~~(time)%60;
-
         timer.innerText = timeStr;
     }
 
-
+    //Función que actualiza la barra de progreso de la canción en el player.
     function updateProgressBar(event){
         const {duration, currentTime} = event.srcElement;
         const percentage = currentTime/duration * 100;
         progress.style.width = percentage + "%";
     }
 
-
-
-    //Evento capturar click en la barra de tiempo y asi actualizar el tiempo de reproducción de la canción
-    timeBar.addEventListener("click", () => setTime(event));
-
-    function setTime(event){
+    //Función que actualiza el tiempo actual de la canción con respecto al lugar donde de click el usuario dentro de la barra de tiempo.
+    function changeSongInstant(event){
         const maxWidth = timeBar.clientWidth;
         const clickedWidth = event.offsetX;
-        
         let val = clickedWidth / maxWidth;
-
-        audio.currentTime = val * audio.duration;
+        audio.currentTime = (val * audio.duration);
     }
 
+    //Función que añade una canción a la cola, y crea el conjunto de elementos neecsarios para visualizar la caja de la canción añadida.
+    function addQueue(audio_source_param, nombre_param, img_source_param, duration_param){
+
+        let song = {
+            'audio': audio_source_param,
+            'name':nombre_param,
+            'image':img_source_param,
+            'duration':duration_param,
+            'index':indexQueue
+        };
+        queue.push(song);
+
+        //song-box
+        const songBox = document.createElement('div');
+        songBox.classList.add('song-box');
+        songBox.setAttribute("id", "song-box"+indexQueue);
+        songBox.setAttribute("data", `${indexQueue}`);
+
+        //song-box__info
+        const songBoxInfo = document.createElement('div');
+        songBoxInfo.classList.add('song-box__info');
+        songBoxInfo.setAttribute("onclick", `loadSongQueue('${audio_source_param}', '${nombre_param}', '${img_source_param}', '${duration_param}', '${indexQueue}')`);
+
+        //song-box__image-container
+        const songBoxImageContainer = document.createElement('div');
+        songBoxImageContainer.classList.add('song-box__image-container');
+
+        //image
+        const image = document.createElement('img');
+        image.src = img_source_param;
+
+        //Añadir image a songBoxImageContainer
+        songBoxImageContainer.append(image);
+        
+        //Añadir songBoxImageContainer a songBoxInfo
+        songBoxInfo.append(songBoxImageContainer);
+        
+        //h6 titulo
+        const h6 = document.createElement('h6');
+        h6.classList.add('song-box__title');
+        h6.innerText = nombre_param;
+
+        //Añadir h6 a songBoxInfo
+        songBoxInfo.append(h6);
+
+        //Añadir song-box__info a song-box
+        songBox.append(songBoxInfo);
+
+        //song-box__button
+        const button = document.createElement('button');
+        button.classList.add('song-box__button');
+        button.setAttribute("onclick", `removeFromQueue('${indexQueue}')`);
+        button.innerText = '...';
+
+        //Añadir song-box__button a song-box
+        songBox.append(button);
+
+        //Añadir song-box a songs-container
+        songsContainer.append(songBox);
+
+        indexQueue++;
+    }
+
+    //Función que reproduce la canción seleccionada de la cola. Además elimina las canciones que estén en frente en conjunto con esta, debido a que se toman como omitidas.
+    function loadSongQueue(aud_source_param, nombre_param, img_source_param, duration_param, index_param){
+
+        queuePlaying = true;
+
+        //Se toma el índice del primer elemento del contenedor de canciones
+        let firstSongIndex = songsContainer.firstChild.getAttribute("data")*1;
+
+        //Se eliminan las canciones que estén en frente de la canción seleccionada, ya que se toman como omitidas.
+        for(let i = firstSongIndex; i<=index_param; i++){
+            let el = document.getElementById("song-box"+i);
+            el.remove();
+            queue.shift();
+        }
+
+        //Se establecen todos los parametros correctos de la canción
+        audio.src = aud_source_param;
+        setTitle(nombre_param);
+        setImage(img_source_param);
+        setDuration(duration_param);
+
+        //Se reproduce la canción y se actualiza el icono.
+        audio.play();
+        updateIcon();
+    }
+
+    //Función que remueve de la cola la canción seleccionada.
+    function removeFromQueue(index_param){
+
+        //Se toma el índice del primer elemento del contenedor de canciones
+        let firstSongIndex = songsContainer.firstChild.getAttribute("data")*1;
+        
+        //Se calcula la posición dentro del arreglo de la canción seleccionada, con el fin de eliminarla posteriormente.
+        let pos = (index_param*1) - firstSongIndex;
+
+        let el = document.getElementById("song-box"+index_param);
+        el.remove();
+
+        queue.splice(pos, 1);
+    }
+
+    //Evento del botón play/pause que escucha click y reproduce o pausa la canción con respecto a su estado, además actualiza el icono del botón dependiendo del estado también.
+    play.addEventListener("click", () => {
+        if(audio.paused){
+            audio.play();
+        }
+        else{
+            audio.pause();
+        }
+
+        updateIcon();
+    });
+
+    //Evento del botón anterior canción el cuál escucha clicks y reproduce la anterior canción en la lista.
+    prev.addEventListener("click", () => playPrevSong());
+
+    //Evento del botón siguiente canción el cuál escucha clicks y reproduce la siguiente canción en la lista.
+    next.addEventListener("click", () => playNextSong());
+
+    //Evento de audio el cual al actualizarse el tiempo de la canción se activa.
+    audio.addEventListener("timeupdate", () => updateTime(event));
+
+    //Evento capturar click en la barra de tiempo y asi actualizar el tiempo de reproducción de la canción
+    timeBar.addEventListener("click", () => changeSongInstant(event));
 
     //Evento que al acabarse una canción reproduce la siguiente de manera.
     audio.addEventListener("ended", () => playNextSong());
 
+    //Evento que sirve para que al darle click al botón de la cola del desplegable se ejecuten ciertas instrucciones
+    queueButton.addEventListener("click", () => {
+        let queuePage = document.getElementById("queue-page");
+        let body = document.getElementById("body");
+
+        queuePage.style.transitionProperty = "bottom";
+        queuePage.style.transitionDuration = ".45s";
+
+        if(!queueExtended){
+            player.style.position = "fixed";
+            player.style.bottom = "calc(100vh - 125px)";
+
+            queuePage.style.bottom = "0";
+            queuePage.style.overflowY = "auto";
+
+            body.style.overflowY = "hidden";
+
+            queueExtended = true;
+        }
+        else{
+            player.style.bottom = "0px";
+            player.style.position = "sticky";
+
+            queuePage.style.bottom = "calc(-100vh + 125px)";
+            queuePage.style.overflowY = "hidden";
+
+            body.style.overflowY = "auto";
+
+            queueExtended = false;
+        }
+    })
+
+    //Función que elimina todas las canciones que se encuentren en la cola en el instante en que se presione el botón.
+    undoQueueButton.addEventListener("click", () => {
+        if(queue.length==0){
+            return
+        }
+        let firstSongIndex = songsContainer.firstChild.getAttribute("data")*1;
+        for(let i = firstSongIndex; i<indexQueue; i++){
+            let el = document.getElementById("song-box"+i);
+            el.remove();
+            queue.shift();
+        }
+    })
 </script>

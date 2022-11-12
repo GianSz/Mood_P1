@@ -16,11 +16,10 @@ from datetime import datetime, date
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
 
-# Create your views here.
-
 def handle_not_found(request,exception):
     return render(request,template_name='error404.html')
 
+#Función que carga la página de registro de usuario
 def register_page(request):
     form = CreateUserForm()
     
@@ -46,6 +45,7 @@ def register_page(request):
 
     return render(request, template_name='registro.html', context = {'form': form, 'error': "None"})
 
+#Función que carga la página principal de la página
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page
     cancionesGustos = recomByLikes(request)
@@ -95,7 +95,7 @@ def home_page(request): # Views para la home page
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
     return render(request, template_name='home.html', context=contexto)
 
-# función para recomendar por gustos
+#Función para retornar una playlist según los gustos del usuario
 def recomByLikes(request):
     gustos=Genero_Favorito.objects.filter(id_perfil__usuario=request.user)
     gustos=[gusto.id_genero.nombre for gusto in gustos] 
@@ -110,6 +110,7 @@ def recomByLikes(request):
 
     return canciones
 
+#Función que carga la página de mi perfil
 @login_required(login_url='/login/')
 def miPerfil_page(request):
     usuario = User.objects.get(id=request.user.id) #Obtener usuario logeado
@@ -275,14 +276,14 @@ def get_song(request):
         
         for obj in objs: # Iterar sobre todas las canciones que empiecen con la busqueda
             genr_songs = Genero_Cancion.objects.filter(id_cancion_id=obj.id) # Obtener las canciones en la tabla genero_cancion en los que el id de la cancion coincida
-            #nombre_genr = [] 
+            nombre_genr = [] 
             for genr_song in genr_songs: # Iterar sobre todas las relaciones encontradas
                 genr = Genero.objects.filter(id=genr_song.id_genero_id) #Obtener los generos que coincidan por el id
                 for genres in genr: # Iterar sobre todos los generos obtenidos que coinciden
                     nombre_genr.append(genres.nombre) #Agregar el nombre de los generos al arreglo para desps agregarlos
 
             arts_songs = Artista_Cancion.objects.filter(id_cancion_id=obj.id)
-            #nombre_arts = []
+            nombre_arts = []
             for arts_song in arts_songs:
                 arts = Artista.objects.filter(id=arts_song.id_artista_id)
                 for art in arts:
@@ -385,7 +386,7 @@ def get_song(request):
     })
 
 @login_required(login_url='/login/')
-def mood_page(request): #Views para la pagina mood
+def mood_page(request):
     return render(request, template_name='mood.html')
 
 @login_required(login_url='/login/')
@@ -433,7 +434,8 @@ def login_page(request): #Views para la pagina mood
     
     return render(request, template_name='login.html')
 
-def recognize(request): #Views para la pagina mood
+#Función que sirve para analizar la expresión facial del usuario y reconocer su sentimiento
+def recognize(request):
 
     userEmotion = "" #initialize empty variable for storing the users emotion
 
@@ -472,6 +474,7 @@ def recognize(request): #Views para la pagina mood
 
     return render(request, template_name='confirmEmotion.html', context=context)
 
+#Función que genera una playlist con respecto al estado de ánimo del usuario
 def playlist(request, userEmotion):    
     cancionesQuery=[]
     
@@ -671,13 +674,7 @@ def sendSatisfactionForm(request,goto):
     elif(goto=="perfil"):
         return miPerfil_page(request)
 
-# @login_required(login_url='/login/')
-# def logout_view(request):
-#     logout(request)
-#     messages.success(request, f'Sesión cerrada correctamente')
-#     return login_page(request)
-
-#--------------------------------------------- utilidad para guardar musica en la BBDD -------------------------------
+#----------------------------- Las siguientes funciones son usadas únicamente para guardar musica en la BBDD -----------------------------
 def SubirMusica(request):
     archivo = open("main/data/help.csv",encoding="UTF-8")
     verificacion=[]

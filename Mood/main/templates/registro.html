@@ -58,7 +58,8 @@
     </style>
 
 </head>
-<body style="background: #FFF9F2;">
+
+<body style="background: #FFF;">
 
     {% if error|length > 5 %}
         <div class="alert alert-dismissible alert-primary" role="alert">
@@ -128,7 +129,7 @@
         
                     <div class="form__field form__field--8">
                         <label class="form__terms-label form-label">
-                            <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los términos y condiciones.
+                            <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los <a href="{% url 'terminos' %}" class="text-white fw-bold">términos y condiciones.</a>
                         </label>
                     </div>
         
@@ -137,6 +138,36 @@
                     </div>
                     
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cuadro de permiso de uso de camara -->
+    <div class="modal fade" id="PermitirUsoDeCamara" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">
+                    ¿Permite usted el uso de su cámara para el reconocimiento facial?
+                </h5>
+                <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <h6 class="text-center">
+                        ¡Para nosotros es muy importante su seguridad!
+                    </h6>
+                    <br>
+                    <div class="text-center">
+                        <!-- <a href="{% url 'recognize' %}" data-bs-dismiss="modal" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
+                        <a href="{% url 'recognize' %}" onclick="charge()" class="btn btn-outline-success btn-recog">Si, permito el uso de mi cámara</a>
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">No, gracias</button>
+                    </div>
+                </form>
+            </div>
             </div>
         </div>
     </div>

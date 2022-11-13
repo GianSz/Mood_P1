@@ -45,6 +45,9 @@ def register_page(request):
 
     return render(request, template_name='registro.html', context = {'form': form, 'error': "None"})
 
+def terminos(request):
+    return render(request, template_name='terminosycondiciones.html')
+
 #Función que carga la página principal de la página
 @login_required(login_url='/login/')
 def home_page(request): # Views para la home page

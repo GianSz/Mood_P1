@@ -66,6 +66,43 @@
         </div>
     </div>
 
+    <div class="modal fade" id="addPlaylist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">
+                        ¿A qué playlist quieres añadir la canción?
+                    </h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'home' %}">
+                        {% csrf_token %}
+                        <h6 class="text-center">
+                            Escoge todas las playlists a las que deseas añadir la canción
+                        </h6>
+                        <input id="songId" name="songId" type="hidden" value="">
+                        <br>
+                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                            {% for playlist in playlists %}
+                                <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <br>
+                        <div class="text-center">
+                            <button class="form__button btn btn-outline-success" type="submit">Añadir</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         @media screen and (max-width: 991px){
             .playlist-container{
@@ -158,8 +195,6 @@
             color: black;
             text-align: center;
         }
-    </style>
-    <style>
 
         .card{
 
@@ -230,43 +265,6 @@
             }
         })
     </script>
-
-    <div class="modal fade" id="addPlaylist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel">
-                        ¿A qué playlist quieres añadir la canción?
-                    </h5>
-                    <button type="button" class="btn-close"
-                        data-bs-dismiss="modal" aria-label="Close">
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <form method="POST" action="{% url 'home' %}">
-                        {% csrf_token %}
-                        <h6 class="text-center">
-                            Escoge todas las playlists a las que deseas añadir la canción
-                        </h6>
-                        <input id="songId" name="songId" type="hidden" value="">
-                        <br>
-                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
-                            {% for playlist in playlists %}
-                                <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                        <br>
-                        <br>
-                        <div class="text-center">
-                            <button class="form__button btn btn-outline-success" type="submit">Añadir</button>
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Cuando el usuario da click en el botón, se alterna entre mostrar y ocultar el dropdown.

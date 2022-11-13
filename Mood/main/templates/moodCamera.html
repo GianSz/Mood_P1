@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="py-5 text-center container" style="background:  #F0F0F0 ;">
+    <section class="py-5 text-center container" style="background:  #fff ;">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h2 class="fw-light"><b>INSTRUCCIONES DE USO</b></h2>
@@ -19,7 +19,7 @@
             <div>
                 <br>
                 <!-- <a href="{% url 'recognize' %}" class="btn btn-outline-success">Si, permito el uso de mi camara</a> -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
+                <button type="button" class="miboton btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Comenzar Mood </button>
             </div>
         </div>
     </section>
@@ -67,5 +67,19 @@
         }
     </script>
     <br>
+    <style>
+        .miboton{
+            background-color:#8241F3 ;
+            border-color: #8241F3;
+        }
 
+        .miboton:hover, .miboton:focus, .miboton:active:focus{
+            background-color:#5d30aa ;
+            border-color: #5d30aa;
+        }
+
+        .miboton:active:focus, .miboton:focus{
+            box-shadow: 0 0 0 .25rem #6836c057;
+        }
+    </style>
 {% endblock %}

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <section class="py-5 text-center container" style="background:  #F0F0F0 ;">
+    <section class="py-5 text-center container" style="background:  #fff ;">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light" style="font-family:Impact"><b>¡BIENVENIDA/O A MOOD!</b></h1>
@@ -18,7 +18,7 @@
             
             <div>
                 <br>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Escoger método </button>
+                <button type="button" class="btn btn-primary miboton" data-bs-toggle="modal" data-bs-target="#PermitirUsoDeCamara"> Escoger método </button>
             </div>
         </div>
     </section>
@@ -44,8 +44,8 @@
                     </h6>
                     <br>
                     <div class="text-center">
-                        <a href="{% url 'texto' %}" class="btn btn-outline-success">Por texto</a>
-                        <a href="{% url 'camara' %}" class="btn btn-outline-success">Por cámara</a>
+                        <a href="{% url 'texto' %}" class="miboton btn btn-primary">Por texto</a>
+                        <a href="{% url 'camara' %}" class="miboton btn btn-primary">Por cámara</a>
                     </div>
                 </form>
             </div>
@@ -53,5 +53,21 @@
         </div>
     </div>
     <br>
+
+    <style>
+        .miboton{
+            background-color:#8241F3 ;
+            border-color: #8241F3;
+        }
+
+        .miboton:hover, .miboton:focus, .miboton:active:focus{
+            background-color:#5d30aa ;
+            border-color: #5d30aa;
+        }
+
+        .miboton:active:focus, .miboton:focus{
+            box-shadow: 0 0 0 .25rem #6836c057;
+        }
+    </style>
 
 {% endblock %}

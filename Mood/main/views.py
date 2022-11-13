@@ -72,7 +72,7 @@ def home_page(request): # Views para la home page
         }
         listaCancionesUltimo.append(dictio)
 
-    if request.method == 'POST':
+    if request.method == 'POST' and (request.POST.get('songId')):
         addTo = request.POST.getlist('addTo')
         songToAdd = request.POST.get('songId')
         songToAdd = Cancion.objects.get(id = int(songToAdd))

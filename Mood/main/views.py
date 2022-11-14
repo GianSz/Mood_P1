@@ -56,19 +56,23 @@ def home_page(request): # Views para la home page
 
     listaCancionesGustos = []
     for cancion in cancionesGustos:
-        dictio = {"nombre":cancion.nombre,
-        "audio": cancion.audio.url,
-        "imagen": cancion.imagen,
-        "duracion": cancion.duracion
+        dictio = {
+            "nombre":cancion.nombre,
+            "audio": cancion.audio.url,
+            "imagen": cancion.imagen,
+            "duracion": cancion.duracion,
+            "id": cancion.id
         }
         listaCancionesGustos.append(dictio)
 
     listaCancionesUltimo = []
     for cancion in cancionesUltimo:
-        dictio = {"nombre":cancion.id_cancion.nombre,
-        "audio": cancion.id_cancion.audio.url,
-        "imagen": cancion.id_cancion.imagen,
-        "duracion": cancion.id_cancion.duracion
+        dictio = {
+            "nombre":cancion.id_cancion.nombre,
+            "audio": cancion.id_cancion.audio.url,
+            "imagen": cancion.id_cancion.imagen,
+            "duracion": cancion.id_cancion.duracion,
+            "id": cancion.id
         }
         listaCancionesUltimo.append(dictio)
 

@@ -299,13 +299,13 @@ def get_song(request):
             payload.append({
                 'id': obj.id,
                 'name': obj.nombre, 
-                #'audio': obj.audio,
+                'audio': obj.audio.url,
                 'img': obj.imagen,
                 'length': obj.duracion,
                 'frequency': obj.frecuencia,
                 'idiom': obj.idioma,
                 'genres': nombre_genr,
-                'artists': nombre_arts,
+                'artists': nombre_arts
             })
         
         nombre_genr = []
@@ -337,13 +337,13 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        #'audio': obj.audio,
+                        'audio': obj.audio.url,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
                         'idiom': obj.idioma,
                         'genres': nombre_genr,
-                        'artists': nombre_arts,
+                        'artists': nombre_arts
                     })
         
         nombre_genr = []
@@ -375,13 +375,13 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        #'audio': obj.audio,
+                        'audio': obj.audio.url,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
                         'idiom': obj.idioma,
                         'genres': nombre_genr,
-                        'artists': nombre_arts,
+                        'artists': nombre_arts
                     })
         
         nombre_genr = []

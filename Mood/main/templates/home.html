@@ -277,7 +277,7 @@
                 <li class="m-3">
                     <div class="wiki-title">
                         <img src="${result.img}" alt="Image" style="width: 35px;"> 
-                        <a href="" style="text-decoration: none; color: #000; display: inline-block;">${result.name}${artistas}${generos}</a> 
+                        <a onclick="loadSong('${result.audio}', '${result.name}', '${result.img}', '${result.length}', undefined, undefined)" style="text-decoration: none; color: #000; display: inline-block; cursor: pointer;">${result.name}${artistas}${generos}</a> 
                         <div class="dropdown">
                             <button type="button" onclick="openDropdownSearchBar(${result.id})" class="dropbtn btn btn-light position-absolute start-100 translate-middle" style="margin-top: -18px; margin-left: -30px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="dropbtn bi bi-three-dots-vertical" viewBox="0 0 16 16">

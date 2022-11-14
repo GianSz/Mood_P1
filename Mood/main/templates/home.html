@@ -306,8 +306,7 @@
             document.getElementById(`dropDown-searchBar-${id}`).classList.toggle("show");
         }
 
-        function openDropDownGustosPlaylist(id){
-            console.log(id);    
+        function openDropDownGustosPlaylist(id){  
             document.getElementById(`dropDown-GustosPlaylist-${id}`).classList.toggle("show");
         }
 
@@ -322,16 +321,16 @@
         
         // Cierra el dropdown si el usuario hace click fuera de él
         window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')){
+                        openDropdown.classList.remove('show');
+                    }
+                }
             }
-          }
         }
     </script>
 {% endblock %}

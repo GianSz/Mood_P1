@@ -366,53 +366,41 @@
         };
         queue.push(song);
 
-        //song-box
+        //Crear song-box
         const songBox = document.createElement('div');
         songBox.classList.add('song-box');
-        songBox.setAttribute("id", "song-box"+indexQueue);
+        songBox.id = `song-box-${indexQueue}`;
         songBox.setAttribute("data", `${indexQueue}`);
+        songBox.innerHTML = 
+        `
+        <div class="song-box__info" onclick="loadSongQueue('${audio_source_param}', '${nombre_param}', '${img_source_param}', '${duration_param}', '${indexQueue}')">
+            <div class="song-box__image-container">
+                <img src="${img_source_param}" alt="${nombre_param}"/>
+            </div>
+            <h6 class="song-box__title">${nombre_param}</h6>
+        </div>
+        <button type="button" onclick="openDropDownQueuePlaylist('${indexQueue}')" class="song-box__button dropbtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="dropbtn bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+            </svg>
+        </button>
+        `
 
-        //song-box__info
-        const songBoxInfo = document.createElement('div');
-        songBoxInfo.classList.add('song-box__info');
-        songBoxInfo.setAttribute("onclick", `loadSongQueue('${audio_source_param}', '${nombre_param}', '${img_source_param}', '${duration_param}', '${indexQueue}')`);
-
-        //song-box__image-container
-        const songBoxImageContainer = document.createElement('div');
-        songBoxImageContainer.classList.add('song-box__image-container');
-
-        //image
-        const image = document.createElement('img');
-        image.src = img_source_param;
-
-        //Añadir image a songBoxImageContainer
-        songBoxImageContainer.append(image);
-        
-        //Añadir songBoxImageContainer a songBoxInfo
-        songBoxInfo.append(songBoxImageContainer);
-        
-        //h6 titulo
-        const h6 = document.createElement('h6');
-        h6.classList.add('song-box__title');
-        h6.innerText = nombre_param;
-
-        //Añadir h6 a songBoxInfo
-        songBoxInfo.append(h6);
-
-        //Añadir song-box__info a song-box
-        songBox.append(songBoxInfo);
-
-        //song-box__button
-        const button = document.createElement('button');
-        button.classList.add('song-box__button');
-        button.setAttribute("onclick", `removeFromQueue('${indexQueue}')`);
-        button.innerText = '...';
-
-        //Añadir song-box__button a song-box
-        songBox.append(button);
+        //Crear dropdown
+        const dropDown = document.createElement('div');
+        dropDown.classList.add('dropdown-content');
+        dropDown.id = `dropDown-queuePlaylist-${indexQueue}`;
+        dropDown.innerHTML =
+        `
+        <button type="button" onclick="removeFromQueue(${indexQueue})" class="btn caid">
+            Eliminar de la cola
+        </button>
+        `
 
         //Añadir song-box a songs-container
         songsContainer.append(songBox);
+        //Añadir dropdown a songsContainer
+        songsContainer.append(dropDown);
 
         indexQueue++;
     }
@@ -427,8 +415,7 @@
 
         //Se eliminan las canciones que estén en frente de la canción seleccionada, ya que se toman como omitidas.
         for(let i = firstSongIndex; i<=index_param; i++){
-            let el = document.getElementById("song-box"+i);
-            el.remove();
+            removeSongFromDOM(i);
             queue.shift();
         }
 
@@ -452,10 +439,20 @@
         //Se calcula la posición dentro del arreglo de la canción seleccionada, con el fin de eliminarla posteriormente.
         let pos = (index_param*1) - firstSongIndex;
 
-        let el = document.getElementById("song-box"+index_param);
-        el.remove();
+        //Eliminamos el elemento del DOM, junto con su dropDown.
+        removeSongFromDOM(index_param);
 
         queue.splice(pos, 1);
+    }
+
+    //Función que elimina una canción del DOM con su correspondiente dropdown
+    function removeSongFromDOM(index_param){
+        let el = document.getElementById(`song-box-${index_param}`);
+        if(el!=null){
+            el.remove();
+            el = document.getElementById(`dropDown-queuePlaylist-${index_param}`);
+            el.remove();
+        }
     }
 
     //Evento del botón play/pause que escucha click y reproduce o pausa la canción con respecto a su estado, además actualiza el icono del botón dependiendo del estado también.
@@ -524,9 +521,27 @@
         }
         let firstSongIndex = songsContainer.firstChild.getAttribute("data")*1;
         for(let i = firstSongIndex; i<indexQueue; i++){
-            let el = document.getElementById("song-box"+i);
-            el.remove();
+            removeSongFromDOM(i);
             queue.shift();
         }
     })
+</script>
+<script>
+    function openDropDownQueuePlaylist(id){
+        document.getElementById(`dropDown-queuePlaylist-${id}`).classList.toggle("show");
+    }
+
+    // Cierra el dropdown si el usuario hace click fuera de él
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
 </script>

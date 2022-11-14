@@ -289,7 +289,7 @@
                             <button type="button" onclick="addSongToPlaylist(${result.id})" class="btn caid" data-bs-toggle="modal" data-bs-target="#addPlaylist">
                                 Añadir a playlist
                             </button>
-                            <button type="button" class="btn caid">
+                            <button type="button" onclick="addQueue('${result.audio}', '${result.name}', '${result.img}', '${result.length}')" class="btn caid">
                                 Añadir a la cola
                             </button>
                         </div>

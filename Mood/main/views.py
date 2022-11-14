@@ -70,7 +70,7 @@ def home_page(request): # Views para la home page
             "audio": cancion.id_cancion.audio.url,
             "imagen": cancion.id_cancion.imagen,
             "duracion": cancion.id_cancion.duracion,
-            "id": cancion.id
+            "id": cancion.id_cancion.id
         }
         listaCancionesUltimo.append(dictio)
 
@@ -87,13 +87,11 @@ def home_page(request): # Views para la home page
                 adding.save()
 
                 if adding is not None:
-                    messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
-                    return redirect('home')
+                    messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito a la playlist {addToPlay}')
                 else:
                     messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
-                    return redirect('home')
             else:
-                    messages.error(request, 'Ya existe esta canción en la playlist')
+                    messages.error(request, f'Ya existe esta canción en la playlist {addToPlay}')
             
 
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
@@ -225,11 +223,11 @@ def tuMusica_page(request):
                     adding.save()
 
                     if adding is not None:
-                        messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
+                        messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito a la playlist {addToPlay}')
                     else:
                         messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
                 else:
-                    messages.error(request, 'Ya existe esta canción en la playlist')
+                    messages.error(request, f'Ya existe esta canción en la playlist {addToPlay}')
 
     context = {'playlistToListen':showPlaylist, 'songsPlaylist': songsPlaylistDefault, 'playlists': playlists}
     return render(request, template_name='tuMusica.html', context=context)
@@ -699,13 +697,14 @@ def playlist(request, userEmotion):
             if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
                 adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
                 adding.save()
+
+                if adding is not None:
+                    messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito a la playlist {addToPlay}')
+                else:
+                    messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
             else:
                     messages.error(request, f'Ya existe esta canción en la playlist {addToPlay.nombre} ')
         
-        if adding is not None:
-            messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
-        else:
-            messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
 
     context={'userEmotion':userEmotion,'canciones':canciones,'MOOD':True, 'playlists': playlists}
     #parametros:

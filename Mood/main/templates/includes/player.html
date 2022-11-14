@@ -305,23 +305,32 @@
     //Función que reproduce la canción siguiente a la que se encuentra actualmente sonando.
     function playNextSong(){
         //Si en la cola hay alguna canción pendiente entonces se reproduce esta en vez de la siguiente en la playlist.
-        if(queue.length>0){
-            let song = queue[0];
-            loadSongQueue(song.audio, song.name, song.image, song.duration, song.index);
+        if(playlist == undefined){
+            if(queue.length>0){
+                let song = queue[0];
+                loadSongQueue(song.audio, song.name, song.image, song.duration, song.index);
+            }
         }
-        //Sino, se reproduce la siguiente en la playlist.
         else{
-            if(indexPlaylist < playlist.length - 1){
-                indexPlaylist++;
-                let song = playlist[indexPlaylist];
-                loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+            if(queue.length>0){
+                let song = queue[0];
+                loadSongQueue(song.audio, song.name, song.image, song.duration, song.index);
             }
+            //Sino, se reproduce la siguiente en la playlist.
             else{
-                indexPlaylist = 0;
-                let song = playlist[indexPlaylist];
-                loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+                if(indexPlaylist < playlist.length - 1){
+                    indexPlaylist++;
+                    let song = playlist[indexPlaylist];
+                    loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+                }
+                else{
+                    indexPlaylist = 0;
+                    let song = playlist[indexPlaylist];
+                    loadSong(song.audio, song.nombre, song.imagen, song.duracion, indexPlaylist, playlist);
+                }
             }
         }
+        
     }
     
     //Función que gestiona las actualizaciones con base en el tiempo de la canción. En otras palabras, llama a las dos funciones siguientes que son las que ejecutan funcionalidades con respecto al tiempo de la canción.
@@ -354,7 +363,7 @@
         audio.currentTime = (val * audio.duration);
     }
 
-    //Función que añade una canción a la cola, y crea el conjunto de elementos neecsarios para visualizar la caja de la canción añadida.
+    //Función que añade una canción a la cola, y crea el conjunto de elementos necesarios para visualizar el elemento de la canción añadida.
     function addQueue(audio_source_param, nombre_param, img_source_param, duration_param){
 
         let song = {

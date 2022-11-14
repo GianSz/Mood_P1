@@ -56,7 +56,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form method="POST" action="{% url 'home' %}">
+                    <form method="POST" action="{% url 'playlist' userEmotion=userEmotion %}">
                         {% csrf_token %}
                         <h6 class="text-center">
                             Escoge todas las playlists a las que deseas añadir la canción

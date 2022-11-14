@@ -1,12 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from matplotlib.style import context
 from .models import *
-import matplotlib.pyplot as plt
 import cv2
 from deepface import DeepFace
-import numpy as np
 import random
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required

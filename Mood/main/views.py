@@ -92,6 +92,8 @@ def home_page(request): # Views para la home page
                 else:
                     messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
                     return redirect('home')
+            else:
+                    messages.error(request, 'Ya existe esta canción en la playlist')
             
 
     contexto = {'listaCancionesUltimo':listaCancionesUltimo, 'listaCancionesGustos':listaCancionesGustos, 'playlists':playlists}
@@ -193,8 +195,41 @@ def tuMusica_page(request):
                 }   
                 songsPlaylist.append(dictio) 
             
+            #Si se quiere eliminar una canción de la playlist
+            if request.POST.get('songIdDelete'):
+                playlistToListen = request.POST.get('playlistToListen') #Cogemos la playlist seleccionada
+                showPlaylist = Playlist.objects.get(id = int(playlistToListen)) #Cogemos el nombre de la playlist
+                songToDelete = request.POST.get('songIdDelete')
+                songsInPlaylist=Playlist_Cancion.objects.filter(id_playlist=playlistToListen)
+
+                for song in songsInPlaylist:
+                    if (int(songToDelete) == int(song.id_cancion.id)):
+                        song.delete()
+                        messages.success(request, f'Se ha eliminado la canción {Cancion.objects.get(id = int(songToDelete))} con éxito')
+                return redirect('tuMusica')
+            
             context2 = {'playlistToListen': showPlaylist, 'songsPlaylist': songsPlaylist, 'playlists': playlists}
             return render(request, template_name='tuMusica.html', context=context2)
+        
+        #Si se quiere añadir una canción 
+        if request.POST.get('songId'):
+            addTo = request.POST.getlist('addTo')
+            songToAdd = request.POST.get('songId')
+            songToAdd = Cancion.objects.get(id = int(songToAdd))
+            
+            for i in range (len(addTo)):
+                addToPlay = Playlist.objects.get(id = int(addTo[i]))
+
+                if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
+                    adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
+                    adding.save()
+
+                    if adding is not None:
+                        messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
+                    else:
+                        messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
+                else:
+                    messages.error(request, 'Ya existe esta canción en la playlist')
 
     context = {'playlistToListen':showPlaylist, 'songsPlaylist': songsPlaylistDefault, 'playlists': playlists}
     return render(request, template_name='tuMusica.html', context=context)
@@ -482,7 +517,10 @@ def recognize(request):
     return render(request, template_name='confirmEmotion.html', context=context)
 
 #Función que genera una playlist con respecto al estado de ánimo del usuario
-def playlist(request, userEmotion):    
+def playlist(request, userEmotion):   
+
+    idPerfil = Perfil.objects.get(usuario=request.user) #Obtener usuario
+    playlists = Playlist.objects.filter(id_perfil = idPerfil).order_by('nombre').values().exclude(nombre = "ultima") #Cogemos las playlist de este usuario
     cancionesQuery=[]
     
     if(userEmotion=="feliz"):
@@ -650,11 +688,31 @@ def playlist(request, userEmotion):
         }
         canciones.append(dictio)
 
-    context={'userEmotion':userEmotion,'canciones':canciones,'MOOD':True}
+    if request.method == 'POST' and (request.POST.get('songId')):
+        addTo = request.POST.getlist('addTo')
+        songToAdd = request.POST.get('songId')
+        songToAdd = Cancion.objects.get(id = int(songToAdd))
+        
+        for i in range (len(addTo)):
+            addToPlay = Playlist.objects.get(id = int(addTo[i]))
+
+            if(len(Playlist_Cancion.objects.filter(id_playlist = addToPlay).filter(id_cancion = songToAdd)) == 0):
+                adding = Playlist_Cancion(id_playlist = addToPlay, id_cancion = songToAdd)
+                adding.save()
+            else:
+                    messages.error(request, f'Ya existe esta canción en la playlist {addToPlay.nombre} ')
+        
+        if adding is not None:
+            messages.success(request, f'Se ha añadido la canción {songToAdd} con éxito')
+        else:
+            messages.error(request, 'Ocurrió un problema, por favor vuelva a intentarlo')
+
+    context={'userEmotion':userEmotion,'canciones':canciones,'MOOD':True, 'playlists': playlists}
     #parametros:
-    #userEmotion: la emoción que mandaremis a la playlist
+    #userEmotion: la emoción que mandaremos a la playlist
     #canciones: la lista de las canciones
     #MOOD: el verificador que ya se usó el servicio de mood para poder enviar la encuesta
+    #playlists: las playlists que tiene el usuario para poder agregar canciones a estas
 
     return render(request, template_name='playlist.html', context = context)
 

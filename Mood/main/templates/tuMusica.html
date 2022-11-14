@@ -82,7 +82,10 @@
                                 </button>
                             </div>
                             <div id="dropDown-personalPlaylist-{{cancion.id}}" class="dropdown-content">
-                                <button type="button" onclick="" class="btn caid">
+                                <button type="button" onclick="addSongToPlaylist('{{cancion.id}}')" class="btn caid" data-bs-toggle="modal" data-bs-target="#addPlaylist">
+                                    Añadir a playlist
+                                </button>
+                                <button type="button" onclick="deleteSong('{{cancion.id}}')" class="btn caid" data-bs-toggle="modal" data-bs-target="#deleteSong">
                                     Eliminar de la playlist
                                 </button>
                                 <button type="button" onclick="addQueue('{{cancion.audio}}', '{{cancion.nombre}}', '{{cancion.imagen}}', '{{cancion.duracion}}')" class="btn caid">
@@ -95,6 +98,72 @@
             </div>
         </div>
     </div>  
+
+    <div class="modal fade" id="addPlaylist" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">
+                        ¿A qué playlist quieres añadir la canción?
+                    </h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'tuMusica' %}">
+                        {% csrf_token %}
+                        <h6 class="text-center">
+                            Escoge todas las playlists a las que deseas añadir la canción
+                        </h6>
+                        <input id="songId" name="songId" type="hidden" value="">
+                        <br>
+                        <select name="addTo" class="selectpicker" data-width="100%"  title="Seleccione tu playlist..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" multiple>
+                            {% for playlist in playlists %}
+                                <option value="{{ playlist.id }}">{{ playlist.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+                        <br>
+                        <div class="text-center">
+                            <button class="form__button btn btn-outline-success" type="submit">Añadir</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteSong" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">
+                        ¿Estás seguro que quieres eliminar la canción de la playlist {{ playlistToListen }}?
+                    </h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'tuMusica' %}">
+                        {% csrf_token %}
+                        <input id="songIdDelete" name="songIdDelete" type="hidden" value="">
+                        <input id="playlistToListen" name="playlistToListen" type="hidden" value="{{playlistToListen.id}}">
+                        <div class="text-center">
+                            <button class="form__button btn btn-outline-success" type="submit">Eliminar</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     {% endif %}
 
     <style>
@@ -211,6 +280,16 @@
             document.getElementById(`dropDown-personalPlaylist-${id}`).classList.toggle("show");
         }
         
+        function addSongToPlaylist(id){
+            var songid = document.getElementById("songId");
+            songid.value = id;
+        }
+
+        function deleteSong(id){
+            var songid = document.getElementById("songIdDelete");
+            songid.value = id;
+        }
+
         // Cierra el dropdown si el usuario hace click fuera de él
         window.onclick = function(event) {
             if (!event.target.matches('.dropbtn')) {

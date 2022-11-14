@@ -703,7 +703,7 @@ def SubirMusica(request):
 
         #Canción
         if(len(Cancion.objects.filter(nombre=registro[0].title()))==0):
-            cancionSV=Cancion(nombre=registro[0].title(),duracion=int(registro[1]),frecuencia=int(registro[2]),idioma=registro[3].title(),intensidad_feliz=int(registro[4]),intensidad_triste=int(registro[5]),intensidad_enojo=int(registro[6]))
+            cancionSV=Cancion(nombre=registro[0].title(),duracion=int(registro[1]),frecuencia=int(registro[2]),idioma=registro[3].title(),intensidad_feliz=int(registro[4]),intensidad_triste=int(registro[5]),intensidad_enojo=int(registro[6]),imagen=registro[9])
             cancionSV.save()
 
         can=Cancion.objects.get(nombre=registro[0].title())
@@ -770,11 +770,11 @@ def subirAudios(request):
         registro= linea.split(";")    
         registro[-1]=registro[-1][:-1]
 
-        cancionAct = Cancion.objects.get(nombre=registro[0])
+        cancionAct = Cancion.objects.get(nombre=registro[0].title())
         #opción 1
-        cancionAct.audio="audios/"+registro[1]#ojo que debe incluir el .mp3 en el excel
+        #cancionAct.audio="audios/"+registro[1]#ojo que debe incluir el .mp3 en el excel
         #opción 2
-        #cancionAct.audio="audios/"+registro[0].lower().replace(" ","_")+".mp3"
+        cancionAct.audio="audios/"+registro[0].lower().replace(" ","_")+".mp3"
         cancionAct.save()
 
         mistr=registro[0]+"con la direccion: audios/"+registro[1]

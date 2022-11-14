@@ -156,7 +156,8 @@ def tuMusica_page(request):
             dictio = {"nombre":song.id_cancion.nombre,
                 "audio": song.id_cancion.audio.url,
                 "imagen": song.id_cancion.imagen,
-                "duracion": song.id_cancion.duracion
+                "duracion": song.id_cancion.duracion,
+                "id":song.id_cancion.id
             }   
             songsPlaylistDefault.append(dictio) 
 
@@ -189,7 +190,8 @@ def tuMusica_page(request):
                 dictio = {"nombre":song.id_cancion.nombre,
                     "audio": song.id_cancion.audio.url,
                     "imagen": song.id_cancion.imagen,
-                    "duracion": song.id_cancion.duracion
+                    "duracion": song.id_cancion.duracion,
+                    "id": song.id_cancion.id
                 }   
                 songsPlaylist.append(dictio) 
             
@@ -645,7 +647,8 @@ def playlist(request, userEmotion):
         dictio = {"nombre":cancion.nombre,
         "audio": cancion.audio.url,
         "imagen": cancion.imagen,
-        "duracion": cancion.duracion
+        "duracion": cancion.duracion,
+        "id": cancion.id
         }
         canciones.append(dictio)
 

@@ -80,7 +80,13 @@
         
                     <div class="form__field form__field--8">
                         <label class="form__terms-label form-label">
-                            <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los <button type="button" class="btn btn-terms fw-bold" data-bs-toggle="modal" data-bs-target="#Prueba"> términos y condiciones.</button>
+                            <input class="form__terms-input form-check-input" type="checkbox" required> Acepto los                     
+                            <div class="dropdown">
+                                <button class="dropbtn fw-bold">términos y condiciones</button>
+                                <div class="dropdown-content">
+                                    <img src="../../../static/Terms&Cond.png" alt="Terminos" style="width: 100%;"> 
+                                </div>
+                            </div>
                         </label>
                     </div>
         
@@ -94,35 +100,31 @@
     </div>
 </body>
 
-<!-- Cuadro de permiso de uso de camara -->
-<div class="modal fade" id="Prueba" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="ModalLabel">
-                ¿Permite usted el uso de su cámara para el reconocimiento facial?
-            </h5>
-            <button type="button" class="btn-close"
-                    data-bs-dismiss="modal" aria-label="Close">
-            </button>
-        </div>
-        <div class="modal-body">
-            <form method="POST">
-                {% csrf_token %}
-                <h6 class="text-center">
-                    ¡Para nosotros es muy importante su seguridad!
-                </h6>
-                <br>
-                <div class="text-center">
-                    <p>prueba</p>
-                </div>
-            </form>
-        </div>
-        </div>
-    </div>
-</div>
-
 <style>
+
+    .dropbtn {
+    background-color: #5E2FB1;
+    color: white;
+    padding: 5px;
+    font-size: 16px;
+    border: none;
+    }
+
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+
+    .dropdown-content {
+    display: none;
+    position: relative;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    }
+
+    .dropdown:hover .dropdown-content {display: block;}
 
     .form{
         background-color: #5E2FB1;

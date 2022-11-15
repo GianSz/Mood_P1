@@ -6,6 +6,10 @@
 
 {% block content %}
 
+    <div class="text-md-end">
+        <button type="button" class="btn miboton btn-primary" style="margin-top: 30px; margin-bottom: -168px;" data-bs-toggle="modal" data-bs-target="#videoTutorial"> Tutorial </button>
+    </div>
+
     <div class="container mt-5 pt-3 mb-5" >
         <div class="col-11 col-md-9 col-lg-6 col-xl-6 mx-auto">
             <div id="autocomplete" class="autocomplete">
@@ -18,7 +22,7 @@
     <div class="playlist-container row justify-content-center" style="margin-bottom: 2.5em;">
 
         <div class="col-11 col-sm-11 col-lg-6">
-            <div class="card text-center h-100" >
+            <div class="card1 card text-center h-100" >
                 <div class="card-body pt-0">
                     <h3 class="card-title" style="color: white;">Según tus gustos</h3>
                     <div class="songs-container">
@@ -57,7 +61,7 @@
     
 
         <div class="col-11 col-sm-11 col-lg-6">
-            <div class="card text-center" >
+            <div class="card1 card text-center" >
                 <div class="card-body pt-0">
                     <h3 class="card-title" style="color:white;">Según tu último estado de ánimo</h3>
                     <div class="songs-container">
@@ -131,11 +135,51 @@
         </div>
     </div>
 
+    <div class="modal fade" id="videoTutorial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">
+                        ¡Conoce todo lo que puedes hacer en Mood!
+                    </h5>
+                    <button type="button" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="text-center">
+                        <video controls width="250">
+                        
+                            <source src="../../../static/Tuto.mp4"
+                                    type="video/mp4">
+                        
+                        </video>     
+                    </div>        
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         @media screen and (max-width: 991px){
             .playlist-container{
                 gap:24px;
             } 
+        }
+
+        .miboton{
+            background-color:#8241F3 ;
+            border-color: #8241F3;
+        }
+
+        .miboton:hover, .miboton:focus, .miboton:active:focus{
+            background-color:#5d30aa ;
+            border-color: #5d30aa;
+        }
+
+        .miboton:active:focus, .miboton:focus{
+            box-shadow: 0 0 0 .25rem #6836c057;
         }
 
         .dropdown {
@@ -227,7 +271,7 @@
             background-color: rgba(127,127,127,.25) !important;
         }
 
-        .card{
+        .card1{
             background-color: #5E2FB1;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg stroke='%23000000' stroke-width='0' %3E%3Ccircle fill='%235E2FB1' cx='0' cy='0' r='1800'/%3E%3Ccircle fill='%236030b5' cx='0' cy='0' r='1700'/%3E%3Ccircle fill='%236231b9' cx='0' cy='0' r='1600'/%3E%3Ccircle fill='%236432bc' cx='0' cy='0' r='1500'/%3E%3Ccircle fill='%236633c0' cx='0' cy='0' r='1400'/%3E%3Ccircle fill='%236834c4' cx='0' cy='0' r='1300'/%3E%3Ccircle fill='%236a35c8' cx='0' cy='0' r='1200'/%3E%3Ccircle fill='%236d36cc' cx='0' cy='0' r='1100'/%3E%3Ccircle fill='%236f37d0' cx='0' cy='0' r='1000'/%3E%3Ccircle fill='%237138d3' cx='0' cy='0' r='900'/%3E%3Ccircle fill='%23733ad7' cx='0' cy='0' r='800'/%3E%3Ccircle fill='%23753bdb' cx='0' cy='0' r='700'/%3E%3Ccircle fill='%23773cdf' cx='0' cy='0' r='600'/%3E%3Ccircle fill='%23793de3' cx='0' cy='0' r='500'/%3E%3Ccircle fill='%237b3ee7' cx='0' cy='0' r='400'/%3E%3Ccircle fill='%237e3feb' cx='0' cy='0' r='300'/%3E%3Ccircle fill='%238040ef' cx='0' cy='0' r='200'/%3E%3Ccircle fill='%238241F3' cx='0' cy='0' r='100'/%3E%3C/g%3E%3C/svg%3E");
             background-attachment: local;

@@ -6,11 +6,11 @@
 
 {% block content %}
 
-    <div class="text-md-end">
-        <button type="button" class="btn miboton btn-primary" style="margin-top: 30px; margin-bottom: -168px;" data-bs-toggle="modal" data-bs-target="#videoTutorial"> Tutorial </button>
+    <div class="tutorial-container mt-5">
+        <button type="button" class="tutorial-container__button btn btn-primary" data-bs-toggle="modal" data-bs-target="#videoTutorial"> Tutorial </button>
     </div>
 
-    <div class="container mt-5 pt-3 mb-5" >
+    <div class="container mt-2 pt-3 mb-5" >
         <div class="col-11 col-md-9 col-lg-6 col-xl-6 mx-auto">
             <div id="autocomplete" class="autocomplete">
                 <input class="autocomplete-input" style="border: 1px solid #aaa;" placeholder="Busca tu canción favorita..." />
@@ -168,17 +168,24 @@
             } 
         }
 
-        .miboton{
-            background-color:#8241F3 ;
+        .tutorial-container{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .tutorial-container__button{
+            width: 15%;
+            background-color:#8241F3;
             border-color: #8241F3;
         }
 
-        .miboton:hover, .miboton:focus, .miboton:active:focus{
+        .tutorial-container__button:hover, .tutorial-container__button:focus, .tutorial-container__button:active:focus{
             background-color:#5d30aa ;
             border-color: #5d30aa;
         }
 
-        .miboton:active:focus, .miboton:focus{
+        .tutorial-container__button:active:focus, .tutorial-container__button:focus{
             box-shadow: 0 0 0 .25rem #6836c057;
         }
 

@@ -37,14 +37,12 @@
             <div class="modal-body">
                 <form method="POST">
                     {% csrf_token %}
-                    <select name="emo" class="selectpicker" data-width="100%"  title="Emociones..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10">
-                        {% for emocion in emociones %}
+                    <select name="emo" class="selectpicker" data-width="100%"  title="Emociones..." aria-label="" data-actions-box="true" data-live-search="true" data-size="10" onChange="activar(this);">                        {% for emocion in emociones %}
                             <option>{{ emocion }}</option>
                         {% endfor %}
                     </select>
                     <div class="botones text-center">
-                        <button class="form__button btn btn-outline-success" type="submit">Generar playlist</button>
-                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
+                        <button class="form__button btn btn-outline-success" id="btn-enviar" type="submit" disabled="disabled">Generar playlist</button>                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
@@ -71,4 +69,11 @@
             margin-top: 10px;
         }
     </style>
+
+    <script>
+        function activar(sel) {
+            document.getElementById('btn-enviar').disabled = !sel.selectedIndex;
+        }
+    </script>
+
 {% endblock %}

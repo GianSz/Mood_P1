@@ -476,12 +476,15 @@ def login_page(request): #Views para la pagina mood
 
 #Función que sirve para analizar la expresión facial del usuario y reconocer su sentimiento
 def recognize(request):
-
+    print("-------------------------------")
+    print("entramos al metodo")
     userEmotion = "" #initialize empty variable for storing the users emotion
 
-    video=cv2.VideoCapture(-1)  #requisting the input from the webcam or camera
+    video=cv2.VideoCapture(0)  #requisting the input from the webcam or camera
+    print("activamos la camara")
 
     while video.isOpened():  #verifying if the camera was opened
+        print("entramos al while")
         _,frame = video.read() #read the camera footage
            
         #we'll do a try and exception to analyze the users emotion
@@ -508,9 +511,11 @@ def recognize(request):
         else: #if the string was empty then the face was not recognized
             userEmotion = "No te hemos reconocido"
 
+    print("salimos del while")
     print(userEmotion)
 
     context={'userEmotion':userEmotion}
+    print("-------------------------------")
 
     return render(request, template_name='confirmEmotion.html', context=context)
 

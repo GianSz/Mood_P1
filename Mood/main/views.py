@@ -479,7 +479,7 @@ def recognize(request):
 
     userEmotion = "" #initialize empty variable for storing the users emotion
 
-    video=cv2.VideoCapture(0)  #requisting the input from the webcam or camera
+    video=cv2.VideoCapture(-1)  #requisting the input from the webcam or camera
 
     while video.isOpened():  #verifying if the camera was opened
         _,frame = video.read() #read the camera footage

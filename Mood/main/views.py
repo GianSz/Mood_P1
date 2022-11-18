@@ -56,7 +56,7 @@ def home_page(request): # Views para la home page
     for cancion in cancionesGustos:
         dictio = {
             "nombre":cancion.nombre,
-            "audio": cancion.audio.url,
+            "audio": cancion.audio,
             "imagen": cancion.imagen,
             "duracion": cancion.duracion,
             "id": cancion.id
@@ -67,7 +67,7 @@ def home_page(request): # Views para la home page
     for cancion in cancionesUltimo:
         dictio = {
             "nombre":cancion.id_cancion.nombre,
-            "audio": cancion.id_cancion.audio.url,
+            "audio": cancion.id_cancion.audio,
             "imagen": cancion.id_cancion.imagen,
             "duracion": cancion.id_cancion.duracion,
             "id": cancion.id_cancion.id
@@ -152,7 +152,7 @@ def tuMusica_page(request):
         #Guardamos todas las canciones de la playlist
         for song in playlistListen:      
             dictio = {"nombre":song.id_cancion.nombre,
-                "audio": song.id_cancion.audio.url,
+                "audio": song.id_cancion.audio,
                 "imagen": song.id_cancion.imagen,
                 "duracion": song.id_cancion.duracion,
                 "id":song.id_cancion.id
@@ -186,7 +186,7 @@ def tuMusica_page(request):
             #Guardamos todas las canciones de la playlist
             for song in playlistListen:
                 dictio = {"nombre":song.id_cancion.nombre,
-                    "audio": song.id_cancion.audio.url,
+                    "audio": song.id_cancion.audio,
                     "imagen": song.id_cancion.imagen,
                     "duracion": song.id_cancion.duracion,
                     "id": song.id_cancion.id
@@ -332,7 +332,7 @@ def get_song(request):
             payload.append({
                 'id': obj.id,
                 'name': obj.nombre, 
-                'audio': obj.audio.url,
+                'audio': obj.audio,
                 'img': obj.imagen,
                 'length': obj.duracion,
                 'frequency': obj.frecuencia,
@@ -370,7 +370,7 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        'audio': obj.audio.url,
+                        'audio': obj.audio,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
@@ -408,7 +408,7 @@ def get_song(request):
                     payload.append({
                         'id': obj.id,
                         'name': obj.nombre, 
-                        'audio': obj.audio.url,
+                        'audio': obj.audio,
                         'img': obj.imagen,
                         'length': obj.duracion,
                         'frequency': obj.frecuencia,
@@ -684,7 +684,7 @@ def playlist(request, userEmotion):
         cancionEnUltima.save()
         #organizamos las canciones en un diccionario para usar correctamente el js
         dictio = {"nombre":cancion.nombre,
-        "audio": cancion.audio.url,
+        "audio": cancion.audio,
         "imagen": cancion.imagen,
         "duracion": cancion.duracion,
         "id": cancion.id
@@ -811,34 +811,28 @@ def subirDuracion(request):
         registro= linea.split(";")    
         registro[-1]=registro[-1][:-1]
 
-        cancionAct = Cancion.objects.get(nombre=registro[0])
-        cancionAct.duracion=int(registro[1])
+        registro[0]=registro[0]
+        reg=registro[0]+" con audio: "+registro[1]
+        print("buscando: ",reg)
+
+        cancionAct = Cancion.objects.get(nombre__icontains=registro[0])
+        cancionAct.audio=registro[1]
         cancionAct.save()
 
-        mistr=registro[0]+"que dura: "+registro[1]
-        verificacion.append(mistr)
+        verificacion.append(reg)
 
     archivo.close()
     return render(request,template_name="zzVerificar.html",context={"lista":verificacion})
 
 def subirAudios(request):
-    archivo = open("main/data/help.csv",encoding="UTF-8")
 
     verificacion=[]
+    archivo = Cancion.objects.all().order_by('nombre').values()
+    print(archivo)
 
     for linea in archivo:
-        registro= linea.split(";")    
-        registro[-1]=registro[-1][:-1]
 
-        cancionAct = Cancion.objects.get(nombre=registro[0].title())
-        #opción 1
-        #cancionAct.audio="audios/"+registro[1]#ojo que debe incluir el .mp3 en el excel
-        #opción 2
-        cancionAct.audio="audios/"+registro[0].lower().replace(" ","_")+".mp3"
-        cancionAct.save()
+        verificacion.append(linea['nombre'] +'con audio'+linea['audio'])
+        print(linea['nombre'] +';'+linea['audio'])
 
-        mistr=registro[0]+"con la direccion: audios/"+registro[1]
-        verificacion.append(mistr)
-
-    archivo.close()
     return render(request,template_name="zzVerificar.html",context={"lista":verificacion})

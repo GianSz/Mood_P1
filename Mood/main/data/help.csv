@@ -1,30 +1,51 @@
-﻿As it was;167;4;Inglés;30;50;20;Pop;Harry Styles;https://i.scdn.co/image/ab67616d00004851b46f74097655d7f353caab14
-Perfect;263;2;Inglés;45;45;10;Pop;Ed Sheeran;https://i.scdn.co/image/ab67616d00004851ba5db46f4b838ef6027e6f96
-First times;185;3;Inglés;35;55;10;Pop;Ed Sheeran;https://i.scdn.co/image/ab67616d00004851ef24c3fdbf856340d55cfeb2
-Bad habits;230;4;Inglés;45;10;45;Pop;Ed Sheeran;https://i.scdn.co/image/ab67616d00004851ef24c3fdbf856340d55cfeb2
-7 Rings;178;4;Inglés;25;25;50;Pop,Trap;Ariana Grande;https://i.scdn.co/image/ab67616d0000485156ac7b86e090f307e218e9c8
-Positions;172;5;Inglés;35;20;45;Pop;Ariana Grande;https://i.scdn.co/image/ab67616d000048515ef878a782c987d38d82b605
-Thank U, next;207;4;Inglés;20;30;50;Pop;Ariana Grande;https://i.scdn.co/image/ab67616d0000485156ac7b86e090f307e218e9c8
-Love again;258;3;Inglés;20;45;35;Pop;Dua Lipa;https://i.scdn.co/image/ab67616d00004851bd26ede1ae69327010d49946
-That kind of  woman;200;3;Inglés;10;30;60;Pop;Dua Lipa;https://i.scdn.co/image/ab67616d00004851ef12a4e8cdb297684e197cc4
-Si te preguntan…;223;4;Español;25;50;25;Bachata;Prince Royce,Jay Wheeler,Nicky Jam;https://i.scdn.co/image/ab67616d00004851ac070ac46e0667551611b24e
-Inocente;236;4;Español;25;25;50;Bachata;Romeo Santos;https://i.scdn.co/image/ab67616d00004851e9da42890bbd629df1e8f640
-Eres mía;256;3;Español;30;30;40;Bachata;Romeo Santos;https://i.scdn.co/image/ab67616d00004851e9da42890bbd629df1e8f640
-Darte un beso;206;3;Español;40;20;40;Bachata;Prince Royce;https://i.scdn.co/image/ab67616d000048519698eca2303d9c50b8974064
-Propuesta indecente;235;3;Español;40;30;30;Bachata;Romeo Santos;https://i.scdn.co/image/ab67616d00004851e9da42890bbd629df1e8f640
-Las cosas pequeñas;215;2;Español;40;40;20;Bachata;Prince Royce;https://i.scdn.co/image/ab67616d000048517f187201bff22a11f0d6053b
-Hilito;234;2;Español;10;50;40;Bachata;Romeo Santos;https://i.scdn.co/image/ab67616d00004851e9da42890bbd629df1e8f640
-Carita de inocente;191;4;Español;20;35;45;Bachata;Prince Royce;https://i.scdn.co/image/ab67616d000048516012de41ed6b520b025c389f
-Obra maestra;245;5;Español;50;30;20;Bachata;Romeo Santos;https://i.scdn.co/image/ab67616d00004851e9da42890bbd629df1e8f640
-Tarot;237;4;Español;40;20;40;Urbano;Bad Bunny,Jhayco;https://i.scdn.co/image/ab67616d0000485149d694203245f241a1bcaa72
-Ojitos lindos;258;2;Español;25;45;30;Urbano;Bad Bunny,Bomba Estereo;https://i.scdn.co/image/ab67616d0000485149d694203245f241a1bcaa72
-La inocente;202;4;Español;10;40;50;Urbano;Mora,Feid;https://i.scdn.co/image/ab67616d00004851851222dc5c5681bd4c3119d3
-Calentón;203;5;Español;40;20;40;Urbano;Mora;https://i.scdn.co/image/ab67616d00004851076ef0fed51ff7a4911459e9
-Modelito;190;5;Español;50;10;40;Urbano;Mora,YOVNGCHIMI;https://i.scdn.co/image/ab67616d00004851076ef0fed51ff7a4911459e9
-Hey mor;196;4;Español;30;40;30;Urbano;Ozuna,Feid;https://i.scdn.co/image/ab67616d0000485180f5e31c0a66b5aed16d98e3
-Prohibidox;166;2;Español;30;35;35;Urbano;Feid;https://i.scdn.co/image/ab67616d0000485173456ed697350847810e52b3
-Ferxxo 100;167;2;Español;20;50;30;Urbano;Feid;https://i.scdn.co/image/ab67616d0000485137ba1ee95caed30372ea483a
-Feliz cumpleaños Ferxxo;156;3;Español;35;30;35;Urbano;Feid;https://i.scdn.co/image/ab67616d00004851171b67f2647cf7fda88bbe35
-Perdoname;242;3;Español;20;45;35;Reggaeton;La Factoría,Eddy Lover;https://i.scdn.co/image/ab67616d00004851a5d1ef8771a816029303d0f9
-Si no le contesto;220;4;Español;20;35;45;Reggaeton;Plan B;https://i.scdn.co/image/ab67616d0000485180b3341e1bae2887870b0160
-Estar enamorado;221;2;Español;40;30;30;Reggaeton;Golpe a Golpe;https://i.scdn.co/image/ab67616d0000485152d7fb4f32be7b07daa89eb6
+﻿7 Rings;/static/audios/7_rings.mp3
+Alguien;/static/audios/alguien.mp3
+Bad Habits;/static/audios/bad_habits.mp3
+Calentón;/static/audios/calentón.mp3
+Carita De Inocente;/static/audios/carita_de_inocente.mp3
+Casi te envidio;/static/audios/casi_te_envidio.mp3
+Darte Un Beso;/static/audios/darte_un_beso.mp3
+Deseandote;/static/audios/deseandote.mp3
+Dile;/static/audios/dile.mp3
+El día de mi suerte;/static/audios/el_dia_de_mi_suerte.mp3
+En Barranquilla me quedo;/static/audios/en_barranquilla_me_quedo.mp3
+Enter sandman;/static/audios/enter_sandman.mp3
+Eres Mía;/static/audios/eres_mia_TeUC6i6.mp3
+Es un secreto;/static/audios/es_un_secreto.mp3
+Estar Enamorado;/static/audios/estar_enamorado.mp3
+Feliz Cumpleaños Ferxxo;/static/audios/feliz_cumpleaños_ferxxo.mp3
+Ferxxo 100;/static/audios/ferxxo_100.mp3
+First Times;/static/audios/first_times.mp3
+Happy;/static/audios/happy.mp3
+Hey Mor;/static/audios/hey_mor.mp3
+Hilito;/static/audios/hilito.mp3
+Hotel California;/static/audios/hotel_california.mp3
+In the end;/static/audios/in_the_end.mp3
+Inocente;/static/audios/inocente.mp3
+La Inocente;/static/audios/la_inocente.mp3
+La bachata;/static/audios/la_bachata.mp3
+Las Cosas Pequeñas;/static/audios/las_cosas_pequeñas.mp3
+Love Again;/static/audios/love_again.mp3
+Modelito;/static/audios/modelito.mp3
+Obra Maestra;/static/audios/obra_maestra.mp3
+Ojitos Lindos;/static/audios/ojitos_lindos.mp3
+Ojitos chiquitos;/static/audios/ojitos_chiquitos.mp3
+Pa que retozen;/static/audios/pa_que_retoze.mp3
+Paint it, Black;/static/audios/paint_it_black.mp3
+Perdoname;/static/audios/perdoname.mp3
+Perfect;/static/audios/perfect.mp3
+Periódico de ayer;/static/audios/periodico_de_ayer.mp3
+Positions;/static/audios/positions.mp3
+Prohibidox;/static/audios/prohibidox.mp3
+Propuesta Indecente;/static/audios/propuesta_indecente.mp3
+Psychosocial;/static/audios/psychosocial.mp3
+Si No Le Contesto;/static/audios/si_no_le_contesto.mp3
+Si Te Preguntan…;/static/audios/si_te_preguntan..._jSOCLfj.mp3
+Solos;/static/audios/solos.mp3
+Tarot;/static/audios/tarot.mp3
+Te va a doler;/static/audios/te_va_a_doler.mp3
+Thank U, Next;/static/audios/thank_u,_next.mp3
+That Kind Of  Woman;/static/audios/that_kind_of_woman_A4z7Sdd.mp3
+Ven bailalo;/static/audios/ven_bailalo.mp3
+Yo voy;/static/audios/yo_voy.mp3
+As It Was;/static/audios/as_it_was_0dhMjpR.mp3

@@ -481,35 +481,35 @@ def recognize(request):
     userEmotion = "" #initialize empty variable for storing the users emotion
 
     video=cv2.VideoCapture(0)  #requisting the input from the webcam or camera
+    print("seleccionamos la camara")
+
+    _,frame = video.read() #read the camera footage
     print("activamos la camara")
+        
+    #we'll do a try and exception to analyze the users emotion
+    try:
+        #if we can detect a face we use DeepFace.analyze to extract the information (emtion, age, race and) of the user
+        analyze = DeepFace.analyze(frame, actions = ['emotion']) 
+        userEmotion = analyze['dominant_emotion']  #we only need the users emotion so we take that data
+        print("llegamos al final del try")
+    except:
+        userEmotion = " " #if we couldn't detect the users face we store an empty string
+        print("toco except")
 
-    while video.isOpened():  #verifying if the camera was opened
-        print("entramos al while")
-        _,frame = video.read() #read the camera footage
-           
-        #we'll do a try and exception to analyze the users emotion
-        try:
-            #if we can detect a face we use DeepFace.analyze to extract the information (emtion, age, race and) of the user
-            analyze = DeepFace.analyze(frame, actions = ['emotion']) 
-            userEmotion = analyze['dominant_emotion']  #we only need the users emotion so we take that data
+    video.release() #stop live footage
 
-        except:
-            userEmotion = " " #if we couldn't detect the users face we store an empty string
+    #as this page is in spanish and Deepface is in english we translate the emotions
+    if userEmotion == "happy" or userEmotion == "neutral" or userEmotion == "surprised":
+        userEmotion = "feliz"
 
-        video.release() #stop live footage
+    elif userEmotion == "sad" or userEmotion == "fear":
+        userEmotion = "triste"
 
-        #as this page is in spanish and Deepface is in english we translate the emotions
-        if userEmotion == "happy" or userEmotion == "neutral" or userEmotion == "surprised":
-            userEmotion = "feliz"
-
-        elif userEmotion == "sad" or userEmotion == "fear":
-            userEmotion = "triste"
-
-        elif userEmotion == "angry" or userEmotion == "disgust":
-            userEmotion = "enojado"
-            
-        else: #if the string was empty then the face was not recognized
-            userEmotion = "No te hemos reconocido"
+    elif userEmotion == "angry" or userEmotion == "disgust":
+        userEmotion = "enojado"
+        
+    else: #if the string was empty then the face was not recognized
+        userEmotion = "No te hemos reconocido"
 
     print("salimos del while")
     print(userEmotion)

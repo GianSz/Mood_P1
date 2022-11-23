@@ -480,7 +480,7 @@ def recognize(request):
     print("entramos al metodo")
     userEmotion = "" #initialize empty variable for storing the users emotion
 
-    video=cv2.VideoCapture(0)  #requisting the input from the webcam or camera
+    video=cv2.VideoCapture(0, cv2.CAP_DSHOW)  #requisting the input from the webcam or camera
     print("seleccionamos la camara")
 
     _,frame = video.read() #read the camera footage
